@@ -12,6 +12,9 @@ class Conveyor
 public:
     Conveyor();
 
+    void printUrobek();
+    void printIloscPaczek();
+
 //private:
     int lp_prz; //< wykorzystywany w lokalizacji
     std::string oddzial;

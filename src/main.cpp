@@ -1057,48 +1057,26 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
     cout<<"\n"<<"stan zapelnienia R III"<<tabz[15].stan_Tanka<<"\n";
 
 
-    cout<<"\n"<<"ilos paczek Conveyora "<<tabp[23].lp_prz<<" tyle paczek -> "<<tabp[23].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[24].lp_prz<<" tyle paczek -> "<<tabp[24].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[63].lp_prz<<" tyle paczek -> "<<tabp[63].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[28].lp_prz<<" tyle paczek -> "<<tabp[28].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[29].lp_prz<<" tyle paczek -> "<<tabp[29].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[30].lp_prz<<" tyle paczek -> "<<tabp[30].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[44].lp_prz<<" tyle paczek -> "<<tabp[44].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[42].lp_prz<<" tyle paczek -> "<<tabp[42].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[39].lp_prz<<" tyle paczek -> "<<tabp[39].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[40].lp_prz<<" tyle paczek -> "<<tabp[40].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[41].lp_prz<<" tyle paczek -> "<<tabp[41].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[43].lp_prz<<" tyle paczek -> "<<tabp[43].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[46].lp_prz<<" tyle paczek -> "<<tabp[46].il_paczek<<"\n";
-    cout<<"ilos paczek Conveyora "<<tabp[45].lp_prz<<" tyle paczek -> "<<tabp[45].il_paczek<<"\n";
-
-    cout<<"\n"<<"z Conveyora 44 (WeighingBelt) ";
-    for(int j=0; j<tabp[44].il_paczek; j++)
-    {
-        cout<<tabp[44].urobek[j]<<" ";
-    }
     cout<<"\n";
+    tabp[23].printIloscPaczek();
+    tabp[24].printIloscPaczek();
+    tabp[63].printIloscPaczek();
+    tabp[28].printIloscPaczek();
+    tabp[29].printIloscPaczek();
+    tabp[30].printIloscPaczek();
+    tabp[44].printIloscPaczek();
+    tabp[42].printIloscPaczek();
+    tabp[39].printIloscPaczek();
+    tabp[40].printIloscPaczek();
+    tabp[41].printIloscPaczek();
+    tabp[43].printIloscPaczek();
+    tabp[46].printIloscPaczek();
+    tabp[45].printIloscPaczek();
 
-    cout<<"\n"<<"z Conveyora 42 (WeighingBelt) ";
-    for(int j=0; j<tabp[42].il_paczek; j++)
-    {
-        cout<<tabp[42].urobek[j]<<" ";
-    }
-    cout<<"\n";
-
-    cout<<"\n"<<"z Conveyora 46 (WeighingBelt) ";
-    for(int j=0; j<tabp[46].il_paczek; j++)
-    {
-        cout<<tabp[46].urobek[j]<<" ";
-    }
-    cout<<"\n";
-
-    cout<<"\n"<<"z Conveyora 41 (WeighingBelt) ";
-    for(int j=0; j<tabp[41].il_paczek; j++)
-    {
-        cout<<tabp[41].urobek[j]<<" ";
-    }
-    cout<<"\n";
+    tabp[44].printUrobek();
+    tabp[42].printUrobek();
+    tabp[46].printUrobek();
+    tabp[41].printUrobek();
 
     cout<<"\n"<<"Tank 11 stan Tanka "<<tabz[11].stan_Tanka;
     cout<<"\n"<<"Tank 11 zapelnianie ";
@@ -1108,43 +1086,11 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
     }
     cout<<"\n";
 
-    cout<<"\n"<<"z Conveyora 40 (WeighingBelt) ";
-    for(int j=0; j<tabp[40].il_paczek; j++)
-    {
-        cout<<tabp[40].urobek[j]<<" ";
-    }
-    cout<<"\n";
-
-
-    cout<<"\n"<<"z Conveyora 39 (WeighingBelt) ";
-    for(int j=0; j<tabp[39].il_paczek; j++)
-    {
-        cout<<tabp[39].urobek[j]<<" ";
-    }
-    cout<<"\n";
-
-
-    cout<<"\n"<<"z Conveyora 24 (WeighingBelt) ";
-    for(int j=0; j<tabp[24].il_paczek; j++)
-    {
-        cout<<tabp[24].urobek[j]<<" ";
-    }
-    cout<<"\n";
-
-
-    cout<<"\n"<<"z Conveyora 28 (WeighingBelt) ";
-    for(int j=0; j<tabp[28].il_paczek; j++)
-    {
-        cout<<tabp[28].urobek[j]<<" ";
-    }
-    cout<<"\n";
-
-    cout<<"\n"<<"z Conveyora 23 (WeighingBelt) ";
-    for(int j=0; j<tabp[23].il_paczek; j++)
-    {
-        cout<<tabp[23].urobek[j]<<" ";
-    }
-    cout<<"\n";
+    tabp[40].printUrobek();
+    tabp[39].printUrobek();
+    tabp[24].printUrobek();
+    tabp[28].printUrobek();
+    tabp[23].printUrobek();
 
 
     cout<<"\n"<<"R III"<<"\n";
@@ -1156,7 +1102,7 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
     cout<<"\n";
 
 
-    cout<<"\n"<<"Tank"<<"\n";
+    cout<<"\n"<<"zbiornik"<<"\n";
 
     for(int j=0; j<n; j++) // sprawdzam Tank
     {
@@ -1165,7 +1111,7 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
     cout<<"\n";
 
 
-    cout<<"\n"<<"WeighingBelt z Conveyora 23 na 5 paczce"<<"\n";
+    cout<<"\n"<<"waga z przenosnika 23 na 5 paczce"<<"\n";
 
     for(int j=0; j<n; j++) // sprawdzam Tank
     {
@@ -1180,8 +1126,8 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
     float urob=800; // t/h
 
     float wynik;
-    wynik=urob*przelicznik;
-    cout<<wynik;
+    wynik = urob * przelicznik;
+    cout << wynik;
 
 
     cout << "\n";
