@@ -6,6 +6,9 @@
 
 class Tank
 {
+    friend std::istream& operator>>(std::istream& is, Tank& dt);
+    friend std::ostream& operator<<(std::ostream& os, const Tank& conv);
+
 public:
     Tank();
 

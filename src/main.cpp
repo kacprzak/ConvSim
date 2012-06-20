@@ -125,7 +125,7 @@ int main()
     else cout<<"plik wagi.txt nie zostal otwarty do odczytu"<<"\n";
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    // przypisanie wag do Conveyorow
+    // przypisanie wag do przenosnikow
     for (int i=0; i<ile_Conveyorow; i++) // Conveyor [0] lp=1
     {
         int dodatkowa=0;
@@ -142,91 +142,13 @@ int main()
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy stuktur krat i wczytanie ich z pliku
     int ile_krat=3;
-    LoadingGrid *tabk= new LoadingGrid[ile_krat];
-    for(int i=0; i<ile_krat; i++)
-    {
-        string pomin;// pomocny podczas pomijania kolumn przy wczytywaniu krat
-        switch (i)
-        {
-        case 0:
-            tabk[i].nadawa= new double[n];
-            plik.open("kr1.txt",ios::in | ios::binary);
-            if(plik.is_open()==true)
-            {
-                plik>>tabk[i].lp_prz;
-                plik>>tabk[i].lokalizacja;
-                tabk[i].gdzie=tabk[i].lokalizacja/odcinek;
-                for(int j=0; j<n; j++)
-                {
-                    plik>>pomin;
-                    plik>>pomin;
-                    plik>>tabk[i].nadawa[j];
-                }
-                plik.close();
-            }
-            else cout<<"nie mozna otworzyc pliku kr1.txt do odczytu";
-
-            // sprawdzenie wczytania kraty kr1
-            cout<<"krata na przeniosniku nr: "<<tabk[i].lp_prz<<" zlokalizowana na metrze"<<tabk[i].lokalizacja<<"\n";
-            for( int j=0; j<n; j++)
-            {
-                //cout<<tabk[i].nadawa[j]<<" ";
-            }
-            cout<<"\n\n";
-            break;
-        case 1:
-            tabk[i].nadawa= new double[n];
-            plik.open("kr2.txt",ios::in | ios::binary);
-            if(plik.is_open()==true)
-            {
-                plik>>tabk[i].lp_prz;
-                plik>>tabk[i].lokalizacja;
-                for(int j=0; j<n; j++)
-                {
-                    plik>>pomin;
-                    plik>>pomin;
-                    plik>>tabk[i].nadawa[j];
-                }
-                plik.close();
-            }
-            else cout<<"nie mozna otworzyc pliku kr2.txt do odczytu";
-
-            // sprawdzenie wczytania kraty kr1
-            cout<<"waga na przenosniku nr: "<<tabk[i].lp_prz<<" zlokalizowana na metrze"<<tabk[i].lokalizacja<<"\n";
-            for( int j=0; j<n; j++)
-            {
-                //cout<<tabk[i].nadawa[j]<<" ";
-            }
-            cout<<"\n\n";
-            break;
-        case 2:
-            tabk[i].nadawa= new double[n];
-            plik.open("kr3.txt",ios::in | ios::binary); // mozemy używac tego samego pliku plik6 po zamknieciu ale trzeba znowu otworzyc
-            if(plik.is_open()==true)
-            {
-                plik>>tabk[i].lp_prz;
-                plik>>tabk[i].lokalizacja;
-                for(int j=0; j<n; j++)
-                {
-                    plik>>pomin;
-                    plik>>pomin;
-                    plik>>tabk[i].nadawa[j];
-                }
-                plik.close();
-            }
-            else cout<<"nie mozna otworzyc pliku kr3.txt do odczytu";
-
-            // sprawdzenie wczytania kraty kr1
-            cout<<"waga na przenosniku nr: "<<tabk[i].lp_prz<<" zlokalizowana na metrze"<<tabk[i].lokalizacja<<"\n";
-            for( int j=0; j<n; j++)
-            {
-                //cout<<tabk[i].nadawa[j]<<" ";
-            }
-            cout<<"\n\n";
-            break;
-        }
-
-    }
+    LoadingGrid *tabk = new LoadingGrid[ile_krat];
+    tabk[0].loadData("kr1.txt", n);
+    cout << tabk[0];
+    tabk[1].loadData("kr2.txt", n);
+    cout << tabk[1];
+    tabk[2].loadData("kr3.txt", n);
+    cout << tabk[2];
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // obliczenie ile paczek bedzie w Conveyorach i zapisanie ich do struktury
@@ -510,7 +432,7 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
         {
             tabp[23].urobek[end-j]=tabp[23].urobek[end-j-1]; // przerzucanie paczek
         }
-        tabp[23].urobek[tabk[0].gdzie]=tabk[0].nadawa[k]; // LoadingGrid LoadingGrid sypie dopiero jak Conveyor poprzerzuca paczki gdzie lokalizacja kraty
+        tabp[23].urobek[int(tabk[0].lokalizacja/odcinek)]=tabk[0].nadawa[k]; // LoadingGrid LoadingGrid sypie dopiero jak Conveyor poprzerzuca paczki gdzie lokalizacja kraty
         tabw[0].odczyt[k]=tabp[23].urobek[int(tabw[0].lokalizacja/odcinek)]; //WeighingBelt
 
         // PRZ1 !!!!!!!!!!!!!!

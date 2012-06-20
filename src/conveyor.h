@@ -6,10 +6,11 @@
 
 class Conveyor
 {
+    friend std::istream& operator>>(std::istream& is, Conveyor& dt);
+    friend std::ostream& operator<<(std::ostream& os, const Conveyor& conv);
+
 public:
     Conveyor();
-
-    //friend std::istream& operator>>(std::istream& is, Conveyor& dt);
 
 //private:
     int lp_prz; //< wykorzystywany w lokalizacji

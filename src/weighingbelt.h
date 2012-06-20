@@ -5,6 +5,9 @@
 
 class WeighingBelt
 {
+    friend std::istream& operator>>(std::istream& is, WeighingBelt& dt);
+    friend std::ostream& operator<<(std::ostream& os, const WeighingBelt& conv);
+
 public:
     WeighingBelt();
 
