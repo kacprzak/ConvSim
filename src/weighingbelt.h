@@ -1,6 +1,8 @@
 #ifndef WEIGHINGBELT_H
 #define WEIGHINGBELT_H
 
+#include <iostream>
+
 class WeighingBelt
 {
 public:
@@ -12,5 +14,19 @@ public:
     int gdzie;
     double *odczyt;
 };
+
+inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
+{
+    is >> wb.lp_prz;
+    is >> wb.lokalizacja;
+    return is;
+}
+
+inline std::ostream& operator<<(std::ostream& os, const WeighingBelt& wb)
+{
+    os << wb.lp_prz << "\t";
+    os << wb.lokalizacja << "\n";
+    return os;
+}
 
 #endif // WEIGHINGBELT_H

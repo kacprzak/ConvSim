@@ -21,7 +21,7 @@ int main()
     int n; // ilosc cykli
     //n=ts*3600/tr;
     n=100;
-    float v; //predkosc Conveyorow zakladamy dla wszystkich 2,5[m/s]
+    float v; //predkosc przenosnikow zakladamy dla wszystkich 2,5[m/s]
     v=2.5;
     float przelicznik=tr/3600; //przelicza t/h na t/tr czyli w rzeczywistosci ile w tym czasie tr jest w Tanku [t] urobku
     float odcinek=v*tr;
@@ -67,29 +67,21 @@ int main()
     int ile_Conveyorow=64;// ilosc Conveyoraow
     Conveyor *tabp= new Conveyor[ile_Conveyorow]; // wskaznik na tablice w ktorej sa zapisywane struktury Conveyora
     plik.open ("przenosniki.txt", ios::in | ios::binary);
-    //plik.open ("przenosniki.txt", ios::in);
     if( plik.is_open() == true) //sprawdz czy plik zostal otwarty
     {
         for(int i=0; i<ile_Conveyorow; i++)
         {
-            plik >> tabp[i].lp_prz;
-            plik >> tabp[i].oddzial;
-            plik >> tabp[i].nazwa;
-            plik >> tabp[i].L;
-            plik >> tabp[i].B;
+            plik >> tabp[i];
         }
         plik.close();
         //delete []wydajnosc;
     }
     else cout<<"plik przenosniki.txt nie zostal otwarty"<<"\n";
+
     // niepotrzebne sprawdzenie czy sie wczytalo
     for (int i=0; i<ile_Conveyorow; i++)
     {
-        cout<<tabp[i].lp_prz<<"\t\t";
-        cout<<tabp[i].oddzial<<"\t\t";
-        cout<<tabp[i].nazwa<<"\t\t";
-        cout<<tabp[i].L<<"\t\t";
-        cout<<tabp[i].B<<"\n";
+        cout << tabp[i];
     }
     cout<<"\n\n";
 
@@ -97,16 +89,12 @@ int main()
     //stworzenie tablicy struktur Tanków i wczytanie z pliku
     int ile_Tankow=16;
     Tank *tabz=new Tank[ile_Tankow]; //wskaznik na tablice w ktorej sa zapisywane struktury Tanka
-    plik.open("Tanki.txt",ios::in | ios::binary);
+    plik.open("zbiorniki.txt",ios::in | ios::binary);
     if(plik.is_open()==true)
     {
         for(int i=0; i<ile_Tankow; i++)
         {
-            plik>>tabz[i].numer_Tanka;
-            plik>>tabz[i].odzial;
-            plik>>tabz[i].nazwa;
-            plik>>tabz[i].poj;
-            plik>>tabz[i].wydajnosc;
+            plik >> tabz[i];
         }
         plik.close();
     }
@@ -114,11 +102,7 @@ int main()
 
     for(int i=0; i<ile_Tankow; i++)
     {
-        //cout<<tabz[i].numer_Tanka<<"\t";
-        //cout<<tabz[i].odzial<<"\t";
-        //cout<<tabz[i].nazwa<<"\t";
-        //cout<<tabz[i].poj<<"\n";
-        //cout<<tabz[i].wydajnosc<<"\n";
+        cout << tabz[i];
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy struktur wag i wczytanie ich z pliku
@@ -129,15 +113,12 @@ int main()
     {
         for(int i=0; i<ile_wszystkich_wag; i++)
         {
-            plik>>tabw[i].lp_prz;
-            plik>>tabw[i].lokalizacja;
-            tabw[i].gdzie=tabw[i].lokalizacja/odcinek;
+            plik >> tabw[i];
         }
         // sprawdzenie wczytania wag
         for(int i=0; i<ile_wszystkich_wag; i++)
         {
-            cout<<"waga na przenisnik: "<<tabw[i].lp_prz<<"\t";
-            cout<<tabw[i].lokalizacja<<"\n";
+            cout<<"waga na przenisnik: " << tabw[i];
         }
         plik.close();
     }
@@ -530,7 +511,7 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
             tabp[23].urobek[end-j]=tabp[23].urobek[end-j-1]; // przerzucanie paczek
         }
         tabp[23].urobek[tabk[0].gdzie]=tabk[0].nadawa[k]; // LoadingGrid LoadingGrid sypie dopiero jak Conveyor poprzerzuca paczki gdzie lokalizacja kraty
-        tabw[0].odczyt[k]=tabp[23].urobek[tabw[0].gdzie]; //WeighingBelt
+        tabw[0].odczyt[k]=tabp[23].urobek[int(tabw[0].lokalizacja/odcinek)]; //WeighingBelt
 
         // PRZ1 !!!!!!!!!!!!!!
         end=tabp[24].il_paczek-1; // end-1..... do obliczen
