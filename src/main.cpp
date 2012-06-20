@@ -6,12 +6,13 @@
 #include <tank.h>
 #include <loadinggrid.h>
 
-void loadConveyors(Conveyor *tab, int size)
+template <class T>
+void loadObjects(T *tab, int size, char *file)
 {
     using namespace std;
 
     fstream plik;
-    plik.open ("przenosniki.txt", ios::in | ios::binary);
+    plik.open(file, ios::in | ios::binary);
     if(plik.is_open() == true) //sprawdz czy plik zostal otwarty
     {
         for(int i=0; i < size; i++)
@@ -21,59 +22,16 @@ void loadConveyors(Conveyor *tab, int size)
         plik.close();
         //delete []wydajnosc;
     }
-    else cout << "plik przenosniki.txt nie zostal otwarty" << "\n";
+    else cout << "plik" << file << "nie zostal otwarty" << "\n";
 
     // niepotrzebne sprawdzenie czy sie wczytalo
     for (int i=0; i < size; i++)
     {
         cout << tab[i];
     }
-    cout<<"\n\n";
+    cout << "\n\n";
 }
 
-void loadTanks(Tank *tab, int size)
-{
-    using namespace std;
-
-    fstream plik;
-    plik.open("zbiorniki.txt", ios::in | ios::binary);
-    if(plik.is_open() == true)
-    {
-        for(int i=0; i < size; i++)
-        {
-            plik >> tab[i];
-        }
-        plik.close();
-    }
-    else cout << "nie mozna otworzyc pliku zbiorniki.txt do odczytu";
-
-    for(int i=0; i < size; i++)
-    {
-        cout << tab[i];
-    }
-}
-
-void loadWeighingBelts(WeighingBelt *tab, int size)
-{
-    using namespace std;
-
-    fstream plik;
-    plik.open("wagi.txt", ios::in | ios::binary);
-    if(plik.is_open()==true)
-    {
-        for(int i=0; i < size; i++)
-        {
-            plik >> tab[i];
-        }
-        // sprawdzenie wczytania wag
-        for(int i=0; i < size; i++)
-        {
-            cout << "waga na przenisnik: " << tab[i];
-        }
-        plik.close();
-    }
-    else cout << "plik wagi.txt nie zostal otwarty do odczytu" << "\n";
-}
 
 int main()
 {
@@ -100,20 +58,20 @@ int main()
     // wczytanie Conveyorow z pliku do struktury
     int ile_Conveyorow=64;// ilosc Conveyoraow
     Conveyor *tabp = new Conveyor[ile_Conveyorow];
-    loadConveyors(tabp, ile_Conveyorow);
+    loadObjects<Conveyor>(tabp, ile_Conveyorow, "przenosniki.txt");
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy struktur Tanków i wczytanie z pliku
     int ile_Tankow=16;
     Tank *tabz=new Tank[ile_Tankow]; //wskaznik na tablice w ktorej sa zapisywane struktury Tanka
-    loadTanks(tabz, ile_Tankow);
+    loadObjects<Tank>(tabz, ile_Tankow, "zbiorniki.txt");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy struktur wag i wczytanie ich z pliku
     int ile_wszystkich_wag=6;
     WeighingBelt *tabw= new WeighingBelt[ile_wszystkich_wag];
-    loadWeighingBelts(tabw, ile_wszystkich_wag);
+    loadObjects<WeighingBelt>(tabw, ile_wszystkich_wag, "wagi.txt");
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
