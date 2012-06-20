@@ -6,6 +6,75 @@
 #include <tank.h>
 #include <loadinggrid.h>
 
+void loadConveyors(Conveyor *tab, int size)
+{
+    using namespace std;
+
+    fstream plik;
+    plik.open ("przenosniki.txt", ios::in | ios::binary);
+    if(plik.is_open() == true) //sprawdz czy plik zostal otwarty
+    {
+        for(int i=0; i < size; i++)
+        {
+            plik >> tab[i];
+        }
+        plik.close();
+        //delete []wydajnosc;
+    }
+    else cout << "plik przenosniki.txt nie zostal otwarty" << "\n";
+
+    // niepotrzebne sprawdzenie czy sie wczytalo
+    for (int i=0; i < size; i++)
+    {
+        cout << tab[i];
+    }
+    cout<<"\n\n";
+}
+
+void loadTanks(Tank *tab, int size)
+{
+    using namespace std;
+
+    fstream plik;
+    plik.open("zbiorniki.txt", ios::in | ios::binary);
+    if(plik.is_open() == true)
+    {
+        for(int i=0; i < size; i++)
+        {
+            plik >> tab[i];
+        }
+        plik.close();
+    }
+    else cout << "nie mozna otworzyc pliku zbiorniki.txt do odczytu";
+
+    for(int i=0; i < size; i++)
+    {
+        cout << tab[i];
+    }
+}
+
+void loadWeighingBelts(WeighingBelt *tab, int size)
+{
+    using namespace std;
+
+    fstream plik;
+    plik.open("wagi.txt", ios::in | ios::binary);
+    if(plik.is_open()==true)
+    {
+        for(int i=0; i < size; i++)
+        {
+            plik >> tab[i];
+        }
+        // sprawdzenie wczytania wag
+        for(int i=0; i < size; i++)
+        {
+            cout << "waga na przenisnik: " << tab[i];
+        }
+        plik.close();
+    }
+    else cout << "plik wagi.txt nie zostal otwarty do odczytu" << "\n";
+}
+
 int main()
 {
     using namespace std;
@@ -26,103 +95,26 @@ int main()
     float przelicznik=tr/3600; //przelicza t/h na t/tr czyli w rzeczywistosci ile w tym czasie tr jest w Tanku [t] urobku
     float odcinek=v*tr;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    // wczytanie kraty
-    float *wydajnosc=new float[n]; //zapisujemy tutaj wydajnosc kraty w zaleznosci od ilosci cykli
-    fstream plik;
-    plik.open ("kr.txt", ios::in | ios::binary); // nie ma juz kr.txt
-    if( plik.is_open() == true ) //sprawdz czy plik zostal otwarty
-    {
-        string pomin;
-        for(int i=0; i<n; i++)
-        {
-            plik>>pomin;
-            plik>>pomin;
-            plik>>wydajnosc[i];
-            //cout<<wydajnosc[i]<<"\n";
-        }
-        plik.close();
-        //delete []wydajnosc;
-    }
-    else cout<<"plik kr.txt nie zostal otwarty"<<"\n";
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    //zapis do pliku (działa)
-
-    plik.open("zapis.txt", ios::out);
-    if(plik.is_open() == true) //sprawdz czy plik zostal otwarty
-    {
-        cout<<"plik zostal otwarty zapisze do pliku"<<"\n";
-        for(int i=0; i<n; i++)
-        {
-            plik<<wydajnosc[i]<<"\n";
-        }
-        plik.close();
-        //delete []wydajnosc;
-    }
-    else cout<<"plik nie zostal otwarty"<<"\n";
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // wczytanie Conveyorow z pliku do struktury
-
     int ile_Conveyorow=64;// ilosc Conveyoraow
-    Conveyor *tabp= new Conveyor[ile_Conveyorow]; // wskaznik na tablice w ktorej sa zapisywane struktury Conveyora
-    plik.open ("przenosniki.txt", ios::in | ios::binary);
-    if( plik.is_open() == true) //sprawdz czy plik zostal otwarty
-    {
-        for(int i=0; i<ile_Conveyorow; i++)
-        {
-            plik >> tabp[i];
-        }
-        plik.close();
-        //delete []wydajnosc;
-    }
-    else cout<<"plik przenosniki.txt nie zostal otwarty"<<"\n";
+    Conveyor *tabp = new Conveyor[ile_Conveyorow];
+    loadConveyors(tabp, ile_Conveyorow);
 
-    // niepotrzebne sprawdzenie czy sie wczytalo
-    for (int i=0; i<ile_Conveyorow; i++)
-    {
-        cout << tabp[i];
-    }
-    cout<<"\n\n";
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy struktur Tanków i wczytanie z pliku
     int ile_Tankow=16;
     Tank *tabz=new Tank[ile_Tankow]; //wskaznik na tablice w ktorej sa zapisywane struktury Tanka
-    plik.open("zbiorniki.txt",ios::in | ios::binary);
-    if(plik.is_open()==true)
-    {
-        for(int i=0; i<ile_Tankow; i++)
-        {
-            plik >> tabz[i];
-        }
-        plik.close();
-    }
-    else cout<<"nie mozna otworzyc pliku zbiorniki.txt do odczytu";
+    loadTanks(tabz, ile_Tankow);
 
-    for(int i=0; i<ile_Tankow; i++)
-    {
-        cout << tabz[i];
-    }
-    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy struktur wag i wczytanie ich z pliku
     int ile_wszystkich_wag=6;
     WeighingBelt *tabw= new WeighingBelt[ile_wszystkich_wag];
-    plik.open("wagi.txt", ios::in | ios::binary);
-    if(plik.is_open()==true)
-    {
-        for(int i=0; i<ile_wszystkich_wag; i++)
-        {
-            plik >> tabw[i];
-        }
-        // sprawdzenie wczytania wag
-        for(int i=0; i<ile_wszystkich_wag; i++)
-        {
-            cout<<"waga na przenisnik: " << tabw[i];
-        }
-        plik.close();
-    }
-    else cout<<"plik wagi.txt nie zostal otwarty do odczytu"<<"\n";
+    loadWeighingBelts(tabw, ile_wszystkich_wag);
+
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // przypisanie wag do przenosnikow
@@ -139,7 +131,7 @@ int main()
         tabp[i].ile_wag=dodatkowa;
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
     //stworzenie tablicy stuktur krat i wczytanie ich z pliku
     int ile_krat=3;
     LoadingGrid *tabk = new LoadingGrid[ile_krat];
