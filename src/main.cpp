@@ -83,14 +83,14 @@ int main()
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     cout << "Setting Weighing Belts on Conveyors ...\n";
     // przypisanie wag do przenosnikow
-    for (int i=0; i<ile_Conveyorow; i++) // Conveyor [0] lp=1
+    for (int i=0; i<ile_Conveyorow; ++i) // Conveyor [0] lp=1
     {
         int dodatkowa=0;
-        for(int j=0; j<ile_wszystkich_wag; j++)
+        for(int j=0; j<ile_wszystkich_wag; ++j)
         {
-            if(tabw[j].lp_prz==i+1) // i+1 poniewaz numerujemy w tablicy od 0
+            if(tabw[j].lp_prz == i+1) // i+1 poniewaz numerujemy w tablicy od 0
             {
-                dodatkowa++;
+                ++dodatkowa;
             }
         }
         tabp[i].ile_wag=dodatkowa;
@@ -112,99 +112,33 @@ int main()
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // obliczenie ile paczek bedzie w Conveyorach i zapisanie ich do struktury
-    float t_przejazdu;
     for(int i=0; i<ile_Conveyorow; i++)
     {
-        t_przejazdu=tabp[i].length()/v;
-        float ile_pf=t_przejazdu/tr;
-        int il_p=t_przejazdu/tr;
-        tabp[i].il_paczek=t_przejazdu/tr;
-
-        if(((t_przejazdu/tr)-il_p)>0) // tworzenie paczki jezeli na koncu nie wychodzi rowno
-        {
-            tabp[i].il_paczek++;
-        }
-    }
-    cout<<"\n pokazane ile paczek"<<"\n";
-    for(int i=0; i<ile_Conveyorow; i++)
-    {
-        cout<<tabp[i].il_paczek<<"\n";
+        tabp[i].setIloscPaczek(tr);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////////????????????????????????????????
-    // stworzenie tablic (paczek) w Conveyorach i wyzerowanie ich
+#if VERBOSE
+    cout << "Pokazane ile paczek:\n";
     for(int i=0; i<ile_Conveyorow; i++)
     {
-        int pomocnicza=tabp[i].il_paczek; // zastanów się nad int float
-        tabp[i].urobek=new float[pomocnicza];
-        for(int j=0; j<tabp[i].il_paczek; j++)
-        {
-            tabp[i].urobek[j]=0;
-        }
+        cout << tabp[i].il_paczek << "\n";
     }
-    // wyswietlanie wyzerowanych Conveyorow
+#endif
 
-    for(int i=0; i<ile_Conveyorow; i++)
-    {
-        //cout<<"\n"<<"Conveyor: "<<tabp[i].nazwa<<"\t";
-        for(int j=0; j<tabp[i].il_paczek; j++)
-        {
-            //cout<<tabp[i].urobek[j]<<" ";
-        }
-        //cout<<"\n";
-    }
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     // stworzenie odpowiedniej ilosci paczek w Tankach- tyle co cykli n i wyzerowanie ich dla wszystkich Tankow
-
     for (int i=0; i<ile_Tankow; i++)
     {
-        tabz[i].zapelnianie=new double[n];
-        for(int j=0; j<n; j++)
-        {
-            tabz[i].zapelnianie[j]=0;
-        }
-    }
-    // wyswietlanie wyzerowanych Tankow
-    for (int i=0; i<ile_Tankow; i++)
-    {
-        cout<<"\n"<<"zbiornik: "<<tabz[i].nazwa<<"\t";
-        for(int j=0; j<n; j++)
-        {
-            //cout<<tabz[i].zapelnianie[j]<<" ";
-        }
-        cout<<"\n";
+        tabz[i].setZapelnianie(n);
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // ustawiam zapelnienie Tankow na 0,
-    for (int i=0; i<ile_Tankow; i++)
-    {
-        tabz[i].stan_Tanka=0;
-    }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
     // stworzenie tablicy do odczytu wag i wyzerowanie tablic
 
     for(int i=0; i<ile_wszystkich_wag; i++)
     {
-        tabw[i].odczyt=new double[n];
-    }
-    // zerowanie
-    for(int i=0; i<ile_wszystkich_wag; i++)
-    {
-        for(int j=0; j<n; j++)
-        {
-            tabw[i].odczyt[j]=0;
-        }
-    }
-    // sprawdzenie wyswietlenie
-    for(int i=0; i<ile_wszystkich_wag; i++)
-    {
-        cout <<" waga na przenosniku nr: "<<tabw[i].lp_prz<<"\t";
-        for(int j=0; j<n; j++)
-        {
-            //cout<<tabw[i].odczyt[j]<<" ";
-        }
-        cout<<"\n";
+        tabw[i].setOdczyt(n);
+
     }
 
     // działanie kopalni
@@ -1127,18 +1061,11 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
     {
         //cout<<tabw[0].odczyt[j]<<" ";
     }
-    cout<<"\n";
-
-
-
-    cout<<"\n"<<"\n"<<"\n"<<"\n";
+    cout<<"\n\n";
 
     float urob=800; // t/h
-
-    float wynik;
-    wynik = urob * przelicznik;
+    float wynik = urob * przelicznik;
     cout << wynik;
-
 
     cout << "\n";
 

@@ -12,33 +12,38 @@ class Tank
 public:
     Tank();
 
+    void setZapelnianie(int n);
 //private:
-    int numer_Tanka; //wykorzystywany w lokalizacji numer przenosnika za lub przed zbiornikiem ??????porzadkowy???????
-    std::string odzial;
-    std::string nazwa;
-    double poj;	//pojemnosc zbiornika [t]
+
+
     double wydajnosc;
     double stan_Tanka;
 
     double *zapelnianie;
+
+private:
+    double m_poj;	//pojemnosc zbiornika [t]
+    int m_numerZbiornika; //wykorzystywany w lokalizacji numer przenosnika za lub przed zbiornikiem ??????porzadkowy???????
+    std::string m_oddzial;
+    std::string m_nazwa;
 };
 
 inline std::istream& operator>>(std::istream& is, Tank& tank)
 {
-    is >> tank.numer_Tanka;
-    is >> tank.odzial;
-    is >> tank.nazwa;
-    is >> tank.poj;
+    is >> tank.m_numerZbiornika;
+    is >> tank.m_oddzial;
+    is >> tank.m_nazwa;
+    is >> tank.m_poj;
     is >> tank.wydajnosc;
     return is;
 }
 
 inline std::ostream& operator<<(std::ostream& os, const Tank& tank)
 {
-    os << tank.numer_Tanka << "\t";
-    os << tank.odzial << "\t";
-    os << tank.nazwa << "\t";
-    os << tank.poj << "\t";
+    os << tank.m_numerZbiornika << "\t";
+    os << tank.m_oddzial << "\t";
+    os << tank.m_nazwa << "\t";
+    os << tank.m_poj << "\t";
     os << tank.wydajnosc << "\n";
     return os;
 }

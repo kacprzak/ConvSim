@@ -5,6 +5,7 @@ Conveyor::Conveyor()
 {
     // FIXME: tymczasowo 2,5 m/s
     m_v = 2.5;
+    il_paczek = 0;
 }
 
 void Conveyor::updateState(double x)
@@ -35,4 +36,23 @@ void Conveyor::printIloscPaczek()
     std::cout << "ilos paczek Conveyora "
               << m_number <<" tyle paczek -> "
               << il_paczek << "\n";
+}
+
+void Conveyor::setIloscPaczek(int tr)
+{
+    float t_przejazdu = m_length / m_v;
+    //float ile_pf=t_przejazdu/tr;
+    int il_p = t_przejazdu / tr;
+    il_paczek = t_przejazdu / tr;
+
+    if(((t_przejazdu/tr)-il_p)>0) // tworzenie paczki jezeli na koncu nie wychodzi rowno
+    {
+        il_paczek++;
+    }
+
+    urobek = new float[il_paczek];
+    for(int j = 0; j < il_paczek; ++j)
+    {
+        urobek[j] = 0;
+    }
 }

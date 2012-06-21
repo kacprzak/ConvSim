@@ -22,6 +22,7 @@ public:
 
     void printUrobek();
     void printIloscPaczek();
+    void setIloscPaczek(int tr);
 
 //private:
     int il_paczek; ///< ile paczek ma przenosnik

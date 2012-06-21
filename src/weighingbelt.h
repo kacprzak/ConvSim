@@ -11,11 +11,15 @@ class WeighingBelt
 public:
     WeighingBelt();
 
+    void setOdczyt(int n);
+
 //private:
     int lp_prz; //< na ktorym instalujemy wage
     int lokalizacja; //< na ktorym metrze przenosnika znajduje sie waga
     int gdzie;
     double *odczyt;
+
+private:
 };
 
 inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
