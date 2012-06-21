@@ -8,15 +8,11 @@ Conveyor::Conveyor()
     il_paczek = 0;
 }
 
-void Conveyor::updateState(double x, unsigned int dt)
+void Conveyor::updateState(const double &x, unsigned int dt)
 {
 }
 
-void Conveyor::updateOutput()
-{
-}
-
-double Conveyor::output()
+void Conveyor::updateOutput(double& y)
 {
 }
 

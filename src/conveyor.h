@@ -13,9 +13,8 @@ class Conveyor : public Atomic<double>
 public:
     Conveyor();
 
-    void updateState(double x, unsigned int dt);
-    void updateOutput();
-    double output();
+    void updateState(const double& x, unsigned int dt);
+    void updateOutput(double& y);
 
     /** Długość przeniośnika */
     double length() { return m_length; }

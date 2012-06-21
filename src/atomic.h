@@ -8,9 +8,8 @@ template <class T>
 class Atomic
 {
 public:
-    virtual void updateState(T x, unsigned int dt = 1) = 0;
-    virtual void updateOutput() = 0;
-    virtual T output() = 0;
+    virtual void updateState(const T& x, unsigned int dt = 1) = 0;
+    virtual void updateOutput(T& y) = 0;
 
 private:
     T m_output;

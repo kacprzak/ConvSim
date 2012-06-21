@@ -1,13 +1,14 @@
 #include <iostream>
 #include <fstream>
 
-#include <conveyor.h>
-#include <weighingbelt.h>
-#include <tank.h>
-#include <loadinggrid.h>
+#include "conveyor.h"
+#include "weighingbelt.h"
+#include "tank.h"
+#include "loadinggrid.h"
+#include "simulator.h"
 
 #define VERBOSE 0
-#define NEW_SIMULATOR 0
+#define NEW_SIMULATOR 1
 
 template <class T>
 void loadObjects(T *tab, int size, const char *file)
@@ -140,6 +141,13 @@ int main()
 
 
 #if NEW_SIMULATOR
+    Simulator<double> simulator(&tabp[0]);
+    simulator.computeNextState(0.1);
+    simulator.computeNextState(0.2);
+    simulator.computeNextState(0.1);
+    simulator.computeOutput();
+
+    cout << simulator.getTime();
 
 #else
 

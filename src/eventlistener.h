@@ -9,8 +9,8 @@ class EventListener
 public:
     EventListener();
 
-    virtual void stateChanged(Atomic<T> *model, unsigned int t) {}
-    virtual void outputEvent(Atomic<T> *model, T output, unsigned int t) {}
+    virtual void stateChanged(Atomic<T> */*model*/, unsigned int /*t*/) {}
+    virtual void outputEvent(Atomic<T> */*model*/, const T& /*output*/, unsigned int /*t*/) {}
 };
 
 #endif // EVENTLISTENER_H
