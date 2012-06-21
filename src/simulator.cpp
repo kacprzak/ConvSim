@@ -23,6 +23,7 @@ void Simulator<T>::computeNextState(T input)
         (*it)->stateChanged(m_model, m_t);
     }
 
+    // TODO wyczyścić output modelu
     m_outputUpToDate = false; // Wyjścia nie są aktualne
 }
 

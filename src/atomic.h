@@ -8,7 +8,7 @@ template <class T>
 class Atomic
 {
 public:
-    virtual void updateState(T x) = 0;
+    virtual void updateState(T x, unsigned int dt = 1) = 0;
     virtual void updateOutput() = 0;
     virtual T output() = 0;
 

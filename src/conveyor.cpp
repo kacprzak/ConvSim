@@ -8,7 +8,7 @@ Conveyor::Conveyor()
     il_paczek = 0;
 }
 
-void Conveyor::updateState(double x)
+void Conveyor::updateState(double x, unsigned int dt)
 {
 }
 

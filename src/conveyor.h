@@ -13,7 +13,7 @@ class Conveyor : public Atomic<double>
 public:
     Conveyor();
 
-    void updateState(double x);
+    void updateState(double x, unsigned int dt);
     void updateOutput();
     double output();
 
