@@ -79,20 +79,20 @@ int main()
 
 
     ////////////////////////////////////////////////////////////////////////////
-    cout << "Setting Weighing Belts on Conveyors ...\n";
-    // przypisanie wag do przenosnikow
-    for (int i=0; i<ile_Conveyorow; ++i) // Conveyor [0] lp=1
-    {
-        int dodatkowa=0;
-        for(int j=0; j<ile_wszystkich_wag; ++j)
-        {
-            if(tabw[j].lp_prz == i+1) // i+1 poniewaz numerujemy w tablicy od 0
-            {
-                ++dodatkowa;
-            }
-        }
-        tabp[i].ile_wag=dodatkowa;
-    }
+//    cout << "Setting Weighing Belts on Conveyors ...\n";
+//    // przypisanie wag do przenosnikow
+//    for (int i=0; i<ile_Conveyorow; ++i) // Conveyor [0] lp=1
+//    {
+//        int dodatkowa=0;
+//        for(int j=0; j<ile_wszystkich_wag; ++j)
+//        {
+//            if(tabw[j].lp_prz == i+1) // i+1 poniewaz numerujemy w tablicy od 0
+//            {
+//                ++dodatkowa;
+//            }
+//        }
+//        tabp[i].ile_wag=dodatkowa;
+//    }
 
     ////////////////////////////////////////////////////////////////////////////
     cout << "Loading Loading Grids ...\n";
