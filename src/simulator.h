@@ -20,6 +20,7 @@ public:
 
     void computeNextState(T input);
     void computeOutput();
+    /** Zwraca aktualny czas symulacji */
     unsigned int getTime() { return m_t; }
 
     void addEventListener(EventListener<T> *listener);
@@ -34,6 +35,11 @@ private:
 };
 
 
+/**
+ * Funkcja nakazująca modelowi uaktualnić swój stan.
+ *
+ * @param input     stan wejścia do modelu
+ */
 template <typename T>
 void Simulator<T>::computeNextState(T input)
 {
@@ -49,7 +55,6 @@ void Simulator<T>::computeNextState(T input)
         (*it)->stateChanged(m_model, m_t);
     }
 
-    // TODO wyczyścić output modelu
     m_outputUpToDate = false; // Wyjścia nie są aktualne
 }
 
@@ -61,6 +66,9 @@ void Simulator<T>::addEventListener(EventListener<T> *listener)
 }
 
 
+/**
+ * Uzyskuje stan wyjść modelu i rozgłasza do obiektów nasłuchujących.
+ */
 template <typename T>
 void Simulator<T>::computeOutput()
 {

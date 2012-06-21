@@ -4,6 +4,16 @@
 #include "atomic.h"
 #include <string>
 #include <iostream>
+#include <list>
+
+struct Package
+{
+    Package(double m, double p = 0)
+        : mass(m), position(p) {}
+
+    double mass; ///< Masa urobku [t]
+    double position; ///< Pozycja [m] na przenośniku
+};
 
 class Conveyor : public Atomic<double>
 {
@@ -26,7 +36,7 @@ public:
 //private:
     int il_paczek; ///< ile paczek ma przenosnik
     float *urobek;
-    int ile_wag;
+    //int ile_wag;
 
 private:
     double m_v;             ///< prędkość taśmy
@@ -35,6 +45,9 @@ private:
     int m_number;           ///< wykorzystywany w lokalizacji
     std::string m_oddzial;
     std::string m_nazwa;
+
+    std::list<Package> m_packages;    ///< przyjęte paczki materiału
+    double m_massOnOutput;
 };
 
 inline std::istream& operator>>(std::istream& is, Conveyor& conv)
