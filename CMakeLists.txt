@@ -9,6 +9,9 @@ set( convsim_SRCS
   src/tank.cpp
   src/loadinggrid.cpp
   src/weighingbelt.cpp
+  src/atomic.cpp
+  src/simulator.cpp
+  src/eventlistener.cpp
 )
 
 set( convsim_HEADERS
@@ -16,6 +19,9 @@ set( convsim_HEADERS
   src/tank.h
   src/loadinggrid.h
   src/weighingbelt.h
+  src/atomic.h
+  src/simulator.h
+  src/eventlistener.h
 )
 
 configure_file(data/kr.txt ${CMAKE_CURRENT_BINARY_DIR}/kr.txt COPYONLY)
