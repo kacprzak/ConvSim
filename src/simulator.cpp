@@ -1,13 +1,15 @@
 #include "simulator.h"
 
-Simulator::Simulator(Atomic *model)
+template <class T>
+Simulator<T>::Simulator(Atomic<T> *model)
     : m_model(model)
     , m_t(0)
     , m_outputUpToDate(false)
 {
 }
 
-void Simulator::computeNextState(double input)
+template <class T>
+void Simulator<T>::computeNextState(T input)
 {
     computeOutput(); // Aktualizuje stan wyjść w czasie t
 
@@ -15,7 +17,7 @@ void Simulator::computeNextState(double input)
     m_model->updateState(input);
 
     // Rozgłoszenie zmiany stanu
-    for (ListenerList::iterator it = listeners.begin();
+    for (typename ListenerList::iterator it = listeners.begin();
          it != listeners.end(); ++it)
     {
         (*it)->stateChanged(m_model, m_t);
@@ -24,12 +26,14 @@ void Simulator::computeNextState(double input)
     m_outputUpToDate = false; // Wyjścia nie są aktualne
 }
 
-void Simulator::addEventListener(EventListener *listener)
+template <class T>
+void Simulator<T>::addEventListener(EventListener<T> *listener)
 {
     listeners.push_back(listener);
 }
 
-void Simulator::computeOutput()
+template <class T>
+void Simulator<T>::computeOutput()
 {
     // Jeśli wyjącie aktualne to nic nie rób
     if (m_outputUpToDate) return;

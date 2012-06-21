@@ -1,13 +1,19 @@
 #ifndef ATOMIC_H
 #define ATOMIC_H
 
+/**
+ * Klasa bazowa dla dla modeli obiektów niepodzielnych.
+ */
+template <class T>
 class Atomic
 {
 public:
-    Atomic();
-
-    virtual void updateState(double x) = 0;
+    virtual void updateState(T x) = 0;
     virtual void updateOutput() = 0;
+    virtual T output() = 0;
+
+private:
+    T m_output;
 };
 
 #endif // ATOMIC_H

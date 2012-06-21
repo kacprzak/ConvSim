@@ -1,5 +1,6 @@
 #include "eventlistener.h"
 
-EventListener::EventListener()
+template <class T>
+EventListener<T>::EventListener()
 {
 }

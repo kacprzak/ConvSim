@@ -6,6 +6,8 @@
 #include <tank.h>
 #include <loadinggrid.h>
 
+#define VERBOSE 0
+
 template <class T>
 void loadObjects(T *tab, int size, char *file)
 {
@@ -24,12 +26,14 @@ void loadObjects(T *tab, int size, char *file)
     }
     else cout << "plik" << file << "nie zostal otwarty" << "\n";
 
+#if VERBOSE
     // niepotrzebne sprawdzenie czy sie wczytalo
     for (int i=0; i < size; i++)
     {
         cout << tab[i];
     }
     cout << "\n\n";
+#endif
 }
 
 
@@ -39,7 +43,6 @@ int main()
 
     cout << "ConvSim\n";
 
-
     // podstawowe parametry symulacji
     float tr; //czas probkowania [s]
     tr=4;
@@ -48,13 +51,14 @@ int main()
     int n; // ilosc cykli
     //n=ts*3600/tr;
     n=100;
-    float v; //predkosc przenosnikow zakladamy dla wszystkich 2,5[m/s]
+    float v; //predkosc przenosnikow zakladamy dla wszystkich 2,5[m/s] ALE BZDURA!!
     v=2.5;
-    float przelicznik=tr/3600; //przelicza t/h na t/tr czyli w rzeczywistosci ile w tym czasie tr jest w Tanku [t] urobku
+    float przelicznik=tr/3600; //przelicza t/h na t/tr czyli w rzeczywistosci ile w tym czasie tr jest w zbiorniku [t] urobku
     float odcinek=v*tr;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    cout << "Loading Conveyors ...\n";
     // wczytanie Conveyorow z pliku do struktury
     int ile_Conveyorow=64;// ilosc Conveyoraow
     Conveyor *tabp = new Conveyor[ile_Conveyorow];
@@ -62,12 +66,14 @@ int main()
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
+    cout << "Loading Tanks ...\n";
     //stworzenie tablicy struktur Tanków i wczytanie z pliku
     int ile_Tankow=16;
     Tank *tabz=new Tank[ile_Tankow]; //wskaznik na tablice w ktorej sa zapisywane struktury Tanka
     loadObjects<Tank>(tabz, ile_Tankow, "zbiorniki.txt");
 
     ////////////////////////////////////////////////////////////////////////////////////////////////
+    cout << "Loading Weighing Belts ...\n";
     //stworzenie tablicy struktur wag i wczytanie ich z pliku
     int ile_wszystkich_wag=6;
     WeighingBelt *tabw= new WeighingBelt[ile_wszystkich_wag];
@@ -75,6 +81,7 @@ int main()
 
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
+    cout << "Setting Weighing Belts on Conveyors ...\n";
     // przypisanie wag do przenosnikow
     for (int i=0; i<ile_Conveyorow; i++) // Conveyor [0] lp=1
     {
@@ -90,22 +97,25 @@ int main()
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
+    cout << "Loading Loading Grids ...\n";
     //stworzenie tablicy stuktur krat i wczytanie ich z pliku
     int ile_krat=3;
     LoadingGrid *tabk = new LoadingGrid[ile_krat];
     tabk[0].loadData("kr1.txt", n);
-    cout << tabk[0];
     tabk[1].loadData("kr2.txt", n);
-    cout << tabk[1];
     tabk[2].loadData("kr3.txt", n);
+#if VERBOSE
+    cout << tabk[0];
+    cout << tabk[1];
     cout << tabk[2];
+#endif
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // obliczenie ile paczek bedzie w Conveyorach i zapisanie ich do struktury
     float t_przejazdu;
     for(int i=0; i<ile_Conveyorow; i++)
     {
-        t_przejazdu=tabp[i].L/v;
+        t_przejazdu=tabp[i].length()/v;
         float ile_pf=t_przejazdu/tr;
         int il_p=t_przejazdu/tr;
         tabp[i].il_paczek=t_przejazdu/tr;

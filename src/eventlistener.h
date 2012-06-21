@@ -3,13 +3,14 @@
 
 #include "atomic.h"
 
+template <class T>
 class EventListener
 {
 public:
     EventListener();
 
-    virtual void stateChanged(Atomic *model, unsigned int t) {}
-    virtual void outputEvent(Atomic *model, double output, unsigned int t) {}
+    virtual void stateChanged(Atomic<T> *model, unsigned int t) {}
+    virtual void outputEvent(Atomic<T> *model, T output, unsigned int t) {}
 };
 
 #endif // EVENTLISTENER_H
