@@ -29,6 +29,10 @@ public:
     /** Długość przeniośnika */
     double length() { return m_length; }
 
+    /** Materiał na przenosniku [t] */
+    double materialAmount();
+    std::string name() { return m_nazwa; }
+
     void printUrobek();
     void printIloscPaczek();
     void setIloscPaczek(int tr);

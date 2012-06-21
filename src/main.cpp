@@ -141,13 +141,19 @@ int main()
 
 
 #if NEW_SIMULATOR
-    Simulator<double> simulator(&tabp[0]);
-    simulator.computeNextState(0.1);
-    simulator.computeNextState(0.2);
-    simulator.computeNextState(0.1);
-    simulator.computeOutput();
+    Simulator<double> sim(&tabp[0]);
+    WeighingBelt waga;
+    sim.addEventListener(&waga);
 
-    cout << simulator.getTime();
+    double input[] = {0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.05};
+    int steps = sizeof(input)/sizeof(double);
+
+    for (int n = 0; n < steps; ++n) {
+        sim.computeNextState(input[n]);
+        sim.computeOutput();
+    }
+
+    cout << "Czas symulacji: " << sim.getTime() << "\n";
 
 #else
 

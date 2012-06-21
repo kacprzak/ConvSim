@@ -38,6 +38,17 @@ void Conveyor::updateOutput(double& y)
     y = m_massOnOutput;
 }
 
+double Conveyor::materialAmount()
+{
+    double mass = 0;
+    // Przesunięcie paczek na przenośniku
+    for(std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
+    {
+        mass += it->mass;
+    }
+    return mass;
+}
+
 void Conveyor::printUrobek()
 {
     std::cout << "z Conveyora " << m_number << " (waga) ";

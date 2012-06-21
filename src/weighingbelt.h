@@ -12,7 +12,7 @@ class WeighingBelt : public EventListener<double>
 
 public:
 
-    //void stateChanged(Atomic<double> *model, unsigned int t);
+    void stateChanged(Atomic<double> *model, unsigned int t);
     //void outputEvent(Atomic<double> *model, const double & output, unsigned int t);
 
     void setOdczyt(int n);
