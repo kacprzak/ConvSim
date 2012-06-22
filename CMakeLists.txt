@@ -9,9 +9,9 @@ set( convsim_SRCS
   src/tank.cpp
   src/loadinggrid.cpp
   src/weighingbelt.cpp
-  src/atomic.cpp
-  src/simulator.cpp
-  src/eventlistener.cpp
+  #src/atomic.cpp
+  #src/simulator.cpp
+  #src/eventlistener.cpp
 )
 
 set( convsim_HEADERS

@@ -11,7 +11,7 @@ class Atomic
 {
 public:
     virtual void updateState(const T& x, unsigned int dt = 1) = 0;
-    virtual void updateOutput(T& y) = 0;
+    virtual void outputFunction(T& y) const = 0;
 
 private:
     T m_output;

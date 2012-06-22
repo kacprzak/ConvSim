@@ -6,17 +6,17 @@
 #include <iostream>
 #include <list>
 
-struct Package
-{
-    Package(double m, double p = 0)
-        : mass(m), position(p) {}
-
-    double mass; ///< Masa urobku [t]
-    double position; ///< Pozycja [m] na przenośniku
-};
-
 class Conveyor : public dtss::Atomic<double>
 {
+    struct Package
+    {
+        Package(double m, double p = 0)
+            : mass(m), position(p) {}
+
+        const double mass; ///< Masa urobku [t]
+        double position; ///< Pozycja [m] na przenośniku
+    };
+
     friend std::istream& operator>>(std::istream& is, Conveyor& dt);
     friend std::ostream& operator<<(std::ostream& os, const Conveyor& conv);
 
@@ -24,17 +24,17 @@ public:
     Conveyor();
 
     void updateState(const double& x, unsigned int dt);
-    void updateOutput(double& y);
+    void outputFunction(double& y) const;
 
     /** Długość przeniośnika */
-    double length() { return m_length; }
+    double length() const { return m_length; }
 
     /** Materiał na przenosniku [t] */
-    double materialAmount();
-    std::string name() { return m_nazwa; }
+    double materialAmount() const;
+    std::string name() const { return m_nazwa; }
 
-    void printUrobek();
-    void printIloscPaczek();
+    void printUrobek() const;
+    void printIloscPaczek() const;
     void setIloscPaczek(int tr);
 
 //private:

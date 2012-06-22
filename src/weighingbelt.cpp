@@ -16,5 +16,6 @@ void WeighingBelt::stateChanged(dtss::Atomic<double> *model, unsigned int t)
 {
     Conveyor *conv = static_cast<Conveyor*>(model);
     std::cout << "Na " << conv->name()
-              << " jest " << conv->materialAmount() << " [t]\n";
+              << " jest " << conv->materialAmount() << " [t]"
+              << " w czasie " << t << "\n";
 }

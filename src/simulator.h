@@ -81,7 +81,7 @@ void Simulator<T>::computeOutput()
     m_outputUpToDate = true;
 
     T output;
-    m_model->updateOutput(output);
+    m_model->outputFunction(output);
     // Rozesłanie zdarzeń
     for (typename ListenerList::iterator it = listeners.begin();
          it != listeners.end(); ++it)
