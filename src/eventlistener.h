@@ -3,6 +3,8 @@
 
 #include "atomic.h"
 
+namespace dtss {
+
 template <class T>
 class EventListener
 {
@@ -31,5 +33,7 @@ template <class T>
 EventListener<T>::EventListener()
 {
 }
+
+} // namespace dtss
 
 #endif // EVENTLISTENER_H

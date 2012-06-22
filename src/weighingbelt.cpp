@@ -12,7 +12,7 @@ void WeighingBelt::setOdczyt(int n)
     }
 }
 
-void WeighingBelt::stateChanged(Atomic<double> *model, unsigned int t)
+void WeighingBelt::stateChanged(dtss::Atomic<double> *model, unsigned int t)
 {
     Conveyor *conv = static_cast<Conveyor*>(model);
     std::cout << "Na " << conv->name()

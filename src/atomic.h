@@ -1,6 +1,8 @@
 #ifndef ATOMIC_H
 #define ATOMIC_H
 
+namespace dtss {
+
 /**
  * Klasa bazowa dla dla modeli obiektów niepodzielnych.
  */
@@ -15,4 +17,5 @@ private:
     T m_output;
 };
 
+} // namespace dtss
 #endif // ATOMIC_H

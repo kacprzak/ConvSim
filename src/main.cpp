@@ -141,6 +141,8 @@ int main()
 
 
 #if NEW_SIMULATOR
+    using namespace dtss;
+
     Simulator<double> sim(&tabp[0]);
     WeighingBelt waga;
     sim.addEventListener(&waga);

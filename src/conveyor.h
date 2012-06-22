@@ -15,7 +15,7 @@ struct Package
     double position; ///< Pozycja [m] na przenośniku
 };
 
-class Conveyor : public Atomic<double>
+class Conveyor : public dtss::Atomic<double>
 {
     friend std::istream& operator>>(std::istream& is, Conveyor& dt);
     friend std::ostream& operator<<(std::ostream& os, const Conveyor& conv);

@@ -5,6 +5,8 @@
 #include "eventlistener.h"
 #include <list>
 
+namespace dtss {
+
 /**
  * Klasa zarządzająca postępem symulacji.
  */
@@ -87,5 +89,7 @@ void Simulator<T>::computeOutput()
         (*it)->outputEvent(m_model, output, m_t);
     }
 }
+
+} // namespace dtss
 
 #endif // SIMULATOR_H
