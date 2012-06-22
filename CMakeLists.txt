@@ -3,12 +3,12 @@ cmake_minimum_required( VERSION 2.8 )
 
 add_definitions( "-Wall -Wextra" )
 
-set( convsim_SRCS
-  #src/atomic.cpp
-  #src/simulator.cpp
-  #src/eventlistener.cpp
-  #src/network.cpp
-  #src/resultant.cpp
+set( ConvSim_SRCS
+  src/atomic.cpp
+  src/simulator.cpp
+  src/eventlistener.cpp
+  src/network.cpp
+  src/resultant.cpp
 
   src/main.cpp
   src/conveyor.cpp
@@ -17,7 +17,7 @@ set( convsim_SRCS
   src/weighingbelt.cpp
 )
 
-set( convsim_HEADERS
+set( ConvSim_HEADERS
   src/atomic.h
   src/simulator.h
   src/eventlistener.h
@@ -44,5 +44,5 @@ include_directories(
 )
 
 add_executable( convsim
-  ${convsim_SRCS}
+  ${ConvSim_SRCS}
 )
