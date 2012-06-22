@@ -4,24 +4,30 @@ cmake_minimum_required( VERSION 2.8 )
 add_definitions( "-Wall -Wextra" )
 
 set( convsim_SRCS
+  #src/atomic.cpp
+  #src/simulator.cpp
+  #src/eventlistener.cpp
+  #src/network.cpp
+  #src/resultant.cpp
+
   src/main.cpp
   src/conveyor.cpp
   src/tank.cpp
   src/loadinggrid.cpp
   src/weighingbelt.cpp
-  #src/atomic.cpp
-  #src/simulator.cpp
-  #src/eventlistener.cpp
 )
 
 set( convsim_HEADERS
+  src/atomic.h
+  src/simulator.h
+  src/eventlistener.h
+  src/network.h
+  src/resultant.h
+
   src/conveyor.h
   src/tank.h
   src/loadinggrid.h
   src/weighingbelt.h
-  src/atomic.h
-  src/simulator.h
-  src/eventlistener.h
 )
 
 configure_file(data/kr.txt ${CMAKE_CURRENT_BINARY_DIR}/kr.txt COPYONLY)
