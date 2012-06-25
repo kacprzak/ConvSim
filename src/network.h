@@ -15,13 +15,12 @@ public:
     void setResultant(Atomic<X> *resultant) { m_resultant = resultant; }
     Atomic<X> *resultant() const { return m_resultant; }
 
-    virtual void getComponents(std::set<Atomic<X>*>& c) const;
+    virtual void getComponents(std::set<Atomic<X>*>& c) const = 0;
     // TODO: Pomyśleć nad trzecim parametrem
-    virtual void route(const X& value, Atomic<X> *model, X& r);
+    virtual void route(const X& value, Atomic<X> *model, X& r) = 0;
 
 private:
     Atomic<X> *m_resultant;
-
 };
 
 } // namespace dtss
