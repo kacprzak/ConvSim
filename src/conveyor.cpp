@@ -42,7 +42,7 @@ void Conveyor::outputFunction(double& y) const
 double Conveyor::materialAmount() const
 {
     double mass = 0;
-    // Przesunięcie paczek na przenośniku
+
     for(std::list<Package>::const_iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
         mass += it->mass;
