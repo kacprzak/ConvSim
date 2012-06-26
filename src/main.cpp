@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 #include "conveyor.h"
 #include "weighingbelt.h"
@@ -7,34 +8,20 @@
 #include "loadinggrid.h"
 #include "simulator.h"
 
-#define VERBOSE 0
-
 template <class T>
-void loadObjects(T *tab, int size, const char *file)
+void loadObjects(std::vector<T> *v, int size, const char *file)
 {
     using namespace std;
 
     fstream plik;
     plik.open(file, ios::in | ios::binary);
-    if(plik.is_open() == true) //sprawdz czy plik zostal otwarty
-    {
-        for(int i=0; i < size; i++)
-        {
-            plik >> tab[i];
+    if (plik.is_open() == true) {
+        for(int i = 0; i < size; ++i) {
+            v->push_back(T(plik));
         }
         plik.close();
-        //delete []wydajnosc;
-    }
-    else cout << "plik" << file << "nie zostal otwarty" << "\n";
-
-#if VERBOSE
-    // niepotrzebne sprawdzenie czy sie wczytalo
-    for (int i=0; i < size; i++)
-    {
-        cout << tab[i];
-    }
-    cout << "\n\n";
-#endif
+    } else
+        cout << "plik" << file << "nie zostal otwarty" << "\n";
 }
 
 
@@ -47,39 +34,38 @@ int main()
     ////////////////////////////////////////////////////////////////////////////
     cout << "Loading Conveyors ...\n";
     // wczytanie Conveyorow z pliku do struktury
-    int ile_Conveyorow=64;// ilosc Conveyoraow
-    Conveyor *tabp = new Conveyor[ile_Conveyorow];
-    loadObjects<Conveyor>(tabp, ile_Conveyorow, "przenosniki.txt");
+    int ile_conveyorow = 64;
+    vector<Conveyor> conveyors;
+    loadObjects<Conveyor>(&conveyors, ile_conveyorow, "przenosniki.txt");
 
 
     ////////////////////////////////////////////////////////////////////////////
     cout << "Loading Tanks ...\n";
     //stworzenie tablicy struktur Tanków i wczytanie z pliku
-    int ile_Tankow=16;
-    Tank *tabz=new Tank[ile_Tankow]; //wskaznik na tablice w ktorej sa zapisywane struktury Tanka
-    loadObjects<Tank>(tabz, ile_Tankow, "zbiorniki.txt");
+    int ile_tankow = 16;
+    vector<Tank> tanks;
+    loadObjects<Tank>(&tanks, ile_tankow, "zbiorniki.txt");
 
     ////////////////////////////////////////////////////////////////////////////
     cout << "Loading Weighing Belts ...\n";
     //stworzenie tablicy struktur wag i wczytanie ich z pliku
-    int ile_wszystkich_wag=6;
-    WeighingBelt *tabw= new WeighingBelt[ile_wszystkich_wag];
-    loadObjects<WeighingBelt>(tabw, ile_wszystkich_wag, "wagi.txt");
+    int ile_wszystkich_wag = 6;
+    vector<WeighingBelt> wbelts;
+    loadObjects<WeighingBelt>(&wbelts, ile_wszystkich_wag, "wagi.txt");
 
     ////////////////////////////////////////////////////////////////////////////
     cout << "Loading Loading Grids ...\n";
     //stworzenie tablicy stuktur krat i wczytanie ich z pliku
     int n = 100; // ilosc cykli
-    int ile_krat=3;
-    LoadingGrid *tabk = new LoadingGrid[ile_krat];
-    tabk[0].loadData("kr1.txt", n);
-    tabk[1].loadData("kr2.txt", n);
-    tabk[2].loadData("kr3.txt", n);
+    vector<LoadingGrid> grids;
+    grids.push_back(LoadingGrid("kr1.txt", n));
+    grids.push_back(LoadingGrid("kr2.txt", n));
+    grids.push_back(LoadingGrid("kr3.txt", n));
 
 
     using namespace dtss;
 
-    Simulator<double> sim(&tabp[0]);
+    Simulator<double> sim(&conveyors[0]);
     WeighingBelt waga;
     sim.addEventListener(&waga);
 

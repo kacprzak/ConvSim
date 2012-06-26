@@ -9,9 +9,10 @@ class LoadingGrid
     friend std::ostream& operator<<(std::ostream& os, const LoadingGrid& lg);
 
 public:
-    LoadingGrid() {}
+    LoadingGrid(const std::string& file, int n);
     ~LoadingGrid();
 
+private:
     void loadData(const std::string& file, int n);
 
 //private:

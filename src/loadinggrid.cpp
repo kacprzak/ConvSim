@@ -2,6 +2,11 @@
 
 #include <fstream>
 
+LoadingGrid::LoadingGrid(const std::string &file, int n)
+{
+    loadData(file, n);
+}
+
 void LoadingGrid::loadData(const std::string &file, int n)
 {
     this->n = n;

@@ -11,6 +11,7 @@ class Tank
 
 public:
     Tank();
+    Tank(std::istream& is);
 
     void setZapelnianie(int n);
 //private:
@@ -27,16 +28,6 @@ private:
     std::string m_oddzial;
     std::string m_nazwa;
 };
-
-inline std::istream& operator>>(std::istream& is, Tank& tank)
-{
-    is >> tank.m_numerZbiornika;
-    is >> tank.m_oddzial;
-    is >> tank.m_nazwa;
-    is >> tank.m_poj;
-    is >> tank.wydajnosc;
-    return is;
-}
 
 inline std::ostream& operator<<(std::ostream& os, const Tank& tank)
 {

@@ -65,4 +65,4 @@ set ( ConvSim_TESTS
 add_executable( simulator_test ${ConvSim_TESTS} ${ConvSim_SRCS} )
 
 enable_testing()
-add_test( SimulatorTest ${CMAKE_CURRENT_BINARY_DIR}/simulator_test )
+add_test( simulator_test ${CMAKE_CURRENT_BINARY_DIR}/simulator_test )

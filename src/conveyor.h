@@ -13,15 +13,16 @@ class Conveyor : public dtss::Atomic<double>
         Package(double m, double p = 0)
             : mass(m), position(p) {}
 
-        const double mass; ///< Masa urobku [t]
+        double mass; ///< Masa urobku [t]
         double position;   ///< Pozycja [m] na przenośniku
     };
 
-    friend std::istream& operator>>(std::istream& is, Conveyor& dt);
+    friend std::istream& operator>>(std::istream& is, Conveyor& conv);
     friend std::ostream& operator<<(std::ostream& os, const Conveyor& conv);
 
 public:
     Conveyor();
+    Conveyor(std::istream& is);
 
     void updateState(const double& x, unsigned int dt);
     void outputFunction(double& y) const;
@@ -44,16 +45,6 @@ private:
     std::list<Package> m_packages;    ///< przyjęte paczki materiału
     double m_massOnOutput;            ///< materiał na wyjściu
 };
-
-inline std::istream& operator>>(std::istream& is, Conveyor& conv)
-{
-    is >> conv.m_number;
-    is >> conv.m_oddzial;
-    is >> conv.m_nazwa;
-    is >> conv.m_length;
-    is >> conv.m_beltWidth;
-    return is;
-}
 
 inline std::ostream& operator<<(std::ostream& os, const Conveyor& conv)
 {

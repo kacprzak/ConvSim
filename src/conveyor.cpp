@@ -1,11 +1,30 @@
 #include "conveyor.h"
 
+inline std::istream& operator>>(std::istream& is, Conveyor& conv)
+{
+    is >> conv.m_number;
+    is >> conv.m_oddzial;
+    is >> conv.m_nazwa;
+    is >> conv.m_length;
+    is >> conv.m_beltWidth;
+    return is;
+}
+
 Conveyor::Conveyor()
     : m_v(0)
     , m_massOnOutput(0)
 {
     // FIXME: tymczasowo 2,5 m/s
     m_v = 2.5;
+}
+
+Conveyor::Conveyor(std::istream &is)
+    : m_v(0)
+    , m_massOnOutput(0)
+{
+    // FIXME: tymczasowo 2,5 m/s
+    m_v = 2.5;
+    is >> *this;
 }
 
 void Conveyor::updateState(const double &x, unsigned int dt)

@@ -11,6 +11,8 @@ class WeighingBelt : public dtss::EventListener<double>
     friend std::ostream& operator<<(std::ostream& os, const WeighingBelt& conv);
 
 public:
+    WeighingBelt() {}
+    WeighingBelt(std::istream& is);
 
     void stateChanged(dtss::Atomic<double> *model, unsigned int t);
     //void outputEvent(Atomic<double> *model, const double & output, unsigned int t);
@@ -25,13 +27,6 @@ public:
 
 private:
 };
-
-inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
-{
-    is >> wb.lp_prz;
-    is >> wb.lokalizacja;
-    return is;
-}
 
 inline std::ostream& operator<<(std::ostream& os, const WeighingBelt& wb)
 {

@@ -2,6 +2,18 @@
 
 #include "conveyor.h"
 
+inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
+{
+    is >> wb.lp_prz;
+    is >> wb.lokalizacja;
+    return is;
+}
+
+WeighingBelt::WeighingBelt(std::istream &is)
+{
+    is >> *this;
+}
+
 void WeighingBelt::setOdczyt(int n)
 {
     odczyt = new double[n];
