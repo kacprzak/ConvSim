@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include <vector>
 
 class LoadingGrid
 {
@@ -10,16 +11,14 @@ class LoadingGrid
 
 public:
     LoadingGrid(const std::string& file, int n);
-    ~LoadingGrid();
 
 private:
     void loadData(const std::string& file, int n);
 
-//private:
     int lp_prz;
     int lokalizacja; // na ktorym metrze znajduje sie krata
     //int gdzie;
-    double *nadawa;
+    std::vector<double> m_nadawa;
 
     int n;
 };

@@ -10,7 +10,6 @@ LoadingGrid::LoadingGrid(const std::string &file, int n)
 void LoadingGrid::loadData(const std::string &file, int n)
 {
     this->n = n;
-    nadawa = new double[n];
     std::string pomin;
     std::fstream plik;
 
@@ -19,19 +18,17 @@ void LoadingGrid::loadData(const std::string &file, int n)
     {
         plik >> lp_prz;
         plik >> lokalizacja;
-        //tabk[i].gdzie=tabk[i].lokalizacja/odcinek;
-        for(int j=0; j < n; j++)
+
+        double tmp;
+		for (int i = 0; i < n; ++i)
         {
             plik >> pomin;
             plik >> pomin;
-            plik >> nadawa[j];
+            plik >> tmp;
+			m_nadawa.push_back(tmp);
         }
         plik.close();
     }
     else std::cout << "nie mozna otworzyc pliku kr1.txt do odczytu";
 }
 
-LoadingGrid::~LoadingGrid()
-{
-    delete [] nadawa;
-}

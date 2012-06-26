@@ -80,7 +80,7 @@ int main()
     cout << "Czas symulacji: " << sim.getTime() << "\n";
 
 #ifdef _MSC_VER
-	system("pause");
+    system("pause");
 #endif
 
     return 0;
