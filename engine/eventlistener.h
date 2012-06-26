@@ -2,6 +2,7 @@
 #define DTSS_EVENTLISTENER_H
 
 #include "atomic.h"
+#include "event.h"
 
 namespace dtss {
 
@@ -20,13 +21,12 @@ public:
     virtual void stateChanged(Atomic<T> */*model*/, unsigned int /*t*/) {}
 
     /**
-     * Wywoływana przez symulator w momencie obliczanie stanu wyjść modelu.
+     * Wywoływana przez symulator.
      *
-     * @param model     model dla którego wyjścia zostały obliczone
-     * @param outpu     wartość wyjścia tego modelu
+     * @param e         zdarzenie
      * @param t         czas w którym nastąpiło zdarzenie
      */
-    virtual void outputEvent(Atomic<T> */*model*/, const T& /*output*/, unsigned int /*t*/) {}
+    virtual void outputEvent(const Event<T>& /*e*/, unsigned int /*t*/) {}
 };
 
 template <class T>

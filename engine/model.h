@@ -23,7 +23,7 @@ public:
     Network<T> *parent() const { return m_parent; }
 
 protected:
-    Model() {}
+    Model() : m_parent(0) {}
     //Model(const Model<T>& other);              // non construction-copyable
 private:
     //Model& operator=(const Model<T>& other);   // non copyable

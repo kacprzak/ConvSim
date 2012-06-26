@@ -78,7 +78,7 @@ void Simulator<T>::computeNextState(const std::set<Event<T> >& input)
     {
         const Event<T>& evt = *it;
         if (evt.model()->typeIsAtomic()) {
-            evt.model()->m_input.insert(evt.value());
+            evt.model()->typeIsAtomic()->m_input.insert(evt.value());
         } else {
             route(evt.model()->typeIsNetwork(), evt.model(), evt.value());
         }
@@ -87,7 +87,7 @@ void Simulator<T>::computeNextState(const std::set<Event<T> >& input)
     ++m_t; // Przejście do następnej chwili w czasie
 
     // Aktualizacja stanu każdego komponentu
-    for (typename std::set<Atomic<T> *>::iterator it = m_atomics.begin();
+    for (typename AtomicsSet::iterator it = m_atomics.begin();
          it != m_atomics.end(); ++it)
     {
         Atomic<T> *atomic = *it;
@@ -102,7 +102,7 @@ void Simulator<T>::computeNextState(const std::set<Event<T> >& input)
     }
 
     // Sprzątanie
-    for (typename std::set<Atomic<T> *>::iterator it = m_atomics.begin();
+    for (typename AtomicsSet::iterator it = m_atomics.begin();
          it != m_atomics.end(); ++it)
     {
         Atomic<T> *atomic = *it;
@@ -134,7 +134,7 @@ void Simulator<T>::computeOutput()
     // Aktualizuje wyjścia
     m_outputUpToDate = true;
 
-    for (typename std::set<Atomic<T> *>::iterator it = m_atomics.begin();
+    for (typename AtomicsSet::iterator it = m_atomics.begin();
          it != m_atomics.end(); ++it)
     {
         Atomic<T> *atomic = *it;
@@ -177,7 +177,52 @@ void Simulator<T>::getAllChildren(Network<T> *network, std::set<Atomic<T> *> s)
 template <typename T>
 void Simulator<T>::route(Network<T> *parent, Model<T> *source, const T& x)
 {
-    // TODO
+    // Powiadamia obiekty nasłuchujące o wyjściu. Uwaga: jeśli parent = source
+    // to x jest wejściem do sieci. We wszystkich innych przypadkach x jest
+    // wyściem z modelu.
+
+    if (parent != source) // x jest wyjściem
+        notifyOutputListeners(source, x, m_t);
+
+    // Jeśli parent = 0 symulacji podlega pojedynczy prosty model. Czyli
+    // przy braku sieci nie ma czego przekazywać.
+    if (parent == 0) return;
+
+    // Zbiór komponentów na które wpływa x
+    std::set<Event<T> > r;
+    parent->route(x, source, r);
+
+    for (typename std::set<Event<T> >::iterator it = r.begin();
+         it != r.end(); ++it)
+    {
+        const Event<T>& e = *it;
+        // Jeśli obiektem docelowym zdarzenia jest komponent to ustaw wejście
+        if (e.model()->typeIsAtomic() != 0) {
+            e.model()->typeIsAtomic()->m_input.insert(e.value());
+        }
+        // Jeśli obiektem docelowym jest sieć (nie nadrzędna)
+        else if (parent != e.model()) {
+            route(e.model()->typeIsNetwork(), e.model(), e.value());
+        }
+        // Jeśli obiektem docelowym jest rodzic (sieć nadrzędna)
+        else { // if e.model() == parent
+            route(parent->parent(), parent, e.value());
+        }
+    }
+}
+
+
+template <typename T>
+void Simulator<T>::notifyOutputListeners(Model<T> *model,
+                                         const T& value,
+                                         unsigned int t)
+{
+    Event<T> e(model, value);
+    for (typename ListenerList::iterator it = m_listeners.begin();
+         it != m_listeners.end(); ++it)
+    {
+        (*it)->outputEvent(e, t);
+    }
 }
 
 } // namespace dtss
