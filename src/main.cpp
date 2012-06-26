@@ -1078,5 +1078,9 @@ tabp[i].urobek[0]=tabp[i+1].urobek[tabp[i+1].il_paczek-1]; // tylko gdy Conveyor
 
     cout << "\n";
 
+#ifdef _MSC_VER
+	system("pause");
+#endif
+
     return 0;
 }

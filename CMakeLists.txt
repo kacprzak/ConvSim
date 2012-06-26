@@ -1,7 +1,11 @@
 project( ConvSim )
 cmake_minimum_required( VERSION 2.8 )
 
-add_definitions( "-Wall -Wextra" )
+if( MSVC )
+  #add_definitions( "" )
+else()
+  add_definitions( "-Wall -Wextra" )
+endif()
 
 set( ConvSim_SRCS
   src/atomic.cpp
