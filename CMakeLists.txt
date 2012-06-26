@@ -47,6 +47,12 @@ include_directories(
   src
 )
 
-add_executable( convsim
-  ${ConvSim_SRCS}
-)
+if( MSVC )
+  add_executable( convsim
+    ${ConvSim_SRCS} ${ConvSim_HEADERS}
+  )
+else()
+  add_executable( convsim
+    ${ConvSim_SRCS}
+  )
+endif()
