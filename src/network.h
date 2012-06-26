@@ -16,8 +16,9 @@ public:
     Atomic<X> *resultant() const { return m_resultant; }
 
     virtual void getComponents(std::set<Atomic<X>*>& c) const = 0;
-    // TODO: Pomyśleć nad trzecim parametrem
-    virtual void route(const X& value, Atomic<X> *model, X& r) = 0;
+
+    virtual void route(const X& value, Atomic<X> *source,
+                       std::set<Atomic<X>*> influenced) = 0;
 
 private:
     Atomic<X> *m_resultant;
