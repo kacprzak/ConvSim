@@ -10,9 +10,11 @@ class Event
 {
 public:
     Event() : m_model(0) {}
+
     Event(Atomic<T> *model, const T& value) : m_model(model), m_value(value) {}
 
     Event(const Event<T>& e) : m_model(e.model()), m_value(e.value()) {}
+
     const Event<T>& operator=(const Event<T>& e)
     {
         this->m_model = e.model();
@@ -21,7 +23,7 @@ public:
     }
 
     Atomic<T> *model() const { return m_model; }
-    T value() const { return value; }
+    T value() const { return m_value; }
 
 private:
     Atomic<T> *m_model; ///< Obiekt który wygenerował zdarzenie

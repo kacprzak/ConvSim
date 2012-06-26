@@ -73,7 +73,9 @@ int main()
     int steps = sizeof(input)/sizeof(double);
 
     for (int n = 0; n < steps; ++n) {
-        sim.computeNextState(input[n]);
+        std::set<double> in;
+        in.insert(input[n]);
+        sim.computeNextState(in);
         sim.computeOutput();
     }
 

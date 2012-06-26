@@ -4,6 +4,7 @@
 #include "atomic.h"
 #include "eventlistener.h"
 #include <list>
+#include <set>
 
 namespace dtss {
 
@@ -20,7 +21,7 @@ public:
         , m_outputUpToDate(false)
     {}
 
-    void computeNextState(T input);
+    void computeNextState(const std::set<T>& input);
     void computeOutput();
     /** Zwraca aktualny czas symulacji */
     unsigned int getTime() { return m_t; }
@@ -43,12 +44,12 @@ private:
  * @param input     stan wejścia do modelu
  */
 template <typename T>
-void Simulator<T>::computeNextState(T input)
+void Simulator<T>::computeNextState(const std::set<T> &input)
 {
     computeOutput(); // Aktualizuje stan wyjść w czasie t
 
     ++m_t; // Przejście do następnej chwili w czasie
-    m_model->updateState(input);
+    m_model->delta(input);
 
     // Rozgłoszenie zmiany stanu
     for (typename ListenerList::iterator it = listeners.begin();
@@ -80,13 +81,13 @@ void Simulator<T>::computeOutput()
     // Aktualizuje wyjścia
     m_outputUpToDate = true;
 
-    T output;
+    std::set<T> output;
     m_model->outputFunction(output);
     // Rozesłanie zdarzeń
     for (typename ListenerList::iterator it = listeners.begin();
          it != listeners.end(); ++it)
     {
-        (*it)->outputEvent(m_model, output, m_t);
+        (*it)->outputEvent(m_model, *(output.begin()), m_t);
     }
 }
 

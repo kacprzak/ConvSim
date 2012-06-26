@@ -1,21 +1,30 @@
-#ifndef ATOMIC_H
-#define ATOMIC_H
+#ifndef DTSS_ATOMIC_H
+#define DTSS_ATOMIC_H
+
+#include "model.h"
+
+#include <set>
 
 namespace dtss {
 
 /**
  * Klasa bazowa dla dla modeli obiektów niepodzielnych.
  */
-template <class T>
-class Atomic
+template <typename T>
+class Atomic : public Model<T>
 {
 public:
-    virtual void updateState(const T& x, unsigned int dt = 1) = 0;
-    virtual void outputFunction(T& y) const = 0;
+    virtual void delta(const std::set<T>& xb) = 0;
+    virtual void outputFunction(std::set<T>& yb) const = 0;
+
+    virtual void gcOutput(std::set<T>& /*gb*/) {}
+
+    Atomic<T> *typeIsAtomic() { return this; }
 
 private:
-    T m_output;
+    std::set<T> m_input;
+    std::set<T> m_output;
 };
 
 } // namespace dtss
-#endif // ATOMIC_H
+#endif // DTSS_ATOMIC_H

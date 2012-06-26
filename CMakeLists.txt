@@ -8,6 +8,7 @@ else()
 endif()
 
 set( ConvSim_SRCS
+  engine/model.cpp
   engine/atomic.cpp
   engine/simulator.cpp
   engine/eventlistener.cpp
@@ -22,6 +23,7 @@ set( ConvSim_SRCS
 )
 
 set( ConvSim_HEADERS
+  engine/model.h
   engine/atomic.h
   engine/simulator.h
   engine/eventlistener.h

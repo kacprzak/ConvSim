@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <list>
+#include <set>
 
 class Conveyor : public dtss::Atomic<double>
 {
@@ -24,8 +25,8 @@ public:
     Conveyor();
     Conveyor(std::istream& is);
 
-    void updateState(const double& x, unsigned int dt);
-    void outputFunction(double& y) const;
+    void delta(const std::set<double>& x);
+    void outputFunction(std::set<double>& y) const;
 
     /** Długość przeniośnika */
     double length() const { return m_length; }

@@ -20,7 +20,7 @@ public:
     Resultant(Network<X> *network);
     ~Resultant() { delete m_network; }
 
-    void updateState(const X &x, unsigned int dt);
+    void delta(const X &x, unsigned int dt);
     void outputFunction(X &y) const;
 
 private:
@@ -47,7 +47,7 @@ Resultant<X>::Resultant(Network<X> *network)
 }
 
 template <typename X>
-void Resultant<X>::updateState(const X &x, unsigned int dt)
+void Resultant<X>::delta(const X &x, unsigned int dt)
 {
     // Wyślij input sieci do odpowiednich komponentów tej sieci
     route(x, this);

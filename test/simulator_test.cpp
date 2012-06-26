@@ -22,7 +22,9 @@ int main()
     unsigned int steps = sizeof(input)/sizeof(double);
 
     for (unsigned int n = 0; n < steps; ++n) {
-        sim.computeNextState(input[n]);
+        std::set<double> in;
+        in.insert(input[n]);
+        sim.computeNextState(in);
         sim.computeOutput();
     }
 

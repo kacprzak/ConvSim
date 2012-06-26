@@ -27,12 +27,13 @@ Conveyor::Conveyor(std::istream &is)
     is >> *this;
 }
 
-void Conveyor::updateState(const double &x, unsigned int dt)
+void Conveyor::delta(const std::set<double>& x)
 {
     m_massOnOutput = 0;
     // Przesunięcie paczek na przenośniku
     for(std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
+        int dt = 1; // [s]
         it->position = it->position + m_v * dt;
     }
 
@@ -49,12 +50,12 @@ void Conveyor::updateState(const double &x, unsigned int dt)
     }
 
     // Dodanie nowej paczki na początek przenośnika
-    m_packages.push_back(Package(x));
+    m_packages.push_back(Package(*(x.begin())));
 }
 
-void Conveyor::outputFunction(double& y) const
+void Conveyor::outputFunction(std::set<double> &y) const
 {
-    y = m_massOnOutput;
+    y.insert(m_massOnOutput);
 }
 
 double Conveyor::materialAmount() const

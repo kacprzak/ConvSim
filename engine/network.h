@@ -1,27 +1,23 @@
 #ifndef DTSS_NETWORK_H
 #define DTSS_NETWORK_H
 
-#include "atomic.h"
+#include "model.h"
+#include "event.h"
 #include <set>
 
 namespace dtss {
 
-template <typename X>
-class Network
+template <typename T>
+class Network : public Model<T>
 {
 public:
-    Network() : m_resultant(0) {}
+    virtual void getComponents(std::set<Model<T>*>& c) const = 0;
 
-    void setResultant(Atomic<X> *resultant) { m_resultant = resultant; }
-    Atomic<X> *resultant() const { return m_resultant; }
+    virtual void route(const T& value, Model<T> *source,
+                       std::set<Event<T> >& r) = 0;
 
-    virtual void getComponents(std::set<Atomic<X>*>& c) const = 0;
+    Network<T> *typeIsNetwork() { return this; }
 
-    virtual void route(const X& value, Atomic<X> *source,
-                       std::set<Atomic<X>*> influenced) = 0;
-
-private:
-    Atomic<X> *m_resultant;
 };
 
 } // namespace dtss
