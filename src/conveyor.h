@@ -1,5 +1,5 @@
-#ifndef CONVEYOR_H
-#define CONVEYOR_H
+#ifndef DTSS_CONVEYOR_H
+#define DTSS_CONVEYOR_H
 
 #include "atomic.h"
 #include <string>
@@ -56,4 +56,4 @@ inline std::ostream& operator<<(std::ostream& os, const Conveyor& conv)
     return os;
 }
 
-#endif // CONVEYOR_H
+#endif // DTSS_CONVEYOR_H

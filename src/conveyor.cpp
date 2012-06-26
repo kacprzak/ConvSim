@@ -1,6 +1,6 @@
 #include "conveyor.h"
 
-inline std::istream& operator>>(std::istream& is, Conveyor& conv)
+std::istream& operator>>(std::istream& is, Conveyor& conv)
 {
     is >> conv.m_number;
     is >> conv.m_oddzial;

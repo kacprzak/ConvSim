@@ -8,11 +8,12 @@ else()
 endif()
 
 set( ConvSim_SRCS
-  src/atomic.cpp
-  src/simulator.cpp
-  src/eventlistener.cpp
-  src/network.cpp
-  src/resultant.cpp
+  engine/atomic.cpp
+  engine/simulator.cpp
+  engine/eventlistener.cpp
+  engine/network.cpp
+  engine/resultant.cpp
+  engine/event.cpp
 
   src/conveyor.cpp
   src/tank.cpp
@@ -21,11 +22,12 @@ set( ConvSim_SRCS
 )
 
 set( ConvSim_HEADERS
-  src/atomic.h
-  src/simulator.h
-  src/eventlistener.h
-  src/network.h
-  src/resultant.h
+  engine/atomic.h
+  engine/simulator.h
+  engine/eventlistener.h
+  engine/network.h
+  engine/resultant.h
+  engine/event.h
 
   src/conveyor.h
   src/tank.h
@@ -43,7 +45,7 @@ configure_file(data/zbiorniki.txt ${CMAKE_CURRENT_BINARY_DIR}/zbiorniki.txt COPY
 
 
 include_directories(
-  src
+  src engine
 )
 
 if( MSVC )
@@ -58,7 +60,7 @@ endif()
 
 # TESTY
 
-set ( ConvSim_TESTS
+set( ConvSim_TESTS
   test/simulator_test.cpp
 )
 
