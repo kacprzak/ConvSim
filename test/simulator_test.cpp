@@ -1,5 +1,6 @@
 #include <cstdlib>
 
+#include "event.h"
 #include "conveyor.h"
 #include "weighingbelt.h"
 #include "tank.h"
@@ -22,8 +23,9 @@ int main()
     unsigned int steps = sizeof(input)/sizeof(double);
 
     for (unsigned int n = 0; n < steps; ++n) {
-        std::set<double> in;
-        in.insert(input[n]);
+        std::set<Event<double> > in;
+        in.insert(Event<double>(&conv, input[n]));
+
         sim.computeNextState(in);
         sim.computeOutput();
     }

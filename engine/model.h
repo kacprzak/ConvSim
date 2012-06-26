@@ -20,7 +20,7 @@ public:
     virtual Network<T> *typeIsNetwork() { return 0; }
 
     void setParent(Network<T> *parent) { m_parent = parent; }
-    Network<T> parent() const { return m_parent; }
+    Network<T> *parent() const { return m_parent; }
 
 protected:
     Model() {}

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 
+#include "event.h"
 #include "conveyor.h"
 #include "weighingbelt.h"
 #include "tank.h"
@@ -65,7 +66,8 @@ int main()
 
     using namespace dtss;
 
-    Simulator<double> sim(&conveyors[0]);
+    Conveyor *conv = &conveyors[0];
+    Simulator<double> sim(conv);
     WeighingBelt waga;
     sim.addEventListener(&waga);
 
@@ -73,8 +75,9 @@ int main()
     int steps = sizeof(input)/sizeof(double);
 
     for (int n = 0; n < steps; ++n) {
-        std::set<double> in;
-        in.insert(input[n]);
+        std::set<Event<double> > in;
+        in.insert(Event<double>(conv, input[n]));
+
         sim.computeNextState(in);
         sim.computeOutput();
     }

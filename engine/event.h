@@ -22,6 +22,11 @@ public:
         return *this;
     }
 
+    bool operator<(const Event<T>& other) const
+    {
+        return m_value < other.value();
+    }
+
     Atomic<T> *model() const { return m_model; }
     T value() const { return m_value; }
 
