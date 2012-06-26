@@ -14,7 +14,6 @@ set( ConvSim_SRCS
   src/network.cpp
   src/resultant.cpp
 
-  src/main.cpp
   src/conveyor.cpp
   src/tank.cpp
   src/loadinggrid.cpp
@@ -49,10 +48,21 @@ include_directories(
 
 if( MSVC )
   add_executable( convsim
-    ${ConvSim_SRCS} ${ConvSim_HEADERS}
+      src/main.cpp ${ConvSim_SRCS} ${ConvSim_HEADERS}
   )
 else()
   add_executable( convsim
-    ${ConvSim_SRCS}
+      src/main.cpp ${ConvSim_SRCS}
   )
 endif()
+
+# TESTY
+
+set ( ConvSim_TESTS
+  test/simulator_test.cpp
+)
+
+add_executable( simulator_test ${ConvSim_TESTS} ${ConvSim_SRCS} )
+
+enable_testing()
+add_test( SimulatorTest ${CMAKE_CURRENT_BINARY_DIR}/simulator_test )
