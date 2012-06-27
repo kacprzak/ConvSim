@@ -13,7 +13,6 @@ set( ConvSim_SRCS
   engine/simulator.cpp
   engine/eventlistener.cpp
   engine/network.cpp
-  engine/resultant.cpp
   engine/event.cpp
 
   src/conveyor.cpp
@@ -28,7 +27,6 @@ set( ConvSim_HEADERS
   engine/simulator.h
   engine/eventlistener.h
   engine/network.h
-  engine/resultant.h
   engine/event.h
 
   src/conveyor.h

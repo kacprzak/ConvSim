@@ -1,1 +1,0 @@
-#include "resultant.h"
