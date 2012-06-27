@@ -10,16 +10,19 @@ inline std::istream& operator>>(std::istream& is, Tank& tank)
     return is;
 }
 
+
 Tank::Tank()
     : stan_Tanka(0)
 {
 }
+
 
 Tank::Tank(std::istream &is)
     : stan_Tanka(0)
 {
     is >> *this;
 }
+
 
 void Tank::setZapelnianie(int n)
 {
@@ -28,4 +31,12 @@ void Tank::setZapelnianie(int n)
     {
         zapelnianie[j] = 0;
     }
+}
+
+
+Tank *Tank::create(std::istream &is)
+{
+    Tank *t = new Tank;
+    is >> *t;
+    return t;
 }

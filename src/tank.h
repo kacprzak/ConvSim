@@ -14,9 +14,11 @@ public:
     Tank(std::istream& is);
 
     void setZapelnianie(int n);
-//private:
 
+    // Static methods
+    static Tank *create(std::istream& is);
 
+private:
     double wydajnosc;
     double stan_Tanka;
 

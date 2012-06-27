@@ -4,7 +4,9 @@
 #include "eventlistener.h"
 #include <iostream>
 
-/** Nasłuchuje zdarzeń związanych ze zmianami na przenośnikach tasmowych */
+/**
+ * Nasłuchuje zdarzeń związanych ze zmianami na przenośnikach tasmowych
+ */
 class WeighingBelt : public dtss::EventListener<double>
 {
     friend std::istream& operator>>(std::istream& is, WeighingBelt& dt);
@@ -12,20 +14,20 @@ class WeighingBelt : public dtss::EventListener<double>
 
 public:
     WeighingBelt() {}
-    WeighingBelt(std::istream& is);
 
     void stateChanged(dtss::Atomic<double> *model, unsigned int t);
     //void outputEvent(Atomic<double> *model, const double & output, unsigned int t);
 
     void setOdczyt(int n);
 
-//private:
+    // Static methods
+    static WeighingBelt *create(std::istream& is);
+
+private:
     int lp_prz; //< na ktorym instalujemy wage
     int lokalizacja; //< na ktorym metrze przenosnika znajduje sie waga
     int gdzie;
     double *odczyt;
-
-private:
 };
 
 inline std::ostream& operator<<(std::ostream& os, const WeighingBelt& wb)

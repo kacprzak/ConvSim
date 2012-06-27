@@ -9,10 +9,6 @@ inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
     return is;
 }
 
-WeighingBelt::WeighingBelt(std::istream &is)
-{
-    is >> *this;
-}
 
 void WeighingBelt::setOdczyt(int n)
 {
@@ -23,6 +19,15 @@ void WeighingBelt::setOdczyt(int n)
         odczyt[j] = 0;
     }
 }
+
+
+WeighingBelt *WeighingBelt::create(std::istream &is)
+{
+    WeighingBelt *wb = new WeighingBelt;
+    is >> *wb;
+    return wb;
+}
+
 
 void WeighingBelt::stateChanged(dtss::Atomic<double> *model, unsigned int t)
 {

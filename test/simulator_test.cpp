@@ -14,7 +14,7 @@ int main()
 {
     using namespace dtss;
 
-    Conveyor conv;
+    Conveyor conv("C-1", 10, 2.5, 600);
     Simulator<double> sim(&conv);
     WeighingBelt waga;
     sim.addEventListener(&waga);

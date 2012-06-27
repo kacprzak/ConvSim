@@ -10,19 +10,21 @@
 #include "simulator.h"
 
 template <class T>
-void loadObjects(std::vector<T> *v, int size, const char *file)
+std::vector<T *> loadFromFile(const char *file)
 {
-    using namespace std;
+    std::vector<T *> v;
+    std::ifstream f(file);
 
-    fstream plik;
-    plik.open(file, ios::in | ios::binary);
-    if (plik.is_open() == true) {
-        for(int i = 0; i < size; ++i) {
-            v->push_back(T(plik));
+    if (f.is_open() == true) {
+        while (f.good()) {
+            v.push_back(T::create(f));
         }
-        plik.close();
-    } else
-        cout << "plik" << file << "nie zostal otwarty" << "\n";
+        f.close();
+    } else {
+        std::cerr << "Error: unable to open " << file << std::endl;
+    }
+
+    return v;
 }
 
 
@@ -33,26 +35,19 @@ int main()
     cout << "Starting ConvSim ...\n";
 
     ////////////////////////////////////////////////////////////////////////////
-    cout << "Loading Conveyors ...\n";
-    // wczytanie Conveyorow z pliku do struktury
-    int ile_conveyorow = 64;
-    vector<Conveyor> conveyors;
-    loadObjects<Conveyor>(&conveyors, ile_conveyorow, "przenosniki.txt");
-
+    cout << "Loading Conveyors ... ";
+    vector<Conveyor *> conveyors = loadFromFile<Conveyor>("przenosniki.txt");
+    cout << conveyors.size() << "\n";
 
     ////////////////////////////////////////////////////////////////////////////
-    cout << "Loading Tanks ...\n";
-    //stworzenie tablicy struktur Tanków i wczytanie z pliku
-    int ile_tankow = 16;
-    vector<Tank> tanks;
-    loadObjects<Tank>(&tanks, ile_tankow, "zbiorniki.txt");
+    cout << "Loading Tanks ... ";
+    vector<Tank *> tanks = loadFromFile<Tank>("zbiorniki.txt");
+    cout << tanks.size() << "\n";
 
     ////////////////////////////////////////////////////////////////////////////
-    cout << "Loading Weighing Belts ...\n";
-    //stworzenie tablicy struktur wag i wczytanie ich z pliku
-    int ile_wszystkich_wag = 6;
-    vector<WeighingBelt> wbelts;
-    loadObjects<WeighingBelt>(&wbelts, ile_wszystkich_wag, "wagi.txt");
+    cout << "Loading Weighing Belts ... ";
+    vector<WeighingBelt *> wbelts = loadFromFile<WeighingBelt>("wagi.txt");;
+    cout << wbelts.size() << "\n";
 
     ////////////////////////////////////////////////////////////////////////////
     cout << "Loading Loading Grids ...\n";
@@ -66,7 +61,7 @@ int main()
 
     using namespace dtss;
 
-    Conveyor *conv = &conveyors[0];
+    Conveyor *conv = conveyors[0];
     Simulator<double> sim(conv);
     WeighingBelt waga;
     sim.addEventListener(&waga);
@@ -75,7 +70,7 @@ int main()
     int steps = sizeof(input)/sizeof(double);
 
     for (int n = 0; n < steps; ++n) {
-        std::set<Event<double> > in;
+        set<Event<double> > in;
         in.insert(Event<double>(conv, input[n]));
 
         sim.computeNextState(in);

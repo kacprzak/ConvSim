@@ -1,31 +1,36 @@
 #include "conveyor.h"
 
-std::istream& operator>>(std::istream& is, Conveyor& conv)
+
+Conveyor::Conveyor(const std::string &name, double length, double beltSpeed, int beltWidth)
+    : m_name(name)
+    , m_length(length)
+    , m_beltSpeed(beltSpeed)
+    , m_beltWidth(beltWidth)
+    , m_number(0)
+    , m_massOnOutput(0.0)
 {
-    is >> conv.m_number;
-    is >> conv.m_oddzial;
-    is >> conv.m_nazwa;
-    is >> conv.m_length;
-    is >> conv.m_beltWidth;
-    return is;
 }
 
-Conveyor::Conveyor()
-    : m_v(0)
-    , m_massOnOutput(0)
+
+Conveyor *Conveyor::create(std::istream &is)
 {
+    std::string division, name;
+    double length;
+    int beltWidth, number;
+
+    is >> number;
+    is >> division;
+    is >> name;
+    is >> length;
+    is >> beltWidth;
+
     // FIXME: tymczasowo 2,5 m/s
-    m_v = 2.5;
+    Conveyor *c = new Conveyor(name, length, 2.5, beltWidth);
+    c->setDivision(division);
+    c->setNumber(number);
+    return c;
 }
 
-Conveyor::Conveyor(std::istream &is)
-    : m_v(0)
-    , m_massOnOutput(0)
-{
-    // FIXME: tymczasowo 2,5 m/s
-    m_v = 2.5;
-    is >> *this;
-}
 
 void Conveyor::delta(const std::set<double>& x)
 {
@@ -34,7 +39,7 @@ void Conveyor::delta(const std::set<double>& x)
     for(std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
         int dt = 1; // [s]
-        it->position = it->position + m_v * dt;
+        it->position = it->position + m_beltSpeed * dt;
     }
 
     // Paczki które są poza przenośnikiem są usuwane,
@@ -53,10 +58,12 @@ void Conveyor::delta(const std::set<double>& x)
     m_packages.push_back(Package(*(x.begin())));
 }
 
+
 void Conveyor::outputFunction(std::set<double> &y) const
 {
     y.insert(m_massOnOutput);
 }
+
 
 double Conveyor::materialAmount() const
 {

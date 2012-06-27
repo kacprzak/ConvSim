@@ -23,7 +23,11 @@ class Conveyor : public dtss::Atomic<double>
 
 public:
     Conveyor();
-    Conveyor(std::istream& is);
+    //Conveyor(std::istream& is);
+    Conveyor(const std::string& name,
+             double length,
+             double beltSpeed,
+             int beltWidth);
 
     void delta(const std::set<double>& x);
     void outputFunction(std::set<double>& y) const;
@@ -31,17 +35,26 @@ public:
     /** Długość przeniośnika */
     double length() const { return m_length; }
 
+    void setDivision(const std::string& division) { m_division = division; }
+    std::string division() const { return m_division; }
+
+    void setNumber(int number) { m_number = number; }
+    int number() const { return m_number; }
+
     /** Materiał na przenosniku [t] */
     double materialAmount() const;
-    std::string name() const { return m_nazwa; }
+    std::string name() const { return m_name; }
+
+    // Static methods
+    static Conveyor *create(std::istream& is);
 
 private:
-    double m_v;             ///< prędkość taśmy
+    std::string m_name;     ///< nazwa przenośnika
     double m_length;        ///< dlugość przenośnika
+    double m_beltSpeed;     ///< prędkość taśmy
     double m_beltWidth;     ///< szerokość taśmy
     int m_number;           ///< wykorzystywany w lokalizacji
-    std::string m_oddzial;
-    std::string m_nazwa;
+    std::string m_division; ///< oddział
 
     std::list<Package> m_packages;    ///< przyjęte paczki materiału
     double m_massOnOutput;            ///< materiał na wyjściu
@@ -50,8 +63,8 @@ private:
 inline std::ostream& operator<<(std::ostream& os, const Conveyor& conv)
 {
     os << conv.m_number << "\t\t";
-    os << conv.m_oddzial << "\t\t";
-    os << conv.m_nazwa << "\t\t";
+    os << conv.m_division << "\t\t";
+    os << conv.m_name << "\t\t";
     os << conv.m_length << "\t\t";
     os << conv.m_beltWidth << "\n";
     return os;
