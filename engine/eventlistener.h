@@ -6,12 +6,14 @@
 
 namespace dtss {
 
+/**
+ * Klasy obiektów obserwujących przebieg symulacji powinny dziedziczyć po
+ * tej klasie (po tym interfejsie).
+ */
 template <class T>
 class EventListener
 {
 public:
-    EventListener();
-
     /**
      * Wywoływana przez symulator w razie zmiany stanu symulowanego modelu.
      *
@@ -28,11 +30,6 @@ public:
      */
     virtual void outputEvent(const Event<T>& /*e*/, unsigned int /*t*/) {}
 };
-
-template <class T>
-EventListener<T>::EventListener()
-{
-}
 
 } // namespace dtss
 

@@ -29,11 +29,8 @@ public:
     void addEventListener(EventListener<T> *listener);
 
 private:
-    /// Zwraca wszystkie komponenty sieci
     void getAllChildren(Network<T> *network, std::set<Atomic<T> *> s);
-    /// Przesuwa wartośi z wyjść na odpowiednie wejścia
     void route(Network<T> *parent, Model<T> *source, const T& x);
-    /// Zawiadom obiekty nasłuchujące o zmianie wyjścia
     void notifyOutputListeners(Model<T> *model, const T& value, unsigned int t);
 
 
@@ -47,7 +44,11 @@ private:
     ListenerList m_listeners;             ///< Obiekty nasłuchujące
 };
 
-
+/**
+ * Konstruktor.
+ *
+ * @param model     model do symulacji. Sieć lub Atomic.
+ */
 template <typename T>
 Simulator<T>::Simulator(Model<T> *model)
     : m_t(0)
@@ -114,13 +115,14 @@ void Simulator<T>::computeNextState(const std::set<Event<T> >& input)
     m_outputUpToDate = false; // Wyjścia nie są aktualne
 }
 
-
+/**
+ * Rejestruje obiekt nasłuchujący.
+ */
 template <typename T>
 void Simulator<T>::addEventListener(EventListener<T> *listener)
 {
     m_listeners.push_back(listener);
 }
-
 
 /**
  * Uzyskuje stan wyjść modelu i rozgłasza do obiektów nasłuchujących.
@@ -152,7 +154,12 @@ void Simulator<T>::computeOutput()
     }
 }
 
-
+/** Zwraca wszystkie komponenty sieci.
+ *
+ *  @param network  sieć do inspekcji
+ *  @param s        zbiór do którego zostaną zapisane modele typu Atomic
+ *                  należące do sieci network oraz jej podsieci
+ */
 template <typename T>
 void Simulator<T>::getAllChildren(Network<T> *network, std::set<Atomic<T> *> s)
 {
@@ -173,7 +180,9 @@ void Simulator<T>::getAllChildren(Network<T> *network, std::set<Atomic<T> *> s)
     }
 }
 
-
+/**
+ * Przesuwa wartości z wyjść na odpowiednie wejścia.
+ */
 template <typename T>
 void Simulator<T>::route(Network<T> *parent, Model<T> *source, const T& x)
 {
@@ -211,7 +220,13 @@ void Simulator<T>::route(Network<T> *parent, Model<T> *source, const T& x)
     }
 }
 
-
+/**
+ * Zawiadom obiekty nasłuchujące o zmianie wyjścia.
+ *
+ * @param model     model który zmienił wyjście
+ * @param value     stan wyjścia
+ * @param t         czas w którym nastąpiła zmiana
+ */
 template <typename T>
 void Simulator<T>::notifyOutputListeners(Model<T> *model,
                                          const T& value,
