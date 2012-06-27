@@ -71,12 +71,20 @@ int main()
     WeighingBelt waga;
     sim.addEventListener(&waga);
 
-    double input[] = {0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.05};
+    double input[] = {0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.5,
+					  0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.5,
+					  0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.5,
+					  0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.5,
+					  0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.5,
+					  0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.5};
     int steps = sizeof(input)/sizeof(double);
 
-    for (int n = 0; n < steps; ++n) {
-        set<Event<double> > in;
-        in.insert(Event<double>(conv, input[n]));
+    for (int n = 0; n < 300; ++n) {
+		double material = 0.0;		
+		if (n < steps)
+			material = input[n];
+		set<Event<double> > in;
+		in.insert(Event<double>(conv, material));
 
         sim.computeNextState(in);
         sim.computeOutput();

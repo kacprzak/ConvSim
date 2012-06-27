@@ -40,8 +40,10 @@ public:
     int number() const { return m_number; }
 
     /** Materiał na przenosniku [t] */
-    double materialAmount() const;
+    double materialAmount(double start = 0, double end = 0) const;
     std::string name() const { return m_name; }
+
+	void printMaterialDistribution(double l) const;
 
     // Static methods
     static Conveyor *create(const std::string& str);

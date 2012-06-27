@@ -1,6 +1,8 @@
 #include "conveyor.h"
 
-#include<sstream>
+#include <sstream>
+#include <cassert>
+#include <iomanip>
 
 Conveyor::Conveyor(const std::string& name, double length, double beltSpeed, int beltWidth)
     : m_name(name)
@@ -67,14 +69,36 @@ void Conveyor::outputFunction(std::set<double>& y) const
     y.insert(m_massOnOutput);
 }
 
-
-double Conveyor::materialAmount() const
+/**
+ * Zwraca materiał znajdujący się na trasie pomiędzy znacznikami start oraz end.
+ * Jeśli start i end są 0 to zwracany jest materiał z całej trasy.
+ */
+double Conveyor::materialAmount(double start, double end) const
 {
-    double mass = 0;
+	if (end == 0.0 || end > m_length)
+		end = m_length;
+
+	double mass = 0;
 
     for(std::list<Package>::const_iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
-        mass += it->mass;
+		if (it->position >= start && it->position < end)
+			mass += it->mass;
     }
     return mass;
+}
+
+
+void Conveyor::printMaterialDistribution(double l) const
+{
+	assert(l > 0.0);
+	using namespace std;
+	double pos = 0.0;
+
+	cout << "[";
+	while (pos < m_length) {
+		cout << setprecision(1) << fixed << materialAmount(pos, pos + l) << "  ";
+		pos += l;
+	}
+    cout << "]\n";
 }
