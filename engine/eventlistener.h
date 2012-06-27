@@ -20,7 +20,7 @@ public:
      * @param model     model który zmienił stan
      * @param t         czas w którym nastąpiło zdarzenie
      */
-    virtual void stateChanged(Atomic<T> */*model*/, unsigned int /*t*/) {}
+    virtual void stateChanged(Atomic<T> * /*model*/, unsigned int /*t*/) {}
 
     /**
      * Wywoływana przez symulator.
