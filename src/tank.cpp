@@ -1,5 +1,7 @@
 #include "tank.h"
 
+#include<sstream>
+
 inline std::istream& operator>>(std::istream& is, Tank& tank)
 {
     is >> tank.m_numerZbiornika;
@@ -34,8 +36,10 @@ void Tank::setZapelnianie(int n)
 }
 
 
-Tank *Tank::create(std::istream &is)
+Tank *Tank::create(const std::string& str)
 {
+    std::stringstream is(str);
+
     Tank *t = new Tank;
     is >> *t;
     return t;

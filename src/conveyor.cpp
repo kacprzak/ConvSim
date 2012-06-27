@@ -1,7 +1,8 @@
 #include "conveyor.h"
 
+#include<sstream>
 
-Conveyor::Conveyor(const std::string &name, double length, double beltSpeed, int beltWidth)
+Conveyor::Conveyor(const std::string& name, double length, double beltSpeed, int beltWidth)
     : m_name(name)
     , m_length(length)
     , m_beltSpeed(beltSpeed)
@@ -12,8 +13,10 @@ Conveyor::Conveyor(const std::string &name, double length, double beltSpeed, int
 }
 
 
-Conveyor *Conveyor::create(std::istream &is)
+Conveyor *Conveyor::create(const std::string& str)
 {
+    std::stringstream is(str);
+
     std::string division, name;
     double length;
     int beltWidth, number;
@@ -59,7 +62,7 @@ void Conveyor::delta(const std::set<double>& x)
 }
 
 
-void Conveyor::outputFunction(std::set<double> &y) const
+void Conveyor::outputFunction(std::set<double>& y) const
 {
     y.insert(m_massOnOutput);
 }

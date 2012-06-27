@@ -1,6 +1,7 @@
 #include "weighingbelt.h"
 
 #include "conveyor.h"
+#include <sstream>
 
 inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
 {
@@ -21,8 +22,9 @@ void WeighingBelt::setOdczyt(int n)
 }
 
 
-WeighingBelt *WeighingBelt::create(std::istream &is)
+WeighingBelt *WeighingBelt::create(const std::string &str)
 {
+    std::stringstream is(str);
     WeighingBelt *wb = new WeighingBelt;
     is >> *wb;
     return wb;

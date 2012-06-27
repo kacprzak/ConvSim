@@ -12,16 +12,21 @@
 template <class T>
 std::vector<T *> loadFromFile(const char *file)
 {
-    std::vector<T *> v;
-    std::ifstream f(file);
+    using namespace std;
+
+    string tmp;
+    vector<T *> v;
+    ifstream f(file);
 
     if (f.is_open() == true) {
         while (f.good()) {
-            v.push_back(T::create(f));
+            getline(f, tmp);
+            if (!tmp.empty())
+                v.push_back(T::create(tmp));
         }
         f.close();
     } else {
-        std::cerr << "Error: unable to open " << file << std::endl;
+        cerr << "Error: unable to open " << file << endl;
     }
 
     return v;

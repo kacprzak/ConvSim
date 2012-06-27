@@ -16,7 +16,7 @@ public:
     void setZapelnianie(int n);
 
     // Static methods
-    static Tank *create(std::istream& is);
+    static Tank *create(const std::string& str);
 
 private:
     double wydajnosc;

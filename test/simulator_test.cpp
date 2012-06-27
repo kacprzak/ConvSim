@@ -14,12 +14,12 @@ int main()
 {
     using namespace dtss;
 
-    Conveyor conv("C-1", 10, 2.5, 600);
+    Conveyor conv("C-1", 5, 2.5, 600);
     Simulator<double> sim(&conv);
     WeighingBelt waga;
     sim.addEventListener(&waga);
 
-    double input[] = {0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.05};
+    double input[] = {0.1, 0.2, 0.1, 0.3, 0.1, 0.5, 0.05, 0, 0, 0, 0};
     unsigned int steps = sizeof(input)/sizeof(double);
 
     for (unsigned int n = 0; n < steps; ++n) {

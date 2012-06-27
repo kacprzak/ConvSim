@@ -21,7 +21,7 @@ public:
     void setOdczyt(int n);
 
     // Static methods
-    static WeighingBelt *create(std::istream& is);
+    static WeighingBelt *create(const std::string& str);
 
 private:
     int lp_prz; //< na ktorym instalujemy wage

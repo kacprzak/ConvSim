@@ -14,7 +14,7 @@ class Conveyor : public dtss::Atomic<double>
         Package(double m, double p = 0)
             : mass(m), position(p) {}
 
-        double mass; ///< Masa urobku [t]
+        double mass;       ///< Masa urobku [t]
         double position;   ///< Pozycja [m] na przenośniku
     };
 
@@ -22,8 +22,6 @@ class Conveyor : public dtss::Atomic<double>
     friend std::ostream& operator<<(std::ostream& os, const Conveyor& conv);
 
 public:
-    Conveyor();
-    //Conveyor(std::istream& is);
     Conveyor(const std::string& name,
              double length,
              double beltSpeed,
@@ -46,7 +44,7 @@ public:
     std::string name() const { return m_name; }
 
     // Static methods
-    static Conveyor *create(std::istream& is);
+    static Conveyor *create(const std::string& str);
 
 private:
     std::string m_name;     ///< nazwa przenośnika
