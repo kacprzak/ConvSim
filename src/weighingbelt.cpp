@@ -35,5 +35,5 @@ void WeighingBelt::stateChanged(dtss::Atomic<double> *model, unsigned int t)
 {
     Conveyor *conv = static_cast<Conveyor*>(model);
     std::cout << conv->name() << " [" << t << "]\t";
-	conv->printMaterialDistribution(70);
+    conv->printMaterialDistribution(70);
 }

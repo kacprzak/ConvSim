@@ -75,15 +75,15 @@ void Conveyor::outputFunction(std::set<double>& y) const
  */
 double Conveyor::materialAmount(double start, double end) const
 {
-	if (end == 0.0 || end > m_length)
-		end = m_length;
+    if (end == 0.0 || end > m_length)
+        end = m_length;
 
-	double mass = 0;
+    double mass = 0;
 
     for(std::list<Package>::const_iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
-		if (it->position >= start && it->position < end)
-			mass += it->mass;
+        if (it->position >= start && it->position < end)
+            mass += it->mass;
     }
     return mass;
 }
@@ -91,14 +91,14 @@ double Conveyor::materialAmount(double start, double end) const
 
 void Conveyor::printMaterialDistribution(double l) const
 {
-	assert(l > 0.0);
-	using namespace std;
-	double pos = 0.0;
+    assert(l > 0.0);
+    using namespace std;
+    double pos = 0.0;
 
-	cout << "[";
-	while (pos < m_length) {
-		cout << setprecision(1) << fixed << materialAmount(pos, pos + l) << "  ";
-		pos += l;
-	}
+    cout << "[";
+    while (pos < m_length) {
+        cout << setprecision(1) << fixed << materialAmount(pos, pos + l) << "  ";
+        pos += l;
+    }
     cout << "]\n";
 }
