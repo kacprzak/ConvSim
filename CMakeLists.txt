@@ -8,27 +8,22 @@ else()
 endif()
 
 set( ConvSim_SRCS
-  engine/model.cpp
-  engine/atomic.cpp
-  engine/simulator.cpp
-  engine/eventlistener.cpp
-  engine/network.cpp
-  engine/event.cpp
-
   src/conveyor.cpp
   src/tank.cpp
   src/loadinggrid.cpp
   src/weighingbelt.cpp
 )
 
-set( ConvSim_HEADERS
+set( engine_HEADERS
   engine/model.h
   engine/atomic.h
   engine/simulator.h
   engine/eventlistener.h
   engine/network.h
   engine/event.h
+)
 
+set( ConvSim_HEADERS
   src/conveyor.h
   src/tank.h
   src/loadinggrid.h
@@ -48,15 +43,9 @@ include_directories(
   src engine
 )
 
-if( MSVC )
-  add_executable( convsim
-      src/main.cpp ${ConvSim_SRCS} ${ConvSim_HEADERS}
-  )
-else()
-  add_executable( convsim
-      src/main.cpp ${ConvSim_SRCS}
-  )
-endif()
+add_executable( convsim
+  src/main.cpp ${ConvSim_SRCS} ${ConvSim_HEADERS} ${engine_HEADERS}
+)
 
 # TESTY
 
