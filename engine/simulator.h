@@ -29,7 +29,7 @@ public:
     void addEventListener(EventListener<T> *listener);
 
 private:
-    void getAllChildren(Network<T> *network, std::set<Atomic<T> *> s);
+    void getAllChildren(Network<T> *network, std::set<Atomic<T> *>& s);
     void route(Network<T> *parent, Model<T> *source, const T& x);
     void notifyOutputListeners(Model<T> *model, const T& value, unsigned int t);
 
@@ -161,7 +161,7 @@ void Simulator<T>::computeOutput()
  *                  należące do sieci network oraz jej podsieci
  */
 template <typename T>
-void Simulator<T>::getAllChildren(Network<T> *network, std::set<Atomic<T> *> s)
+void Simulator<T>::getAllChildren(Network<T> *network, std::set<Atomic<T> *>& s)
 {
     std::set<Model<T> *> c;
     network->getComponents(c);

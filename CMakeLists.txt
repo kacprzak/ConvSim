@@ -12,6 +12,7 @@ set( ConvSim_SRCS
   src/tank.cpp
   src/loadinggrid.cpp
   src/weighingbelt.cpp
+  src/transportationsystem.cpp
 )
 
 set( engine_HEADERS
@@ -28,6 +29,7 @@ set( ConvSim_HEADERS
   src/tank.h
   src/loadinggrid.h
   src/weighingbelt.h
+  src/transportationsystem.cpp
 )
 
 configure_file(data/kr.txt ${CMAKE_CURRENT_BINARY_DIR}/kr.txt COPYONLY)
@@ -49,11 +51,9 @@ add_executable( convsim
 
 # TESTY
 
-set( ConvSim_TESTS
-  test/simulator_test.cpp
-)
-
-add_executable( simulator_test ${ConvSim_TESTS} ${ConvSim_SRCS} )
+add_executable( simulator_test test/simulator_test.cpp ${ConvSim_SRCS} )
+add_executable( transportationsystem_test test/transportationsystem_test.cpp ${ConvSim_SRCS} )
 
 enable_testing()
 add_test( simulator_test ${CMAKE_CURRENT_BINARY_DIR}/simulator_test )
+add_test( transportationsystem_test ${CMAKE_CURRENT_BINARY_DIR}/transportationsystem_test )
