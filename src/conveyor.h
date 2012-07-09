@@ -6,19 +6,35 @@
 #include <iostream>
 #include <list>
 #include <set>
+#include <vector>
+#include <utility>
 
-class Conveyor : public dtss::Atomic<double>
+// Typ wejścia wyjścia
+typedef std::pair<int, double> IO_type;
+
+/**
+ * @brief Model przenośnika taśmowego.
+ *
+ * Model ma domyślinie jedno wejście dla materiału
+ * (początek przenosnika) i jedno wyjście (koniec przenośnika).
+ *
+ * W zbiorach wejściwych i wyjściowych są pary wartości <numer IO, wartość>.
+ */
+class Conveyor : public dtss::Atomic<IO_type>
 {
+    /**
+     * Paczka materiału przesuwająca się po przenośniku.
+     */
     struct Package
     {
-        Package(double m, double p = 0)
+        Package(double m, double p = 0.0)
             : mass(m), position(p) {}
 
         double mass;       ///< Masa urobku [t]
         double position;   ///< Pozycja [m] na przenośniku
     };
 
-    friend std::istream& operator>>(std::istream& is, Conveyor& conv);
+    //friend std::istream& operator>>(std::istream& is, Conveyor& conv);
     friend std::ostream& operator<<(std::ostream& os, const Conveyor& conv);
 
 public:
@@ -27,8 +43,8 @@ public:
              double beltSpeed,
              int beltWidth);
 
-    void delta(const std::set<double>& x);
-    void outputFunction(std::set<double>& y) const;
+    void delta(const std::set<IO_type>& x);
+    void outputFunction(std::set<IO_type>& y) const;
 
     /** Długość przeniośnika */
     double length() const { return m_length; }
@@ -45,6 +61,11 @@ public:
 
     void printMaterialDistribution(double l) const;
 
+    /** Ilość wejść */
+    int numberOfInputs() const { return m_inputPositions.size(); }
+    /** Dodaje wejście na określonej pozycji */
+    int addInput(double position);
+
     // Static methods
     static Conveyor *create(const std::string& str);
 
@@ -58,6 +79,11 @@ private:
 
     std::list<Package> m_packages;    ///< przyjęte paczki materiału
     double m_massOnOutput;            ///< materiał na wyjściu
+
+    std::vector<double> m_inputPositions; ///< pozycja wejść
+
+    void addPackage(double materialMass, double position = 0.0);
+    double inputPosition(int inputNumber) const;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Conveyor& conv)

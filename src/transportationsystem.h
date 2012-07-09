@@ -4,21 +4,41 @@
 #include "network.h"
 #include "conveyor.h"
 #include <set>
-#include <map>
+//#include <map>
 
-class TransportationSystem : public dtss::Network<double>
+class TransportationSystem : public dtss::Network<IO_type>
 {
+    struct Connection {
+        Conveyor *outConv;
+        int outputNumber;
+        Conveyor *inConv;
+        int inputNumber;
+
+        Connection() { outConv = 0; }
+        bool isNull() { return outConv == 0; }
+
+        // for STL
+        bool operator<(const Connection& other) const
+        {
+            return outConv < other.outConv;
+        }
+    };
+
 public:
-    void getComponents(std::set<dtss::Model<double>*>& c) const;
-    void route(const double& value, dtss::Model<double> *source, std::set<dtss::Event<double> >& r);
+    void getComponents(std::set<dtss::Model<IO_type>*>& c) const;
+    void route(const IO_type& value, dtss::Model<IO_type> *source,
+               std::set<dtss::Event<IO_type> >& r);
 
     void addConveyor(Conveyor *conv);
-    void connect(Conveyor *out, Conveyor *in);
+    void connect(Conveyor *outConv, Conveyor *inConv);
+    void connect(Conveyor *outConv, int outNum, Conveyor *inConv, int inNum);
 
 private:
     std::set<Conveyor *> m_conveyors;
     // TODO: Zmienić na multi_map
-    std::map<Conveyor *, Conveyor *> m_routes;
+    std::set<Connection> m_connections;
+
+    Connection findConnection(Conveyor *outConv, int outNum);
 };
 
 #endif // TRANSPORTATIONSYSTEM_H

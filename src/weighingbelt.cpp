@@ -1,6 +1,5 @@
 #include "weighingbelt.h"
 
-#include "conveyor.h"
 #include <sstream>
 
 inline std::istream& operator>>(std::istream& is, WeighingBelt& wb)
@@ -31,7 +30,7 @@ WeighingBelt *WeighingBelt::create(const std::string &str)
 }
 
 
-void WeighingBelt::stateChanged(dtss::Atomic<double> *model, unsigned int t)
+void WeighingBelt::stateChanged(dtss::Atomic<IO_type> *model, unsigned int t)
 {
     Conveyor *conv = static_cast<Conveyor*>(model);
     std::cout << conv->name() << " [" << t << "]\t";

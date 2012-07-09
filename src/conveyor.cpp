@@ -12,6 +12,7 @@ Conveyor::Conveyor(const std::string& name, double length, double beltSpeed, int
     , m_number(0)
     , m_massOnOutput(0.0)
 {
+    addInput(0.0);
 }
 
 
@@ -36,8 +37,12 @@ Conveyor *Conveyor::create(const std::string& str)
     return c;
 }
 
+void Conveyor::addPackage(double materialMass, double position)
+{
+    m_packages.push_back(Package(materialMass, position));
+}
 
-void Conveyor::delta(const std::set<double>& x)
+void Conveyor::delta(const std::set<IO_type>& x)
 {
     m_massOnOutput = 0;
     // Przesunięcie paczek na przenośniku
@@ -59,14 +64,20 @@ void Conveyor::delta(const std::set<double>& x)
         }
     }
 
-    // Dodanie nowej paczki na początek przenośnika
-    m_packages.push_back(Package(*(x.begin())));
+    // Dodanie nowych paczek do przenośnika
+    for (std::set<IO_type>::const_iterator it = x.begin(); it != x.end(); ++it)
+    {
+        const IO_type& input = *it;
+        double position = inputPosition(input.first);
+        addPackage(input.second, position);
+    }
 }
 
 
-void Conveyor::outputFunction(std::set<double>& y) const
+void Conveyor::outputFunction(std::set<IO_type>& y) const
 {
-    y.insert(m_massOnOutput);
+    // Wyście 1 (bęben zrzutowy)
+    y.insert(IO_type(1, m_massOnOutput));
 }
 
 /**
@@ -80,7 +91,8 @@ double Conveyor::materialAmount(double start, double end) const
 
     double mass = 0;
 
-    for (std::list<Package>::const_iterator it = m_packages.begin(); it != m_packages.end(); ++it)
+    for (std::list<Package>::const_iterator it = m_packages.begin();
+         it != m_packages.end(); ++it)
     {
         if (it->position >= start && it->position < end)
             mass += it->mass;
@@ -88,7 +100,11 @@ double Conveyor::materialAmount(double start, double end) const
     return mass;
 }
 
-
+/**
+ * Rozkład materiału na przenośniku
+ *
+ * @param l długość odcinków
+ */
 void Conveyor::printMaterialDistribution(double l) const
 {
     assert(l > 0.0);
@@ -101,4 +117,16 @@ void Conveyor::printMaterialDistribution(double l) const
         pos += l;
     }
     cout << "]\n";
+}
+
+int Conveyor::addInput(double position)
+{
+    assert(position <= m_length);
+    m_inputPositions.push_back(position);
+    return m_inputPositions.size();
+}
+
+double Conveyor::inputPosition(int inputNumber) const
+{
+    return m_inputPositions[inputNumber - 1];
 }

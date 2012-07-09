@@ -2,12 +2,13 @@
 #define WEIGHINGBELT_H
 
 #include "eventlistener.h"
+#include "conveyor.h"
 #include <iostream>
 
 /**
  * Nasłuchuje zdarzeń związanych ze zmianami na przenośnikach tasmowych
  */
-class WeighingBelt : public dtss::EventListener<double>
+class WeighingBelt : public dtss::EventListener<IO_type>
 {
     friend std::istream& operator>>(std::istream& is, WeighingBelt& dt);
     friend std::ostream& operator<<(std::ostream& os, const WeighingBelt& conv);
@@ -15,7 +16,7 @@ class WeighingBelt : public dtss::EventListener<double>
 public:
     WeighingBelt() {}
 
-    void stateChanged(dtss::Atomic<double> *model, unsigned int t);
+    void stateChanged(dtss::Atomic<IO_type> *model, unsigned int t);
     //void outputEvent(Atomic<double> *model, const double & output, unsigned int t);
 
     void setOdczyt(int n);

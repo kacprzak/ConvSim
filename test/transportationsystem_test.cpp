@@ -24,7 +24,7 @@ int main()
     ts.addConveyor(&conv1);
     ts.addConveyor(&conv2);
 
-    std::set<dtss::Model<double>*> components;
+    std::set<dtss::Model<IO_type>*> components;
     ts.getComponents(components);
     if (components.size() != 2)
         return EXIT_FAILURE;
@@ -32,7 +32,7 @@ int main()
     // Połączenie wyjścia C-1 z wejściem C-2
     ts.connect(&conv1, &conv2);
 
-    Simulator<double> sim(&ts);
+    Simulator<IO_type> sim(&ts);
     //WeighingBelt waga;
     //sim.addEventListener(&waga);
 
@@ -40,8 +40,8 @@ int main()
     unsigned int steps = sizeof(input)/sizeof(double);
 
     for (unsigned int n = 0; n < steps; ++n) {
-        std::set<Event<double> > in;
-        in.insert(Event<double>(&conv1, input[n]));
+        std::set<Event<IO_type> > in;
+        in.insert(Event<IO_type>(&conv1, IO_type(1, input[n])));
 
         sim.computeNextState(in);
         std::cout << conv1.materialAmount() << " " << conv2.materialAmount() << std::endl;
