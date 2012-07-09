@@ -41,15 +41,15 @@ void Conveyor::delta(const std::set<double>& x)
 {
     m_massOnOutput = 0;
     // Przesunięcie paczek na przenośniku
-    for(std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
+    for (std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
         int dt = 1; // [s]
-        it->position = it->position + m_beltSpeed * dt;
+        it->position += m_beltSpeed * dt;
     }
 
     // Paczki które są poza przenośnikiem są usuwane,
     // a ilośc wysypanego materiału zapamiętana
-    for(std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end();)
+    for (std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end();)
     {
         if (it->position > m_length) {
             m_massOnOutput += it->mass;
@@ -80,7 +80,7 @@ double Conveyor::materialAmount(double start, double end) const
 
     double mass = 0;
 
-    for(std::list<Package>::const_iterator it = m_packages.begin(); it != m_packages.end(); ++it)
+    for (std::list<Package>::const_iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
         if (it->position >= start && it->position < end)
             mass += it->mass;

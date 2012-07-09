@@ -32,6 +32,15 @@ std::vector<T *> loadFromFile(const char *file)
     return v;
 }
 
+template <class C> void freeClear(C & cntr)
+{
+    for (typename C::iterator it = cntr.begin();
+         it != cntr.end(); ++it )
+    {
+        delete *it;
+    }
+    cntr.clear();
+}
 
 int main()
 {
@@ -91,6 +100,11 @@ int main()
     }
 
     cout << "Czas symulacji: " << sim.getTime() << "\n";
+
+    freeClear<std::vector<Conveyor *> >(conveyors);
+    freeClear<std::vector<Tank *> >(tanks);
+    freeClear<std::vector<WeighingBelt *> >(wbelts);
+    //freeClear<std::vector<LoadingGrid *> >(grids);
 
 #ifdef _MSC_VER
     system("pause");
