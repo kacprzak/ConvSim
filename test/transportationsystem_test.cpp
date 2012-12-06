@@ -18,7 +18,7 @@ int main()
     // Utworzenie dwóch przenośników
     Conveyor conv1("C-1", 5, 2.5, 600);
     Conveyor conv2("C-2", 25, 3, 600);
-    // System transoprtowy
+    // System transportowy
     TransportationSystem ts;
     // Zarejestrowanie przenośników w systemie
     ts.addConveyor(&conv1);
