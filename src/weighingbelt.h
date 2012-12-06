@@ -15,9 +15,13 @@ class WeighingBelt : public dtss::EventListener<IO_type>
 
 public:
     WeighingBelt() {}
+    virtual ~WeighingBelt() {}
 
     void stateChanged(dtss::Atomic<IO_type> *model, unsigned int t);
-    //void outputEvent(Atomic<double> *model, const double & output, unsigned int t);
+    void outputEvent(const dtss::Event<IO_type>& /*e*/, unsigned int /*t*/)
+    {
+      // Nic nie robi
+    }
 
     void setOdczyt(int n);
 

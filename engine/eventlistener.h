@@ -20,7 +20,7 @@ public:
      * @param model     model który zmienił stan
      * @param t         czas w którym nastąpiło zdarzenie
      */
-    virtual void stateChanged(Atomic<T> * /*model*/, unsigned int /*t*/) {}
+    virtual void stateChanged(Atomic<T> *model, unsigned int t) = 0;
 
     /**
      * Wywoływana przez symulator.
@@ -28,7 +28,7 @@ public:
      * @param e         zdarzenie
      * @param t         czas w którym nastąpiło zdarzenie
      */
-    virtual void outputEvent(const Event<T>& /*e*/, unsigned int /*t*/) {}
+    virtual void outputEvent(const Event<T>& e, unsigned int t) = 0;
 };
 
 } // namespace dtss
