@@ -38,10 +38,10 @@ private:
     bool m_outputUpToDate;              ///< Czy wyjścia są aktualne?
 
     typedef std::set<Atomic<T> *> AtomicsSet;
-    std::set<Atomic<T> *> m_atomics;    ///< Wszystkie symulowane komponenty
+    AtomicsSet m_atomics;               ///< Wszystkie symulowane komponenty
 
     typedef std::list<EventListener<T> *> ListenerList;
-    ListenerList m_listeners;             ///< Obiekty nasłuchujące
+    ListenerList m_listeners;           ///< Obiekty nasłuchujące
 };
 
 /**

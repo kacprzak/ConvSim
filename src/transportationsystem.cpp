@@ -22,7 +22,7 @@ void TransportationSystem::route(const IO_type &value, dtss::Model<IO_type> *sou
         r.insert(e);
     } else {
         // Wysypany materiał na wyjściu nie jest przejmowany przez kolejne modele
-        std::cerr << "WARNING: empty Connection in TransportationSystem::route\n";
+        //std::cerr << "WARNING: empty Connection in TransportationSystem::route\n";
     }
 }
 

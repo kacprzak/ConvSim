@@ -113,8 +113,10 @@ void Conveyor::printMaterialDistribution(double l) const
 
     cout << "[";
     while (pos < m_length) {
-        cout << setprecision(1) << fixed << materialAmount(pos, pos + l) << "  ";
+        cout << setprecision(1) << fixed << materialAmount(pos, pos + l);
         pos += l;
+        if (pos < m_length)
+            cout << " ";
     }
     cout << "]\n";
 }

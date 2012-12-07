@@ -23,7 +23,7 @@ public:
       // Nic nie robi
     }
 
-    void setOdczyt(int n);
+//    void setOdczyt(int n);
 
     // Static methods
     static WeighingBelt *create(const std::string& str);
@@ -32,7 +32,7 @@ private:
     int lp_prz; //< na ktorym instalujemy wage
     int lokalizacja; //< na ktorym metrze przenosnika znajduje sie waga
     int gdzie;
-    double *odczyt;
+//    double *odczyt;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const WeighingBelt& wb)

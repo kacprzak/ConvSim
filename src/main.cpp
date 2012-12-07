@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <utility>
+#include <iomanip> // setw
 
 #include "event.h"
 #include "conveyor.h"
@@ -9,6 +10,7 @@
 #include "tank.h"
 #include "loadinggrid.h"
 #include "simulator.h"
+#include "transportationsystem.h"
 
 // Jeśli kompilujemy MSVC to na pewno jesteśmy na Windowsie
 #ifdef _MSC_VER
@@ -64,6 +66,30 @@ template <class T> void freeClear(T& cntr)
     cntr.clear();
 }
 
+/**
+ * Wyświetla informacje na ekranie.
+ */
+void printUI(unsigned int t, const std::vector<Conveyor *>& conveyors)
+{
+    using namespace std;
+
+    // Czyści ekran
+#ifdef WINDOWS
+    system("cls");
+#else
+    system("clear");
+#endif
+
+    cout << "Czas symulacji: " << t << '\n';
+    // Wyświetl kilka przenosników
+    int num = 22;
+    for (auto it = conveyors.begin(); it != conveyors.end() && num > 0; ++it) {
+        cout << setw(10) << (*it)->name() << ' ';
+        (*it)->printMaterialDistribution(100); // Wyświetl odcinkami po 100 [m]
+        --num;
+    }
+}
+
 int main()
 {
     using namespace std;
@@ -97,12 +123,27 @@ int main()
 
     using namespace dtss;
 
-    Conveyor *conv = conveyors[0];
-    // Symulacja jednego przenośnika
-    Simulator<IO_type> sim(conv);
+    // System transportowy
+    TransportationSystem ts;
+    // Dodanie wszystkich przenosników do systemu
+    for (auto it = conveyors.begin(); it != conveyors.end(); ++it) {
+        ts.addConveyor(*it);
+    }
+
+    // Połącz przenośniki szeregowo
+    for (auto it = conveyors.begin(); it != conveyors.end();) {
+        Conveyor *c1 = *it;
+        ++it;
+        if (it != conveyors.end()) {
+            Conveyor *c2 = *it;
+            ts.connect(c1, c2);
+        }
+    }
+
+    Simulator<IO_type> sim(&ts);
     // Obserwator symulacji
-    WeighingBelt waga;
-    sim.addEventListener(&waga);
+    //WeighingBelt waga;
+    //sim.addEventListener(&waga);
 
     // Strumień danych wejściowych do symulatora
     double input[] = {0.1, 0.2, 0.4, 0.3, 0.1, 0.5, 0.5,
@@ -110,10 +151,15 @@ int main()
                       0.4, 0.3, 0.2, 0.5, 0.1, 0.3, 0.5,
                       0.3, 0.2, 0.1, 0.3, 0.2, 0.5, 0.7,
                       0.2, 0.7, 0.5, 0.8, 0.1, 0.3, 0.5,
+                      0.5, 0.2, 0.1, 0.3, 0.3, 0.5, 0.1,
+                      0.4, 0.3, 0.2, 0.5, 0.1, 0.3, 0.5,
+                      0.3, 0.2, 0.1, 0.3, 0.2, 0.5, 0.7,
+                      0.2, 0.7, 0.5, 0.8, 0.1, 0.3, 0.5,
                       0.1, 0.2, 0.1, 0.3, 0.2, 0.5, 0.1};
     int steps = sizeof(input)/sizeof(double);
 
-    for (int n = 0; n < 300; ++n) {
+    // Pętla symulacji
+    for (int n = 0; n < 5000; ++n) {
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
         IO_type material(1, 0.0);
         if (n < steps)
@@ -122,18 +168,22 @@ int main()
         // Zbiór zdarzeń wejściowych
         set<Event<IO_type> > in;
         // Jedno zdarzenie: przyjście materiału na przenośnik
-        in.insert(Event<IO_type>(conv, material));
+        in.insert(Event<IO_type>(conveyors[0], material));
 
         // Oblicza stan wszystkich obiektów symulacji
         sim.computeNextState(in);
         // Oblicz wyjścia wszystkich obiektów symulacji
         sim.computeOutput();
 
+        // Wyświetla informacje na ekranie
+        if (n % 5 == 0) // co kilka klatek
+            printUI(n, conveyors);
+
         // Spowalnia symulację
 #ifdef WINDOWS
-        Sleep(100); // 0.1 [s]
+        //Sleep(10);
 #else
-        usleep(100000); // 0.1 [s]
+        usleep(10000);
 #endif
     }
 
