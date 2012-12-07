@@ -18,7 +18,7 @@
 #ifdef WINDOWS
   #include <windows.h> // Sleep
 #else
-  #include <ctime> // sleep
+  #include <unistd.h> // usleep
 #endif
 
 /**
@@ -133,7 +133,7 @@ int main()
 #ifdef WINDOWS
         Sleep(100); // 0.1 [s]
 #else
-        sleep(1);
+        usleep(100000); // 0.1 [s]
 #endif
     }
 
