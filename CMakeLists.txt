@@ -4,7 +4,7 @@ cmake_minimum_required( VERSION 2.8 )
 if( MSVC )
   #add_definitions( "" )
 else()
-  add_definitions( "-Wall -Wextra -g" )
+  add_definitions( "-Wall -Wextra -g -std=c++0x" )
 endif()
 
 set( ConvSim_SRCS
