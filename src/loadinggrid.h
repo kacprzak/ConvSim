@@ -14,7 +14,7 @@ public:
     LoadingGrid(const std::string& file);
     double getNextValue()
     {
-        double current_n = (m_last_n + 1) % m_nadawa.size();
+        unsigned int current_n = (m_last_n + 1) % m_nadawa.size();
         m_last_n = current_n;
         return m_nadawa[current_n];
     }
