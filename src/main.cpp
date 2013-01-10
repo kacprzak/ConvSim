@@ -56,14 +56,12 @@ int main()
     //-------------------------------------------------------------------------
     cout << "Loading Loading Grids ... ";
     vector<LoadingGrid *> grids;
-    grids.push_back(new LoadingGrid("kr1.txt"));
-    grids.push_back(new LoadingGrid("kr2.txt"));
-    grids.push_back(new LoadingGrid("kr3.txt"));
+    grids.push_back(new LoadingGrid("kr.txt"));
+    grids.push_back(new LoadingGrid("kr.txt"));
+    grids.push_back(new LoadingGrid("kr.txt"));
     cout << grids.size() << "\n";
 
     pressAnyKey();
-
-    using namespace dtss;
 
     // System transportowy
     TransportationSystem ts;
@@ -82,7 +80,7 @@ int main()
         }
     }
 
-    Simulator<IO_type> sim(&ts);
+    dtss::Simulator<IO_type> sim(&ts);
     // Obserwator symulacji
     //WeighingBelt waga;
     //sim.addEventListener(&waga);
@@ -96,9 +94,9 @@ int main()
         material.second = grids[0]->getNextValue();
 
         // Zbiór zdarzeń wejściowych
-        set<Event<IO_type> > in;
+        set<dtss::Event<IO_type> > in;
         // Jedno zdarzenie: przyjście materiału na przenośnik
-        in.insert(Event<IO_type>(conveyors[0], material));
+        in.insert(dtss::Event<IO_type>(conveyors[0], material));
 
         // Oblicza stan wszystkich obiektów symulacji
         sim.computeNextState(in);
