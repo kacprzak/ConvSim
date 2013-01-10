@@ -1,34 +1,36 @@
+// -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #include "loadinggrid.h"
 
 #include <fstream>
 
-LoadingGrid::LoadingGrid(const std::string &file, int n)
+LoadingGrid::LoadingGrid(const std::string &file)
+    : m_last_n(0)
 {
-    loadData(file, n);
+    loadData(file);
 }
 
-void LoadingGrid::loadData(const std::string &file, int n)
+void LoadingGrid::loadData(const std::string &file)
 {
-    this->n = n;
-    std::string pomin;
-    std::fstream plik;
+    std::string tmp;
+    double input;
+    std::ifstream ifs(file);
 
-    plik.open(file.c_str(), std::ios::in | std::ios::binary);
-    if(plik.is_open()==true)
-    {
-        plik >> lp_prz;
-        plik >> lokalizacja;
-
-        double tmp;
-		for (int i = 0; i < n; ++i)
-        {
-            plik >> pomin;
-            plik >> pomin;
-            plik >> tmp;
-			m_nadawa.push_back(tmp);
+    if (ifs.is_open() == true) {
+        getline(ifs, tmp); // ignore first line
+        while (ifs.good()) {
+          // getline(f, tmp);
+          // if (!tmp.empty()) {
+          //    std::string ignore;
+          //    tmp
+          //  }
+          ifs >> tmp;
+          ifs >> tmp;
+          ifs >> input;
+          m_nadawa.push_back(input);        
         }
-        plik.close();
+        ifs.close();
+    } else {
+        std::cerr << "Error: unable to open " << file << std::endl;
     }
-    else std::cout << "nie mozna otworzyc pliku kr1.txt do odczytu";
 }
 

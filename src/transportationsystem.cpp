@@ -1,3 +1,4 @@
+// -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #include "transportationsystem.h"
 
 void TransportationSystem::getComponents(std::set<dtss::Model<IO_type>*>& c) const

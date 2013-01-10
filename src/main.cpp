@@ -1,3 +1,4 @@
+// -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -114,12 +115,14 @@ int main()
     //-------------------------------------------------------------------------
     cout << "Loading Loading Grids ...\n";
     //stworzenie tablicy stuktur krat i wczytanie ich z pliku
-    int n = 100; // ilosc cykli
+    //int n = 100; // ilosc cykli
     vector<LoadingGrid> grids;
-    grids.push_back(LoadingGrid("kr1.txt", n));
-    grids.push_back(LoadingGrid("kr2.txt", n));
-    grids.push_back(LoadingGrid("kr3.txt", n));
+    grids.push_back(LoadingGrid("kr1.txt"));
+    grids.push_back(LoadingGrid("kr2.txt"));
+    grids.push_back(LoadingGrid("kr3.txt"));
 
+    //cout << grids[0];
+    //return 0;
 
     using namespace dtss;
 
@@ -145,25 +148,12 @@ int main()
     //WeighingBelt waga;
     //sim.addEventListener(&waga);
 
-    // Strumień danych wejściowych do symulatora
-    double input[] = {0.1, 0.2, 0.4, 0.3, 0.1, 0.5, 0.5,
-                      0.5, 0.2, 0.1, 0.3, 0.3, 0.5, 0.1,
-                      0.4, 0.3, 0.2, 0.5, 0.1, 0.3, 0.5,
-                      0.3, 0.2, 0.1, 0.3, 0.2, 0.5, 0.7,
-                      0.2, 0.7, 0.5, 0.8, 0.1, 0.3, 0.5,
-                      0.5, 0.2, 0.1, 0.3, 0.3, 0.5, 0.1,
-                      0.4, 0.3, 0.2, 0.5, 0.1, 0.3, 0.5,
-                      0.3, 0.2, 0.1, 0.3, 0.2, 0.5, 0.7,
-                      0.2, 0.7, 0.5, 0.8, 0.1, 0.3, 0.5,
-                      0.1, 0.2, 0.1, 0.3, 0.2, 0.5, 0.1};
-    int steps = sizeof(input)/sizeof(double);
-
     // Pętla symulacji
     for (int n = 0; n < 5000; ++n) {
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
         IO_type material(1, 0.0);
-        if (n < steps)
-            material.second = input[n];
+
+        material.second = grids[0].getNextValue();
 
         // Zbiór zdarzeń wejściowych
         set<Event<IO_type> > in;
