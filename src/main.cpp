@@ -14,32 +14,15 @@
 #include "simulator.h"
 #include "transportationsystem.h"
 
-// Jeśli kompilujemy MSVC to na pewno jesteśmy na Windowsie
-#ifdef _MSC_VER
-  #define WINDOWS
-#endif
-
-#ifdef WINDOWS
-  #include <windows.h> // Sleep
-#else
-  #include <unistd.h> // usleep
-#endif
-
 /**
  * Wyświetla informacje na ekranie.
  */
 void printUI(unsigned int t, const std::vector<Conveyor *>& conveyors)
 {
     using namespace std;
-
-    // Czyści ekran
-#ifdef WINDOWS
-    system("cls");
-#else
-    system("clear");
-#endif
-
+    clearScreen();
     cout << "Czas symulacji: " << t << '\n';
+
     // Wyświetl kilka przenosników
     int num = 22;
     for (auto it = conveyors.begin(); it != conveyors.end() && num > 0; ++it) {
@@ -71,16 +54,14 @@ int main()
     cout << wbelts.size() << "\n";
 
     //-------------------------------------------------------------------------
-    cout << "Loading Loading Grids ...\n";
-    //stworzenie tablicy stuktur krat i wczytanie ich z pliku
-    //int n = 100; // ilosc cykli
-    vector<LoadingGrid> grids;
-    grids.push_back(LoadingGrid("kr1.txt"));
-    grids.push_back(LoadingGrid("kr2.txt"));
-    grids.push_back(LoadingGrid("kr3.txt"));
+    cout << "Loading Loading Grids ... ";
+    vector<LoadingGrid *> grids;
+    grids.push_back(new LoadingGrid("kr1.txt"));
+    grids.push_back(new LoadingGrid("kr2.txt"));
+    grids.push_back(new LoadingGrid("kr3.txt"));
+    cout << grids.size() << "\n";
 
-    //cout << grids[0];
-    //return 0;
+    pressAnyKey();
 
     using namespace dtss;
 
@@ -111,7 +92,8 @@ int main()
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
         IO_type material(1, 0.0);
 
-        material.second = grids[0].getNextValue();
+        // Pobierz materiał z kraty
+        material.second = grids[0]->getNextValue();
 
         // Zbiór zdarzeń wejściowych
         set<Event<IO_type> > in;
@@ -141,11 +123,9 @@ int main()
     freeClear<std::vector<Conveyor *> >(conveyors);
     freeClear<std::vector<Tank *> >(tanks);
     freeClear<std::vector<WeighingBelt *> >(wbelts);
-    //freeClear<std::vector<LoadingGrid *> >(grids);
+    freeClear<std::vector<LoadingGrid *> >(grids);
 
-#ifdef WINDOWS
-    system("pause");
-#endif
+    pressAnyKey();
 
     return 0;
 }

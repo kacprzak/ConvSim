@@ -3,6 +3,18 @@
 #include <fstream>
 #include <vector>
 
+// Jeśli kompilujemy MSVC to na pewno jesteśmy na Windowsie
+#ifdef _MSC_VER
+  #define WINDOWS
+#endif
+
+#ifdef WINDOWS
+  #include <windows.h> // Sleep
+#else
+  #include <unistd.h> // usleep
+#endif
+
+
 /**
  * Czyta plik linijka po linijce. Każdą przeczytaną linijkę tekstu
  * przekazuje do metody create, która tworzy obiekt typu T i zwraca
@@ -45,4 +57,25 @@ void freeClear(T& cntr)
         delete *it;
     }
     cntr.clear();
+}
+
+/**
+ * Czeka na wciśnięcie klawisza.
+ */
+void pressAnyKey()
+{
+    std::cout << std::endl << "Press any key to continue...";
+    std::cin.get();
+}
+
+/**
+ * Czyści ekran.
+ */
+void clearScreen()
+{
+#ifdef WINDOWS
+    system("cls");
+#else
+    system("clear");
+#endif
 }
