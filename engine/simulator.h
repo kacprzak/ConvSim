@@ -77,8 +77,8 @@ void Simulator<T>::computeNextState(const std::set<Event<T> >& input)
     computeOutput(); // Aktualizuje stan wyjść w czasie t
 
     // Przekazanie wejść symulatora do odpowiednich komponentów
-    for (typename std::set<Event<T> >::const_iterator it = input.begin();
-         it != input.end(); ++it)
+    for (typename std::set<Event<T> >::const_iterator it = input.cbegin();
+         it != input.cend(); ++it)
     {
         const Event<T>& evt = *it;
         if (evt.model()->typeIsAtomic()) {

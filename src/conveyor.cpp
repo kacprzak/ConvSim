@@ -16,6 +16,7 @@ Conveyor::Conveyor(const std::string& name, double length, double beltSpeed, int
     addInput(0.0);
 }
 
+//------------------------------------------------------------------------------
 
 Conveyor *Conveyor::create(const std::string& str)
 {
@@ -38,10 +39,14 @@ Conveyor *Conveyor::create(const std::string& str)
     return c;
 }
 
+//------------------------------------------------------------------------------
+
 void Conveyor::addPackage(double materialMass, double position)
 {
     m_packages.push_back(Package(materialMass, position));
 }
+
+//------------------------------------------------------------------------------
 
 void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
 {
@@ -65,7 +70,7 @@ void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
     }
 
     // Dodanie nowych paczek do przenośnika
-    for (std::set<IO_type>::const_iterator it = x.begin(); it != x.end(); ++it)
+    for (std::set<IO_type>::const_iterator it = x.cbegin(); it != x.cend(); ++it)
     {
         const IO_type& input = *it;
         double position = inputPosition(input.first);
@@ -73,6 +78,7 @@ void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
     }
 }
 
+//------------------------------------------------------------------------------
 
 void Conveyor::outputFunction(std::set<IO_type>& y) const
 {
@@ -80,6 +86,7 @@ void Conveyor::outputFunction(std::set<IO_type>& y) const
     y.insert(IO_type(1, m_massOnOutput));
 }
 
+//------------------------------------------------------------------------------
 /**
  * Zwraca materiał znajdujący się na trasie pomiędzy znacznikami start oraz end.
  * Jeśli start i end są 0 to zwracany jest materiał z całej trasy.
@@ -91,8 +98,8 @@ double Conveyor::materialAmount(double start, double end) const
 
     double mass = 0;
 
-    for (std::list<Package>::const_iterator it = m_packages.begin();
-         it != m_packages.end(); ++it)
+    for (std::list<Package>::const_iterator it = m_packages.cbegin();
+         it != m_packages.cend(); ++it)
     {
         if (it->position >= start && it->position < end)
             mass += it->mass;
@@ -100,6 +107,7 @@ double Conveyor::materialAmount(double start, double end) const
     return mass;
 }
 
+//------------------------------------------------------------------------------
 /**
  * Rozkład materiału na przenośniku.
  *
@@ -122,12 +130,16 @@ void Conveyor::printMaterialDistribution(double l, int precision) const
     cout << "]\n";
 }
 
+//------------------------------------------------------------------------------
+
 int Conveyor::addInput(double position)
 {
     assert(position < m_length);
     m_inputPositions.push_back(position);
     return m_inputPositions.size();
 }
+
+//------------------------------------------------------------------------------
 
 double Conveyor::inputPosition(int inputNumber) const
 {

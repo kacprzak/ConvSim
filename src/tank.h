@@ -2,34 +2,55 @@
 #ifndef TANK_H
 #define TANK_H
 
+#include "atomic.h"
 #include <string>
 #include <iostream>
+#include <set>
+#include <deque>
 
-class Tank
+// Typ wejścia wyjścia
+typedef std::pair<int, double> IO_type;
+
+class Tank : public dtss::Atomic<IO_type>
 {
-    friend std::istream& operator>>(std::istream& is, Tank& dt);
-    friend std::ostream& operator<<(std::ostream& os, const Tank& conv);
+    friend std::istream& operator>>(std::istream& is, Tank& tank);
+    friend std::ostream& operator<<(std::ostream& os, const Tank& tank);
 
 public:
     Tank();
     Tank(std::istream& is);
 
+    // dtss:Atomic interface
+    void delta(unsigned long dt, const std::set<IO_type>& x);
+    void outputFunction(std::set<IO_type>& y) const;
+    // end dtss:Atomic interface
+
     void setZapelnianie(int n);
+
+    /** Materiał w zbiorniku [t] */
+    double materialAmount() const;
+
+    void printMaterialDistribution(int precision = 0) const;
 
     // Static methods
     static Tank *create(const std::string& str);
 
 private:
-    double wydajnosc;
+    void addPackage(double materialMass);
+
+    double m_wydajnosc;
     double stan_Tanka;
 
     double *zapelnianie;
 
-private:
-    double m_poj;	//pojemnosc zbiornika [t]
-    int m_numerZbiornika; //wykorzystywany w lokalizacji numer przenosnika za lub przed zbiornikiem ??????porzadkowy???????
+    double m_pojemnosc;	//pojemnosc zbiornika [t]
+
+    //wykorzystywany w lokalizacji numer przenosnika za lub przed zbiornikiem ?porzadkowy?
+    int m_numerZbiornika;
     std::string m_oddzial;
     std::string m_nazwa;
+    std::deque<double> m_packages; ///< Zakolejkowany materiał w zbiorniku
+    double m_massOnOutput;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Tank& tank)
@@ -37,8 +58,8 @@ inline std::ostream& operator<<(std::ostream& os, const Tank& tank)
     os << tank.m_numerZbiornika << "\t";
     os << tank.m_oddzial << "\t";
     os << tank.m_nazwa << "\t";
-    os << tank.m_poj << "\t";
-    os << tank.wydajnosc << "\n";
+    os << tank.m_pojemnosc << "\t";
+    os << tank.m_wydajnosc << "\n";
     return os;
 }
 

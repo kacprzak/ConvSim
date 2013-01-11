@@ -18,11 +18,11 @@
 /**
  * Wyświetla informacje na ekranie.
  */
-void printUI(unsigned int t, const std::vector<Conveyor *>& conveyors)
+void printUI(unsigned int step, const std::vector<Conveyor *>& conveyors)
 {
     using namespace std;
     clearScreen();
-    cout << "Czas symulacji: " << t << '\n';
+    cout << "Krok symulacji: " << step << '\n';
 
     // Wyświetl kilka przenosników
     int num = 22;
@@ -89,13 +89,18 @@ int main(int argc, char **argv)
         }
     }
 
-    dtss::Simulator<IO_type> sim(&ts);
+    // Czas jednego kroku symulacji [s]
+    unsigned long dt = 1;
+    dtss::Simulator<IO_type> sim(&ts, dt);
+
     // Obserwator symulacji
     //WeighingBelt waga;
     //sim.addEventListener(&waga);
 
+    // Ilość kroków
+    unsigned int max_step = 2000;
     // Pętla symulacji
-    for (int n = 0; n < 5000; ++n) {
+    for (unsigned int step = 0; step < max_step; ++step) {
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
         IO_type material(1, 0.0);
 
@@ -113,8 +118,8 @@ int main(int argc, char **argv)
         sim.computeOutput();
 
         // Wyświetla informacje na ekranie
-        if (n % 5 == 0) // co kilka klatek
-            printUI(n, conveyors);
+        if (step % 5 == 0) // co kilka klatek
+            printUI(step, conveyors);
 
         if (slow) {
             // Spowalnia symulację
@@ -126,7 +131,7 @@ int main(int argc, char **argv)
         }
     }
 
-    cout << "Czas symulacji: " << sim.getTime() << "\n";
+    cout << "Czas symulacji: " << sim.getTime() << " [s]\n";
 
     // Zwolnienie pamięci
     freeClear<std::vector<Conveyor *> >(conveyors);
