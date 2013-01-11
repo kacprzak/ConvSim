@@ -1,3 +1,4 @@
+// -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #ifndef DTSS_ATOMIC_H
 #define DTSS_ATOMIC_H
 
@@ -26,9 +27,10 @@ public:
     /**
      * Aktualizuje stan modelu na podstawie zbioru wejść.
      *
+     * @param dt    delta czasu
      * @param xb    zbiór wejść
      */
-    virtual void delta(const std::set<T>& xb) = 0;
+    virtual void delta(unsigned long dt, const std::set<T>& xb) = 0;
 
     /**
      * Oblicza wyjścia i dodaje je do zbioru przekazanego jako argument.

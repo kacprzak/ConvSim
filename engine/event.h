@@ -1,3 +1,4 @@
+// -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #ifndef DTSS_EVENT_H
 #define DTSS_EVENT_H
 

@@ -44,7 +44,8 @@ public:
              double beltSpeed,
              int beltWidth);
 
-    void delta(const std::set<IO_type>& x);
+    // dtss:Atomic interface
+    void delta(unsigned long dt, const std::set<IO_type>& x);
     void outputFunction(std::set<IO_type>& y) const;
 
     /** Długość przeniośnika */
@@ -60,7 +61,7 @@ public:
     double materialAmount(double start = 0, double end = 0) const;
     std::string name() const { return m_name; }
 
-    void printMaterialDistribution(double l) const;
+    void printMaterialDistribution(double l, int precision = 0) const;
 
     /** Ilość wejść */
     int numberOfInputs() const { return m_inputPositions.size(); }

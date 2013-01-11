@@ -1,3 +1,4 @@
+// -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #ifndef DTSS_SIMULATOR_H
 #define DTSS_SIMULATOR_H
 
@@ -18,7 +19,7 @@ class Simulator
 {
 
 public:
-    Simulator(Model<T> *model);
+    Simulator(Model<T> *model, unsigned long dt = 1);
 
     void computeNextState(const std::set<Event<T> > &input);
     void computeOutput();
@@ -34,7 +35,8 @@ private:
     void notifyOutputListeners(Model<T> *model, const T& value, unsigned int t);
 
 
-    unsigned int m_t;                   ///< Zegar symulacji
+    unsigned long m_t;                  ///< Zegar symulacji
+    unsigned long m_dt;                 ///< Czas jednego kroku symulacji
     bool m_outputUpToDate;              ///< Czy wyjścia są aktualne?
 
     typedef std::set<Atomic<T> *> AtomicsSet;
@@ -50,8 +52,9 @@ private:
  * @param model     model do symulacji. Sieć lub Atomic.
  */
 template <typename T>
-Simulator<T>::Simulator(Model<T> *model)
+    Simulator<T>::Simulator(Model<T> *model, unsigned long dt)
     : m_t(0)
+    , m_dt(dt)
     , m_outputUpToDate(false)
 {
     // Jeśli model nie jest siecią
@@ -85,14 +88,14 @@ void Simulator<T>::computeNextState(const std::set<Event<T> >& input)
         }
     }
 
-    ++m_t; // Przejście do następnej chwili w czasie
+    m_t += m_dt; // Przejście do następnej chwili w czasie
 
     // Aktualizacja stanu każdego komponentu
     for (typename AtomicsSet::iterator it = m_atomics.begin();
          it != m_atomics.end(); ++it)
     {
         Atomic<T> *atomic = *it;
-        atomic->delta(atomic->m_input);
+        atomic->delta(m_dt, atomic->m_input);
 
         // Rozgłoszenie zmiany stanu
         for (typename ListenerList::iterator liter = m_listeners.begin();

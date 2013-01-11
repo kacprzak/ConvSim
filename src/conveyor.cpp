@@ -43,13 +43,12 @@ void Conveyor::addPackage(double materialMass, double position)
     m_packages.push_back(Package(materialMass, position));
 }
 
-void Conveyor::delta(const std::set<IO_type>& x)
+void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
 {
     m_massOnOutput = 0;
     // Przesunięcie paczek na przenośniku
     for (std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
-        int dt = 1; // [s]
         it->position += m_beltSpeed * dt;
     }
 
@@ -102,11 +101,12 @@ double Conveyor::materialAmount(double start, double end) const
 }
 
 /**
- * Rozkład materiału na przenośniku
+ * Rozkład materiału na przenośniku.
  *
- * @param l długość odcinków
+ * @param l         długość odcinków
+ * @param precision ilość cyfr po przecinku
  */
-void Conveyor::printMaterialDistribution(double l) const
+void Conveyor::printMaterialDistribution(double l, int precision) const
 {
     assert(l > 0.0);
     using namespace std;
@@ -114,7 +114,7 @@ void Conveyor::printMaterialDistribution(double l) const
 
     cout << "[";
     while (pos < m_length) {
-        cout << setprecision(1) << fixed << materialAmount(pos, pos + l);
+        cout << setprecision(precision) << fixed << materialAmount(pos, pos + l);
         pos += l;
         if (pos < m_length)
             cout << " ";
@@ -124,7 +124,7 @@ void Conveyor::printMaterialDistribution(double l) const
 
 int Conveyor::addInput(double position)
 {
-    assert(position <= m_length);
+    assert(position < m_length);
     m_inputPositions.push_back(position);
     return m_inputPositions.size();
 }
