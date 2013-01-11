@@ -4,6 +4,7 @@
 #include <vector>
 //#include <utility>
 #include <iomanip> // setw
+#include <cstring> // strcmp
 
 #include "utils.h"
 #include "event.h"
@@ -32,8 +33,16 @@ void printUI(unsigned int t, const std::vector<Conveyor *>& conveyors)
     }
 }
 
-int main()
+/**
+ * Opcje:
+ *   -s    spowolnienie symulacji
+ */
+int main(int argc, char **argv)
 {
+    bool slow = false;
+    if (argc > 1 && strcmp(argv[1], "-s") == 0)
+        slow = true;
+
     using namespace std;
 
     cout << "Starting ConvSim ...\n";
@@ -107,12 +116,14 @@ int main()
         if (n % 5 == 0) // co kilka klatek
             printUI(n, conveyors);
 
-        // Spowalnia symulację
+        if (slow) {
+            // Spowalnia symulację
 #ifdef WINDOWS
-        //Sleep(10);
+            Sleep(10);
 #else
-        usleep(10000);
+            usleep(10000);
 #endif
+        }
     }
 
     cout << "Czas symulacji: " << sim.getTime() << "\n";
