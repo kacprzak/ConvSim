@@ -6,7 +6,7 @@
 #include "tank.h"
 
 /** Rodzaje połączeń */
-enum ConnType { CONV_CONV, CONV_TANK, TANK_CONV };
+enum ConnType { CONV_CONV, CONV_TANK, TANK_CONV, MODEL_MODEL };
 
 /**
  * Połączenia pomiędzy przenośnikami i zbiornikami w systemie
@@ -20,9 +20,9 @@ class Connection {
 };
 
 template <typename S, typename D>
-class _Connection : public Connection {
+class GenericConnection : public Connection {
  public:
-    _Connection(S *src, int outNum, D *dest, int inNum)
+    GenericConnection(S *src, int outNum, D *dest, int inNum)
         : m_src(src)
         , m_outNumber(outNum)
         , m_dest(dest)
@@ -30,7 +30,7 @@ class _Connection : public Connection {
     {}
 
     // for STL
-    bool operator==(const _Connection& other) const
+    bool operator==(const GenericConnection& other) const
     {
         return m_src == other.m_src
         && m_outNumber == other.m_outNumber
@@ -38,7 +38,7 @@ class _Connection : public Connection {
         && m_inNumber == other.m_inNumber;
     }
     
-    bool operator<(const _Connection& other) const
+    bool operator<(const GenericConnection& other) const
     {
         return m_src < other.m_src;
     }
@@ -56,11 +56,11 @@ class _Connection : public Connection {
 
 //------------------------------------------------------------------------------
 
-class ConvConvConnection : public _Connection<Conveyor, Conveyor>
+class ConvConvConnection : public GenericConnection<Conveyor, Conveyor>
 {
  public:
     ConvConvConnection(Conveyor *src, int outNum, Conveyor *dest, int inNum)
-        : _Connection(src, outNum, dest, inNum)
+        : GenericConnection(src, outNum, dest, inNum)
     {}
 
 

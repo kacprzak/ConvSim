@@ -9,6 +9,16 @@
 #include <set>
 //#include <map>
 
+class TSConnection : public GenericConnection<dtss::Model<IO_type>, dtss::Model<IO_type> >
+{
+ public:
+    TSConnection(dtss::Model<IO_type> *src, int outNum, dtss::Model<IO_type> *dest, int inNum)
+        : GenericConnection(src, outNum, dest, inNum)
+    {}
+
+    ConnType connType() const { return MODEL_MODEL; }
+};
+
 //------------------------------------------------------------------------------
 
 class TransportationSystem : public dtss::Network<IO_type>
@@ -24,15 +34,20 @@ public:
     // end dtss::Network interface
 
     void addConveyor(Conveyor *conv);
-    void connect(Conveyor *outConv, Conveyor *inConv);
-    void connect(Conveyor *outConv, int outNum, Conveyor *inConv, int inNum);
+    void addTank(Tank *tank);
+
+    void connect(dtss::Model<IO_type> *src, dtss::Model<IO_type> *dest);
+    void connect(dtss::Model<IO_type> *src, int outNum,
+                 dtss::Model<IO_type> *dest, int inNum);
 
 private:
     std::set<Conveyor *> m_conveyors;
+    std::set<Tank *>     m_tanks;
+
     // TODO: Zmienić na multi_map
     std::set<Connection *> m_connections;
 
-    const ConvConvConnection *findConnection(Conveyor *outConv, int outNum);
+    const TSConnection *findConnection(dtss::Model<IO_type> *src, int outNum);
 };
 
 #endif // TRANSPORTATIONSYSTEM_H

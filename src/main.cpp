@@ -5,6 +5,7 @@
 //#include <utility>
 #include <iomanip> // setw
 #include <cstring> // strcmp
+#include <cstdlib> // atoi
 
 #include "utils.h"
 #include "event.h"
@@ -83,8 +84,6 @@ int main(int argc, char **argv)
     grids.push_back(new LoadingGrid("kr.txt"));
     cout << grids.size() << "\n";
 
-    pressAnyKey();
-
     // System transportowy
     TransportationSystem ts;
     // Dodanie wszystkich przenosników do systemu
@@ -92,8 +91,55 @@ int main(int argc, char **argv)
         ts.addConveyor(*it);
     }
 
+    // Dodanie wszystkich zbiorników do systemu
+    for (auto it = tanks.begin(); it != tanks.end(); ++it) {
+        ts.addTank(*it);
+    }
+
+#if 1
+    string filename = "connections.txt";
+    char sep = ';';
+    ifstream f(filename);
+
+    if (f.is_open() == true) {
+        while (f.good()) {
+            string conn_type;
+            string src;
+            string out;
+            string dst;
+            string in;
+
+            std::getline(f, conn_type, sep);
+            std::getline(f, src, sep);
+            std::getline(f, out, sep);
+            std::getline(f, dst, sep);
+            std::getline(f, in);
+
+            if (conn_type.empty() || src.empty())
+                break;
+
+            int so = atoi(out.c_str());
+            int di = atoi(in.c_str());
+
+            cout << conn_type << ' '
+                 << src << ' '
+                 << so << ' '
+                 << dst << ' '
+                 << di << '\n';
+            Conveyor *srcp = findByName(conveyors, src);
+            Conveyor *dstp = findByName(conveyors, dst);
+            ts.connect(srcp, so, dstp, di);
+        }
+        f.close();
+    } else {
+        cerr << "Error: unable to open " << filename << endl;
+    }
+#else
+    ts.connect(conveyors[0], tanks[0]);
+    ts.connect(tanks[0], conveyors[1]);
+
     // Połącz przenośniki szeregowo
-    for (auto it = conveyors.begin(); it != conveyors.end();) {
+    for (auto it = (conveyors.begin() + 1); it != conveyors.end();) {
         Conveyor *c1 = *it;
         ++it;
         if (it != conveyors.end()) {
@@ -101,6 +147,9 @@ int main(int argc, char **argv)
             ts.connect(c1, c2);
         }
     }
+#endif
+
+    pressAnyKey();
 
     // Czas jednego kroku symulacji [s]
     unsigned long dt = 1;
@@ -118,6 +167,7 @@ int main(int argc, char **argv)
         IO_type material(1, 0.0);
 
         // Pobierz materiał z kraty
+        //if (step < 100)
         material.second = grids[0]->getNextValue();
 
         // Zbiór zdarzeń wejściowych

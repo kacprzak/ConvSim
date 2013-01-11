@@ -34,6 +34,7 @@ set( ConvSim_HEADERS
   src/connection.h
 )
 
+configure_file(data/connections.txt ${CMAKE_CURRENT_BINARY_DIR}/connections.txt COPYONLY)
 configure_file(data/kr.txt ${CMAKE_CURRENT_BINARY_DIR}/kr.txt COPYONLY)
 configure_file(data/przenosniki.txt ${CMAKE_CURRENT_BINARY_DIR}/przenosniki.txt COPYONLY)
 configure_file(data/wagi.txt ${CMAKE_CURRENT_BINARY_DIR}/wagi.txt COPYONLY)

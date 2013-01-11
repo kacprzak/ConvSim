@@ -63,6 +63,21 @@ void freeClear(T& cntr)
 }
 
 /**
+ * Przyjmuje listę wskaźników. Zwraca wskaźnik do pierwszego obiektu o
+ * nazwie przekazanej w drugim argumencie, lub null jeśli nie ma
+ * takiego obiektu.
+ */
+template <class T>
+T *findByName(const std::vector<T *>& v, const std::string& name)
+{
+    for (auto it = v.begin(); it != v.end(); ++it) {
+        if ((*it)->name() == name)
+            return (*it);
+    }
+    return nullptr;
+}
+
+/**
  * Czeka na wciśnięcie klawisza.
  */
 inline void pressAnyKey()
