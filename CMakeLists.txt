@@ -31,6 +31,7 @@ set( ConvSim_HEADERS
   src/weighingbelt.h
   src/transportationsystem.h
   src/utils.h
+  src/connection.h
 )
 
 configure_file(data/kr.txt ${CMAKE_CURRENT_BINARY_DIR}/kr.txt COPYONLY)

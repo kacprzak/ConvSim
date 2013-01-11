@@ -1,4 +1,7 @@
 // -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
+#ifndef UTILS_H
+#define UTILS_H
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -62,7 +65,7 @@ void freeClear(T& cntr)
 /**
  * Czeka na wciśnięcie klawisza.
  */
-void pressAnyKey()
+inline void pressAnyKey()
 {
     std::cout << std::endl << "Press any key to continue...";
     std::cin.get();
@@ -71,7 +74,7 @@ void pressAnyKey()
 /**
  * Czyści ekran.
  */
-void clearScreen()
+inline void clearScreen()
 {
 #ifdef WINDOWS
     system("cls");
@@ -79,3 +82,5 @@ void clearScreen()
     system("clear");
 #endif
 }
+
+#endif // UTILS_H

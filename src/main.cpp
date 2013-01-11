@@ -18,17 +18,30 @@
 /**
  * Wyświetla informacje na ekranie.
  */
-void printUI(unsigned int step, const std::vector<Conveyor *>& conveyors)
+void printUI(unsigned int step,
+             const std::vector<Conveyor *>& conveyors,
+             const std::vector<Tank *>& tanks)
 {
     using namespace std;
     clearScreen();
     cout << "Krok symulacji: " << step << '\n';
 
     // Wyświetl kilka przenosników
-    int num = 22;
-    for (auto it = conveyors.begin(); it != conveyors.end() && num > 0; ++it) {
+    cout << "Przenośniki:\n";
+    int num = 15;
+    for (auto it = conveyors.cbegin(); it != conveyors.cend() && num > 0; ++it) {
         cout << setw(10) << (*it)->name() << ' ';
         (*it)->printMaterialDistribution(100); // Wyświetl odcinkami po 100 [m]
+        --num;
+    }
+
+    cout << endl;
+    // Wyświetl kilka zbiorników
+    cout << "Zbiorniki:\n";
+    num = 5;
+    for (auto it = tanks.cbegin(); it != tanks.cend() && num > 0; ++it) {
+        cout << setw(10) << (*it)->name() << ' ';
+        (*it)->printMaterialDistribution();
         --num;
     }
 }
@@ -119,7 +132,7 @@ int main(int argc, char **argv)
 
         // Wyświetla informacje na ekranie
         if (step % 5 == 0) // co kilka klatek
-            printUI(step, conveyors);
+            printUI(step, conveyors, tanks);
 
         if (slow) {
             // Spowalnia symulację

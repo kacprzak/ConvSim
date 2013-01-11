@@ -1,6 +1,13 @@
 // -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #include "transportationsystem.h"
 
+#include "utils.h"
+
+TransportationSystem::~TransportationSystem()
+{
+    freeClear(m_connections);
+}
+
 void TransportationSystem::getComponents(std::set<dtss::Model<IO_type>*>& c) const
 {
     c.insert(m_conveyors.begin(), m_conveyors.end());
@@ -16,11 +23,11 @@ void TransportationSystem::route(const IO_type &value, dtss::Model<IO_type> *sou
     // Numer wyjścia źródła
     int outNum = value.first;
     // Obiekt połączenia
-    const Connection& conn = findConnection(outConv, outNum);
+    const ConvConvConnection* conn = findConnection(outConv, outNum);
     // Model docelowy
-    if (!conn.isNull()) {
-        Conveyor *inConv = conn.destination();
-        int inputNumber = conn.destIn();
+    if (conn) {
+        Conveyor *inConv = conn->destination();
+        int inputNumber = conn->destIn();
         dtss::Event<IO_type> e(inConv, IO_type(inputNumber, value.second));
         r.insert(e);
     } else {
@@ -48,20 +55,23 @@ void TransportationSystem::connect(Conveyor *outConv, Conveyor *inConv)
 
 void TransportationSystem::connect(Conveyor *outConv, int outNum, Conveyor *inConv, int inNum)
 {
-    Connection conn(outConv, outNum, inConv, inNum);
+    Connection *conn = new ConvConvConnection(outConv, outNum, inConv, inNum);
     m_connections.insert(conn);
 }
 
 //------------------------------------------------------------------------------
 
-const Connection TransportationSystem::findConnection(Conveyor *outConv, int outNum)
+const ConvConvConnection *TransportationSystem::findConnection(Conveyor *outConv, int outNum)
 {
-    for (std::set<Connection>::const_iterator it = m_connections.begin();
-         it != m_connections.end(); ++it)
+    for (auto it = m_connections.cbegin(); it != m_connections.cend(); ++it)
     {
-        if (it->source() == outConv && it->srcOut() == outNum)
-            return *it;
+        Connection *conn = *it;
+        if (conn->connType() == CONV_CONV) {
+            ConvConvConnection *c = static_cast<ConvConvConnection *>(conn);
+            if (c->source() == outConv && c->srcOut() == outNum)
+                return c;
+        }
     }
-
-    return Connection();
+    //assert(false);
+    return nullptr;
 }

@@ -29,6 +29,7 @@ public:
 
     /** Materiał w zbiorniku [t] */
     double materialAmount() const;
+    std::string name() const { return m_nazwa; }
 
     void printMaterialDistribution(int precision = 0) const;
 
