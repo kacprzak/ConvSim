@@ -40,7 +40,10 @@ public:
     // for STL
     bool operator<(const Event<T>& other) const
     {
-        return m_value < other.value();
+        if (m_model != other.m_model)
+            return m_model < other.m_model;
+        else
+            return m_value < other.m_value;
     }
 
     /**

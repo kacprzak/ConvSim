@@ -12,11 +12,21 @@ class LoadingGrid
 
 public:
     LoadingGrid(const std::string& file);
+
+    /// Następna porcja materiału [t]
     double getNextValue()
     {
+        static int roll = 0;
+        roll = roll % 4;
+
         unsigned int current_n = (m_last_n + 1) % m_nadawa.size();
-        m_last_n = current_n;
-        return m_nadawa[current_n];
+
+        // Co cztery takty przesuwaj
+        if (roll == 3)
+            m_last_n = current_n;
+
+        ++roll;
+        return m_nadawa[current_n] / 1000; // kg/1000
     }
 
 private:
@@ -25,7 +35,7 @@ private:
     int lp_prz;
     int lokalizacja; // na ktorym metrze znajduje sie krata
     //int gdzie;
-    std::vector<double> m_nadawa;
+    std::vector<double> m_nadawa; // [kg]
     unsigned int m_last_n; // ostatnio zwrócony element
 };
 

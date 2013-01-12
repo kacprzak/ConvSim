@@ -17,22 +17,22 @@ inline std::istream& operator>>(std::istream& is, Tank& tank)
 //------------------------------------------------------------------------------
 
 Tank::Tank()
-    : stan_Tanka(0)
-    , m_massOnOutput(0)
+//: stan_Tanka(0)
+    : m_massOnOutput(0)
 {
 }
 
 //------------------------------------------------------------------------------
 
 Tank::Tank(std::istream &is)
-    : stan_Tanka(0)
-    , m_massOnOutput(0)
+//: stan_Tanka(0)
+    : m_massOnOutput(0)
 {
     is >> *this;
 }
 
 //------------------------------------------------------------------------------
-
+#if 0
 void Tank::setZapelnianie(int n)
 {
     zapelnianie = new double[n];
@@ -41,7 +41,7 @@ void Tank::setZapelnianie(int n)
         zapelnianie[j] = 0;
     }
 }
-
+#endif
 //------------------------------------------------------------------------------
 
 Tank *Tank::create(const std::string& str)
@@ -58,8 +58,8 @@ Tank *Tank::create(const std::string& str)
 void Tank::delta(unsigned long dt, const std::set<IO_type>& x)
 {
     m_massOnOutput = 0;
-    double massToRemove = m_wydajnosc * dt;
-
+    double massToRemove = (m_wydajnosc/3600.0) * dt; // t/s * s
+ 
     while (!m_packages.empty() && m_massOnOutput < massToRemove) {
         double p = m_packages.front();
         m_massOnOutput += p;
@@ -113,5 +113,6 @@ double Tank::materialAmount() const
 void Tank::printMaterialDistribution(int precision) const
 {
     using namespace std;
-    cout << "[" << setprecision(precision) << fixed << materialAmount() << "]\n";
+    cout << "[" << setprecision(precision) << fixed << materialAmount() 
+         << " / " << m_pojemnosc << "]\n";
 }

@@ -25,7 +25,7 @@ public:
     void outputFunction(std::set<IO_type>& y) const;
     // end dtss:Atomic interface
 
-    void setZapelnianie(int n);
+    //void setZapelnianie(int n);
 
     /** Materiał w zbiorniku [t] */
     double materialAmount() const;
@@ -39,10 +39,10 @@ public:
 private:
     void addPackage(double materialMass);
 
-    double m_wydajnosc;
-    double stan_Tanka;
+    double m_wydajnosc; // wydajność na wyjściu [t/h]
+    //double stan_Tanka;
 
-    double *zapelnianie;
+    //double *zapelnianie;
 
     double m_pojemnosc;	//pojemnosc zbiornika [t]
 
@@ -51,7 +51,7 @@ private:
     std::string m_oddzial;
     std::string m_nazwa;
     std::deque<double> m_packages; ///< Zakolejkowany materiał w zbiorniku
-    double m_massOnOutput;
+    double m_massOnOutput;  ///< Masa na wyjściu
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Tank& tank)

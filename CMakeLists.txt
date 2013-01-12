@@ -40,6 +40,10 @@ configure_file(data/przenosniki.txt ${CMAKE_CURRENT_BINARY_DIR}/przenosniki.txt 
 configure_file(data/wagi.txt ${CMAKE_CURRENT_BINARY_DIR}/wagi.txt COPYONLY)
 configure_file(data/zbiorniki.txt ${CMAKE_CURRENT_BINARY_DIR}/zbiorniki.txt COPYONLY)
 
+configure_file(data/conveyors_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/conveyors_test1.txt COPYONLY)
+configure_file(data/tanks_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/tanks_test1.txt COPYONLY)
+configure_file(data/connections_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/connections_test1.txt COPYONLY)
+
 
 include_directories(
   src engine

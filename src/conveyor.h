@@ -71,11 +71,13 @@ public:
     // Static methods
     static Conveyor *create(const std::string& str);
 
+    double m_chwilowaWydajnoscNaWejsciu;
+    double m_chwilowaWydajnoscNaWyjsciu;
 private:
     std::string m_name;     ///< nazwa przenośnika
-    double m_length;        ///< dlugość przenośnika
-    double m_beltSpeed;     ///< prędkość taśmy
-    double m_beltWidth;     ///< szerokość taśmy
+    double m_length;        ///< dlugość przenośnika [m]
+    double m_beltSpeed;     ///< prędkość taśmy [m/s]
+    double m_beltWidth;     ///< szerokość taśmy [mm]
     int m_number;           ///< wykorzystywany w lokalizacji
     std::string m_division; ///< oddział
 

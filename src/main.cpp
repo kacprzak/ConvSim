@@ -30,8 +30,11 @@ void printUI(unsigned int step,
     cout << "Przenośniki:\n";
     int num = 15;
     for (auto it = conveyors.cbegin(); it != conveyors.cend() && num > 0; ++it) {
-        cout << setw(10) << (*it)->name() << ' ';
+        Conveyor *c = *it;
+        cout << setw(10) << c->name()
+             << " (Q_we: " << setw(4) << c->m_chwilowaWydajnoscNaWejsciu << " t/h) ";
         (*it)->printMaterialDistribution(100); // Wyświetl odcinkami po 100 [m]
+        cout << " (Q_wy: " << setw(4) << c->m_chwilowaWydajnoscNaWyjsciu << " t/h)\n";
         --num;
     }
 
@@ -62,12 +65,14 @@ int main(int argc, char **argv)
 
     //-------------------------------------------------------------------------
     cout << "Loading Conveyors ... ";
-    vector<Conveyor *> conveyors = loadFromFile<Conveyor>("przenosniki.txt");
+    //vector<Conveyor *> conveyors = loadFromFile<Conveyor>("przenosniki.txt");
+    vector<Conveyor *> conveyors = loadFromFile<Conveyor>("conveyors_test1.txt");
     cout << conveyors.size() << "\n";
 
     //-------------------------------------------------------------------------
     cout << "Loading Tanks ... ";
-    vector<Tank *> tanks = loadFromFile<Tank>("zbiorniki.txt");
+    //vector<Tank *> tanks = loadFromFile<Tank>("zbiorniki.txt");
+    vector<Tank *> tanks = loadFromFile<Tank>("tanks_test1.txt");
     cout << tanks.size() << "\n";
 
     //-------------------------------------------------------------------------
@@ -79,8 +84,9 @@ int main(int argc, char **argv)
     cout << "Loading Loading Grids ... ";
     vector<LoadingGrid *> grids;
     grids.push_back(new LoadingGrid("kr.txt"));
-    grids.push_back(new LoadingGrid("kr.txt"));
-    grids.push_back(new LoadingGrid("kr.txt"));
+    //grids.push_back(new LoadingGrid("kr.txt"));
+    //grids.push_back(new LoadingGrid("kr.txt"));
+    //grids.push_back(new LoadingGrid("kr.txt"));
     cout << grids.size() << "\n";
 
     // System transportowy
@@ -96,7 +102,8 @@ int main(int argc, char **argv)
     }
 
     // Wczytanie konfiguracji systemu transportowego
-    ts.loadConnectionsFromFile("connections.txt");
+    //ts.loadConnectionsFromFile("connections.txt");
+    ts.loadConnectionsFromFile("connections_test1.txt");
 
     pressAnyKey();
 
@@ -107,9 +114,10 @@ int main(int argc, char **argv)
     // Obserwator symulacji
     //WeighingBelt waga;
     //sim.addEventListener(&waga);
+    Conveyor *p3 = findByName<Conveyor *>(conveyors, "P-3");
 
     // Ilość kroków
-    unsigned int max_step = 2000;
+    unsigned int max_step = 3600;
     // Pętla symulacji
     for (unsigned int step = 0; step < max_step; ++step) {
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
@@ -123,6 +131,7 @@ int main(int argc, char **argv)
         set<dtss::Event<IO_type> > in;
         // Jedno zdarzenie: przyjście materiału na przenośnik
         in.insert(dtss::Event<IO_type>(conveyors[0], material));
+        in.insert(dtss::Event<IO_type>(p3, material));
 
         // Oblicza stan wszystkich obiektów symulacji
         sim.computeNextState(in);
@@ -136,9 +145,9 @@ int main(int argc, char **argv)
         if (slow) {
             // Spowalnia symulację
 #ifdef WINDOWS
-            Sleep(10);
+            Sleep(10); // miliseconds
 #else
-            usleep(10000);
+            usleep(10000); // microseconds
 #endif
         }
     }
