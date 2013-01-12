@@ -67,10 +67,10 @@ void freeClear(T& cntr)
  * nazwie przekazanej w drugim argumencie, lub null jeśli nie ma
  * takiego obiektu.
  */
-template <class T>
-T *findByName(const std::vector<T *>& v, const std::string& name)
+template <typename R, typename T>
+R findByName(const T& v, const std::string& name)
 {
-    for (auto it = v.begin(); it != v.end(); ++it) {
+    for (auto it = v.cbegin(); it != v.cend(); ++it) {
         if ((*it)->name() == name)
             return (*it);
     }

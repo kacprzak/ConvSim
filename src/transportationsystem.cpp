@@ -1,6 +1,9 @@
 // -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #include "transportationsystem.h"
 
+#include <cstdlib> // atoi
+#include <iostream>
+#include <fstream>
 #include "utils.h"
 
 TransportationSystem::~TransportationSystem()
@@ -81,4 +84,65 @@ const TSConnection *TransportationSystem::findConnection(dtss::Model<IO_type> *s
     }
     //assert(false);
     return nullptr;
+}
+
+//------------------------------------------------------------------------------
+
+bool TransportationSystem::loadConnectionsFromFile(const std::string& filename)
+{
+    using namespace std;
+
+    char sep = ';';
+    ifstream f(filename);
+
+    if (f.is_open() == true) {
+        while (f.good()) {
+            string conn_type;
+            string src;
+            string out;
+            string dst;
+            string in;
+
+            std::getline(f, conn_type, sep);
+            std::getline(f, src, sep);
+            std::getline(f, out, sep);
+            std::getline(f, dst, sep);
+            std::getline(f, in);
+
+            if (conn_type.empty() || src.empty())
+                break;
+
+            int so = atoi(out.c_str());
+            int di = atoi(in.c_str());
+
+#if 0
+            cout << conn_type << ' '
+                 << src << ' '
+                 << so << ' '
+                 << dst << ' '
+                 << di << '\n';
+#endif
+            if (conn_type == "CC") {
+                Conveyor *srcp = findByName<Conveyor *>(m_conveyors, src);
+                Conveyor *dstp = findByName<Conveyor *>(m_conveyors, dst);
+                connect(srcp, so, dstp, di);
+            } else if (conn_type == "CT") {
+                Conveyor *srcp = findByName<Conveyor *>(m_conveyors, src);
+                Tank *dstp     = findByName<Tank *>(m_tanks, dst);
+                connect(srcp, so, dstp, di);
+            } else if (conn_type == "TC") {
+                Tank *srcp     = findByName<Tank *>(m_tanks, src);
+                Conveyor *dstp = findByName<Conveyor *>(m_conveyors, dst);
+                connect(srcp, so, dstp, di);
+            } else {
+                cerr << "Error: unsupported connection type " 
+                     << conn_type << " in " << filename << endl;
+            }
+        }
+        f.close();
+        return true;
+    } else {
+        cerr << "Error: unable to open " << filename << endl;
+        return false;
+    }
 }

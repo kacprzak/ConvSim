@@ -1,11 +1,10 @@
 // -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
-#include <iostream>
-#include <fstream>
+//#include <iostream>
+//#include <fstream>
 #include <vector>
 //#include <utility>
 #include <iomanip> // setw
 #include <cstring> // strcmp
-#include <cstdlib> // atoi
 
 #include "utils.h"
 #include "event.h"
@@ -96,58 +95,8 @@ int main(int argc, char **argv)
         ts.addTank(*it);
     }
 
-#if 1
-    string filename = "connections.txt";
-    char sep = ';';
-    ifstream f(filename);
-
-    if (f.is_open() == true) {
-        while (f.good()) {
-            string conn_type;
-            string src;
-            string out;
-            string dst;
-            string in;
-
-            std::getline(f, conn_type, sep);
-            std::getline(f, src, sep);
-            std::getline(f, out, sep);
-            std::getline(f, dst, sep);
-            std::getline(f, in);
-
-            if (conn_type.empty() || src.empty())
-                break;
-
-            int so = atoi(out.c_str());
-            int di = atoi(in.c_str());
-
-            cout << conn_type << ' '
-                 << src << ' '
-                 << so << ' '
-                 << dst << ' '
-                 << di << '\n';
-            Conveyor *srcp = findByName(conveyors, src);
-            Conveyor *dstp = findByName(conveyors, dst);
-            ts.connect(srcp, so, dstp, di);
-        }
-        f.close();
-    } else {
-        cerr << "Error: unable to open " << filename << endl;
-    }
-#else
-    ts.connect(conveyors[0], tanks[0]);
-    ts.connect(tanks[0], conveyors[1]);
-
-    // Połącz przenośniki szeregowo
-    for (auto it = (conveyors.begin() + 1); it != conveyors.end();) {
-        Conveyor *c1 = *it;
-        ++it;
-        if (it != conveyors.end()) {
-            Conveyor *c2 = *it;
-            ts.connect(c1, c2);
-        }
-    }
-#endif
+    // Wczytanie konfiguracji systemu transportowego
+    ts.loadConnectionsFromFile("connections.txt");
 
     pressAnyKey();
 

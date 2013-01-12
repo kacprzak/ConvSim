@@ -40,6 +40,8 @@ public:
     void connect(dtss::Model<IO_type> *src, int outNum,
                  dtss::Model<IO_type> *dest, int inNum);
 
+    bool loadConnectionsFromFile(const std::string& filename);
+
 private:
     std::set<Conveyor *> m_conveyors;
     std::set<Tank *>     m_tanks;
