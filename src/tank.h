@@ -3,13 +3,11 @@
 #define TANK_H
 
 #include "atomic.h"
+#include "io_type.h"
 #include <string>
 #include <iostream>
 #include <set>
 #include <deque>
-
-// Typ wejścia wyjścia
-typedef std::pair<int, double> IO_type;
 
 class Tank : public dtss::Atomic<IO_type>
 {
@@ -37,7 +35,7 @@ public:
     static Tank *create(const std::string& str);
 
 private:
-    void addPackage(double materialMass);
+    void addPackage(Material material);
 
     double m_wydajnosc; // wydajność na wyjściu [t/h]
     //double stan_Tanka;
@@ -50,8 +48,8 @@ private:
     int m_numerZbiornika;
     std::string m_oddzial;
     std::string m_nazwa;
-    std::deque<double> m_packages; ///< Zakolejkowany materiał w zbiorniku
-    double m_massOnOutput;  ///< Masa na wyjściu
+    std::deque<Material> m_packages; ///< Zakolejkowany materiał w zbiorniku
+    Material m_materialOnOutput;     ///< Materiał na wyjściu
 };
 
 inline std::ostream& operator<<(std::ostream& os, const Tank& tank)

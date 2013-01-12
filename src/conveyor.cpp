@@ -11,7 +11,6 @@ Conveyor::Conveyor(const std::string& name, double length, double beltSpeed, int
     , m_beltSpeed(beltSpeed)
     , m_beltWidth(beltWidth)
     , m_number(0)
-    , m_massOnOutput(0.0)
 {
     addInput(0.0);
 }
@@ -41,16 +40,16 @@ Conveyor *Conveyor::create(const std::string& str)
 
 //------------------------------------------------------------------------------
 
-void Conveyor::addPackage(double materialMass, double position)
+void Conveyor::addPackage(Material material, double position)
 {
-    m_packages.push_back(Package(materialMass, position));
+    m_packages.push_back(Package(material, position));
 }
 
 //------------------------------------------------------------------------------
 
 void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
 {
-    m_massOnOutput = 0.0;
+    m_materialOnOutput.clear();
     // Przesunięcie paczek na przenośniku
     for (std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end(); ++it)
     {
@@ -62,7 +61,7 @@ void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
     for (std::list<Package>::iterator it = m_packages.begin(); it != m_packages.end();)
     {
         if (it->position > m_length) {
-            m_massOnOutput += it->mass;
+            m_materialOnOutput.push_back(it->material);
             it = m_packages.erase(it);
         } else {
             ++it;
@@ -76,11 +75,11 @@ void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
         const IO_type& input = *it;
         double position = inputPosition(input.first);
         addPackage(input.second, position);
-        massOnInput += input.second;
+        massOnInput += input.second.mass();
     }
 
     m_chwilowaWydajnoscNaWejsciu = (massOnInput) / (dt / 3600.0) ; // kg*1000 / (s/3600)
-    m_chwilowaWydajnoscNaWyjsciu = (m_massOnOutput) / (dt / 3600.0) ; // kg*1000 / (s/3600)
+    m_chwilowaWydajnoscNaWyjsciu = (Material::combine(m_materialOnOutput).mass()) / (dt / 3600.0) ; // kg*1000 / (s/3600)
 }
 
 //------------------------------------------------------------------------------
@@ -88,7 +87,7 @@ void Conveyor::delta(unsigned long dt, const std::set<IO_type>& x)
 void Conveyor::outputFunction(std::set<IO_type>& y) const
 {
     // Wyście 1 (bęben zrzutowy)
-    y.insert(IO_type(1, m_massOnOutput));
+    y.insert(IO_type(1, Material::combine(m_materialOnOutput)));
 }
 
 //------------------------------------------------------------------------------
@@ -107,7 +106,7 @@ double Conveyor::materialAmount(double start, double end) const
          it != m_packages.cend(); ++it)
     {
         if (it->position >= start && it->position < end)
-            mass += it->mass;
+            mass += it->material.mass();
     }
     return mass;
 }

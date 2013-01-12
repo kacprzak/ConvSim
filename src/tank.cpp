@@ -17,31 +17,16 @@ inline std::istream& operator>>(std::istream& is, Tank& tank)
 //------------------------------------------------------------------------------
 
 Tank::Tank()
-//: stan_Tanka(0)
-    : m_massOnOutput(0)
 {
 }
 
 //------------------------------------------------------------------------------
 
 Tank::Tank(std::istream &is)
-//: stan_Tanka(0)
-    : m_massOnOutput(0)
 {
     is >> *this;
 }
 
-//------------------------------------------------------------------------------
-#if 0
-void Tank::setZapelnianie(int n)
-{
-    zapelnianie = new double[n];
-    for(int j = 0; j < n; ++j)
-    {
-        zapelnianie[j] = 0;
-    }
-}
-#endif
 //------------------------------------------------------------------------------
 
 Tank *Tank::create(const std::string& str)
@@ -57,17 +42,21 @@ Tank *Tank::create(const std::string& str)
 
 void Tank::delta(unsigned long dt, const std::set<IO_type>& x)
 {
-    m_massOnOutput = 0;
+    m_materialOnOutput = Material();
     double massToRemove = (m_wydajnosc/3600.0) * dt; // t/s * s
  
-    while (!m_packages.empty() && m_massOnOutput < massToRemove) {
-        double p = m_packages.front();
-        m_massOnOutput += p;
-        if (m_massOnOutput <= massToRemove) {
+    while (!m_packages.empty() && m_materialOnOutput.mass() < massToRemove) {
+        Material p = m_packages.front();
+        Material afterAdd = m_materialOnOutput + p;
+        if (afterAdd.mass() <= massToRemove) {
+            m_materialOnOutput += p;
             m_packages.pop_front();
         } else {
-            m_packages.front() = m_massOnOutput - massToRemove;
-            m_massOnOutput = massToRemove;
+            // Brakująca masa
+            double massToTake = massToRemove - m_materialOnOutput.mass();
+            Material toReclame = p - massToTake;
+            m_materialOnOutput += toReclame;
+            m_packages.front() = p - toReclame;
         }
     }
 
@@ -84,14 +73,14 @@ void Tank::delta(unsigned long dt, const std::set<IO_type>& x)
 void Tank::outputFunction(std::set<IO_type>& y) const
 {
     // Wyście 1
-    y.insert(IO_type(1, m_massOnOutput));
+    y.insert(IO_type(1, m_materialOnOutput));
 }
 
 //------------------------------------------------------------------------------
 
-void Tank::addPackage(double materialMass)
+void Tank::addPackage(Material material)
 {
-    m_packages.push_back(materialMass);
+    m_packages.push_back(material);
 }
 
 //------------------------------------------------------------------------------
@@ -100,10 +89,9 @@ double Tank::materialAmount() const
 {
     double mass = 0;
 
-    for (std::deque<double>::const_iterator it = m_packages.cbegin();
-         it != m_packages.cend(); ++it)
+    for (auto it = m_packages.cbegin(); it != m_packages.cend(); ++it)
     {
-        mass += *it;
+        mass += it->mass();
     }
     return mass;
 }

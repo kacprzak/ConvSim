@@ -32,6 +32,7 @@ set( ConvSim_HEADERS
   src/transportationsystem.h
   src/utils.h
   src/connection.h
+  src/io_type.h
 )
 
 configure_file(data/connections.txt ${CMAKE_CURRENT_BINARY_DIR}/connections.txt COPYONLY)

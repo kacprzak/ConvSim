@@ -24,7 +24,7 @@ int main()
 
     for (unsigned int n = 0; n < steps; ++n) {
         std::set<Event<IO_type> > in;
-        in.insert(Event<IO_type>(&conv, IO_type(1, input[n])));
+        in.insert(Event<IO_type>(&conv, IO_type(1, Material::build(input[n], RUDNA_WEGLANOWA))));
 
         sim.computeNextState(in);
         sim.computeOutput();

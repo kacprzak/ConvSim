@@ -3,15 +3,13 @@
 #define CONVEYOR_H
 
 #include "atomic.h"
+#include "io_type.h"
 #include <string>
 #include <iostream>
 #include <list>
 #include <set>
 #include <vector>
 #include <utility>
-
-// Typ wejścia wyjścia
-typedef std::pair<int, double> IO_type;
 
 /**
  * @brief Model przenośnika taśmowego.
@@ -28,10 +26,10 @@ class Conveyor : public dtss::Atomic<IO_type>
      */
     struct Package
     {
-        Package(double m, double p = 0.0)
-            : mass(m), position(p) {}
+        Package(Material m, double p = 0.0)
+            : material(m), position(p) {}
 
-        double mass;       ///< Masa urobku [t]
+        Material material; ///< Urobek (masa [t] i skład)
         double position;   ///< Pozycja [m] na przenośniku
     };
 
@@ -81,12 +79,12 @@ private:
     int m_number;           ///< wykorzystywany w lokalizacji
     std::string m_division; ///< oddział
 
-    std::list<Package> m_packages;    ///< przyjęte paczki materiału
-    double m_massOnOutput;            ///< materiał na wyjściu
+    std::list<Package> m_packages;            ///< przyjęte paczki materiału
+    std::vector<Material> m_materialOnOutput; ///< materiał na wyjściu
 
     std::vector<double> m_inputPositions; ///< pozycja wejść
 
-    void addPackage(double materialMass, double position = 0.0);
+    void addPackage(Material material, double position = 0.0);
     double inputPosition(int inputNumber) const;
 };
 

@@ -120,12 +120,11 @@ int main(int argc, char **argv)
     unsigned int max_step = 3600;
     // Pętla symulacji
     for (unsigned int step = 0; step < max_step; ++step) {
-        // Treść zdarzenia: materiał na wejście nr 1 przenośnika
-        IO_type material(1, 0.0);
-
         // Pobierz materiał z kraty
         //if (step < 100)
-        material.second = grids[0]->getNextValue();
+        double mass = grids[0]->getNextValue();
+        // Treść zdarzenia: materiał na wejście nr 1 przenośnika
+        IO_type material(1, Material::build(mass, RUDNA_WEGLANOWA));
 
         // Zbiór zdarzeń wejściowych
         set<dtss::Event<IO_type> > in;

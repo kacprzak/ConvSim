@@ -21,12 +21,12 @@ public:
 
         unsigned int current_n = (m_last_n + 1) % m_nadawa.size();
 
-        // Co cztery takty przesuwaj
+        // Co cztery takty przesuwajo
         if (roll == 3)
             m_last_n = current_n;
 
         ++roll;
-        return m_nadawa[current_n] / 1000; // kg/1000
+        return m_nadawa[current_n] / 1000.0; // kg/1000
     }
 
 private:
