@@ -112,8 +112,9 @@ int main(int argc, char **argv)
     dtss::Simulator<IO_type> sim(&ts, dt);
 
     // Obserwator symulacji
-    //WeighingBelt waga;
-    //sim.addEventListener(&waga);
+    WeighingBelt waga(findByName<Conveyor *>(conveyors, "P-5"));
+    sim.addEventListener(&waga);
+
     Conveyor *p3 = findByName<Conveyor *>(conveyors, "P-3");
 
     // Ilość kroków
@@ -124,13 +125,14 @@ int main(int argc, char **argv)
         //if (step < 100)
         double mass = grids[0]->getNextValue();
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
-        IO_type material(1, Material::build(mass, RUDNA_WEGLANOWA));
+        IO_type material1(1, Material::build(mass, RUDNA_WEGLANOWA));
+        IO_type material2(1, Material::build(mass, RUDNA_PIASKOWCOWA));
 
         // Zbiór zdarzeń wejściowych
         set<dtss::Event<IO_type> > in;
         // Jedno zdarzenie: przyjście materiału na przenośnik
-        in.insert(dtss::Event<IO_type>(conveyors[0], material));
-        in.insert(dtss::Event<IO_type>(p3, material));
+        in.insert(dtss::Event<IO_type>(conveyors[0], material1));
+        in.insert(dtss::Event<IO_type>(p3, material2));
 
         // Oblicza stan wszystkich obiektów symulacji
         sim.computeNextState(in);

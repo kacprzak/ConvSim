@@ -5,6 +5,7 @@
 #include "eventlistener.h"
 #include "conveyor.h"
 #include <iostream>
+#include <fstream>
 
 /**
  * Nasłuchuje zdarzeń związanych ze zmianami na przenośnikach tasmowych
@@ -15,15 +16,25 @@ class WeighingBelt : public dtss::EventListener<IO_type>
     friend std::ostream& operator<<(std::ostream& os, const WeighingBelt& conv);
 
 public:
-    WeighingBelt() {}
-    virtual ~WeighingBelt() {}
-
-    void stateChanged(dtss::Atomic<IO_type> *model, unsigned int t);
-    void outputEvent(const dtss::Event<IO_type>& /*e*/, unsigned int /*t*/)
+    WeighingBelt()
+        : m_conveyor(nullptr)
     {
-      // Nic nie robi
+        //m_output.open("output.txt");
+    }
+    
+    WeighingBelt(Conveyor *conv)
+        : m_conveyor(conv)
+    {
+        m_output.open("output.txt");
     }
 
+    virtual ~WeighingBelt()
+    {
+        m_output.close();
+    }
+
+    void stateChanged(dtss::Atomic<IO_type> *model, unsigned int t);
+    void outputEvent(const dtss::Event<IO_type>& e, unsigned int t);
 //    void setOdczyt(int n);
 
     // Static methods
@@ -34,6 +45,8 @@ private:
     int lokalizacja; //< na ktorym metrze przenosnika znajduje sie waga
     int gdzie;
 //    double *odczyt;
+    Conveyor *m_conveyor; // Obserwowany przenośnik
+    std::ofstream m_output;
 };
 
 inline std::ostream& operator<<(std::ostream& os, const WeighingBelt& wb)
