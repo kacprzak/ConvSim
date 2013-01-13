@@ -14,18 +14,9 @@ public:
     LoadingGrid(const std::string& file);
 
     /// Następna porcja materiału [t]
-    double getNextValue()
+    double getNextValue(unsigned int t)
     {
-        static int roll = 0;
-        roll = roll % 4;
-
-        unsigned int current_n = (m_last_n + 1) % m_nadawa.size();
-
-        // Co cztery takty przesuwajo
-        if (roll == 3)
-            m_last_n = current_n;
-
-        ++roll;
+        unsigned int current_n = (t / 4) % m_nadawa.size();
         return m_nadawa[current_n] / 1000.0; // kg/1000
     }
 
@@ -36,7 +27,6 @@ private:
     int lokalizacja; // na ktorym metrze znajduje sie krata
     //int gdzie;
     std::vector<double> m_nadawa; // [kg]
-    unsigned int m_last_n; // ostatnio zwrócony element
 };
 
 inline std::ostream& operator<<(std::ostream& os, const LoadingGrid& lg)

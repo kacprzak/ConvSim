@@ -108,22 +108,25 @@ int main(int argc, char **argv)
     pressAnyKey();
 
     // Czas jednego kroku symulacji [s]
-    unsigned long dt = 1;
+    unsigned long dt = 4;
     dtss::Simulator<IO_type> sim(&ts, dt);
 
     // Obserwator symulacji
-    WeighingBelt waga(findByName<Conveyor *>(conveyors, "P-5"));
-    sim.addEventListener(&waga);
+    WeighingBelt wagaP5(findByName<Conveyor *>(conveyors, "P-5"), "p5.dat");
+    sim.addEventListener(&wagaP5);
 
     Conveyor *p3 = findByName<Conveyor *>(conveyors, "P-3");
 
+    WeighingBelt wagaP3(p3, "p3.dat");
+    sim.addEventListener(&wagaP3);
+
     // Ilość kroków
-    unsigned int max_step = 3600;
+    unsigned int max_step = 1800 / dt;
     // Pętla symulacji
     for (unsigned int step = 0; step < max_step; ++step) {
         // Pobierz materiał z kraty
         //if (step < 100)
-        double mass = grids[0]->getNextValue();
+        double mass = grids[0]->getNextValue(step * dt);
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
         IO_type material1(1, Material::build(mass, RUDNA_WEGLANOWA));
         IO_type material2(1, Material::build(mass, RUDNA_PIASKOWCOWA));

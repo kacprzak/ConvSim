@@ -45,6 +45,7 @@ configure_file(data/conveyors_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/conveyors_te
 configure_file(data/tanks_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/tanks_test1.txt COPYONLY)
 configure_file(data/connections_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/connections_test1.txt COPYONLY)
 
+configure_file(plot/sim1.plt ${CMAKE_CURRENT_BINARY_DIR}/sim1.plt COPYONLY)
 
 include_directories(
   src engine

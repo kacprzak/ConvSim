@@ -18,14 +18,12 @@ class WeighingBelt : public dtss::EventListener<IO_type>
 public:
     WeighingBelt()
         : m_conveyor(nullptr)
-    {
-        //m_output.open("output.txt");
-    }
-    
-    WeighingBelt(Conveyor *conv)
+    {}
+
+    WeighingBelt(Conveyor *conv, const std::string& outputFile)
         : m_conveyor(conv)
     {
-        m_output.open("output.txt");
+        m_output.open(outputFile);
     }
 
     virtual ~WeighingBelt()
@@ -35,18 +33,17 @@ public:
 
     void stateChanged(dtss::Atomic<IO_type> *model, unsigned int t);
     void outputEvent(const dtss::Event<IO_type>& e, unsigned int t);
-//    void setOdczyt(int n);
 
     // Static methods
     static WeighingBelt *create(const std::string& str);
 
 private:
-    int lp_prz; //< na ktorym instalujemy wage
-    int lokalizacja; //< na ktorym metrze przenosnika znajduje sie waga
-    int gdzie;
-//    double *odczyt;
-    Conveyor *m_conveyor; // Obserwowany przenośnik
-    std::ofstream m_output;
+    int lp_prz;      ///< UNUSED na ktorym instalujemy wage
+    int lokalizacja; ///< UNUSED na ktorym metrze przenosnika znajduje sie waga
+    int gdzie;       ///< UNUSED
+
+    Conveyor *m_conveyor;   ///< Obserwowany przenośnik
+    std::ofstream m_output; ///< Plik z odczytami
 };
 
 inline std::ostream& operator<<(std::ostream& os, const WeighingBelt& wb)

@@ -3,13 +3,12 @@
 
 #include <fstream>
 
-LoadingGrid::LoadingGrid(const std::string &file)
-    : m_last_n(0)
+LoadingGrid::LoadingGrid(const std::string& file)
 {
     loadData(file);
 }
 
-void LoadingGrid::loadData(const std::string &file)
+void LoadingGrid::loadData(const std::string& file)
 {
     std::string tmp;
     double input;
