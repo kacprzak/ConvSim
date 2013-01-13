@@ -14,11 +14,7 @@ public:
     LoadingGrid(const std::string& file);
 
     /// Następna porcja materiału [t]
-    double getNextValue(unsigned int t)
-    {
-        unsigned int current_n = (t / 4) % m_nadawa.size();
-        return m_nadawa[current_n] / 1000.0; // kg/1000
-    }
+    double getNextValue(unsigned int t);
 
 private:
     void loadData(const std::string& file);

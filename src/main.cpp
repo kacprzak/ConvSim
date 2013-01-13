@@ -112,13 +112,27 @@ int main(int argc, char **argv)
     dtss::Simulator<IO_type> sim(&ts, dt);
 
     // Obserwator symulacji
-    WeighingBelt wagaP5(findByName<Conveyor *>(conveyors, "P-5"), "p5.dat");
-    sim.addEventListener(&wagaP5);
+    Conveyor *p1 = findByName<Conveyor *>(conveyors, "P-1");
+    WeighingBelt wagaP1(p1, "p1.dat");
+    sim.addEventListener(&wagaP1);
+
+    Conveyor *p2 = findByName<Conveyor *>(conveyors, "P-2");
+    p2->addInput(500); // Wejście na 500 [m]
+    WeighingBelt wagaP2(p2, "p2.dat");
+    sim.addEventListener(&wagaP2);
 
     Conveyor *p3 = findByName<Conveyor *>(conveyors, "P-3");
-
+    p3->addInput(400); // Wejście na 400 [m]
     WeighingBelt wagaP3(p3, "p3.dat");
     sim.addEventListener(&wagaP3);
+
+    Conveyor *p4 = findByName<Conveyor *>(conveyors, "P-4");
+    WeighingBelt wagaP4(p4, "p4.dat");
+    sim.addEventListener(&wagaP4);
+
+    Conveyor *p5 = findByName<Conveyor *>(conveyors, "P-5");
+    WeighingBelt wagaP5(p5, "p5.dat");
+    sim.addEventListener(&wagaP5);
 
     // Ilość kroków
     unsigned int max_step = 1800 / dt;
@@ -129,13 +143,17 @@ int main(int argc, char **argv)
         double mass = grids[0]->getNextValue(step * dt);
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
         IO_type material1(1, Material::build(mass, RUDNA_WEGLANOWA));
-        IO_type material2(1, Material::build(mass, RUDNA_PIASKOWCOWA));
+        IO_type material2(2, Material::build(mass, RUDNA_WEGLANOWA));
+        IO_type material3(1, Material::build(mass, RUDNA_PIASKOWCOWA));
+        IO_type material3_2(2, Material::build(mass, RUDNA_PIASKOWCOWA));
 
         // Zbiór zdarzeń wejściowych
         set<dtss::Event<IO_type> > in;
         // Jedno zdarzenie: przyjście materiału na przenośnik
-        in.insert(dtss::Event<IO_type>(conveyors[0], material1));
-        in.insert(dtss::Event<IO_type>(p3, material2));
+        in.insert(dtss::Event<IO_type>(p1, material1));
+        in.insert(dtss::Event<IO_type>(p2, material2));
+        in.insert(dtss::Event<IO_type>(p3, material3));
+        in.insert(dtss::Event<IO_type>(p3, material3_2));
 
         // Oblicza stan wszystkich obiektów symulacji
         sim.computeNextState(in);

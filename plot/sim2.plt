@@ -1,15 +1,22 @@
 set autoscale
 set macro
 
-PLOT = "plot filename using 1:($2*3600/4) title 'Węglanowa' with lines, \
-             filename using 1:($3*3600/4) title 'Piaskowcowa' with lines, \
-             filename using 1:($4*3600/4) title 'Łupkowa' with lines"
-#             filename using 1:(($2+$3+$4)*3600/4) title 'Suma' with lines"
+# Wartości oczekiwane
+#w = 0.227484
+#p = 0.355236
+#l = 0.125938
+#s = w + p + l
+
+PLOT = "plot filename using 1:($2/($2+$3+$4)) title 'Węglanowa' with lines, \
+             filename using 1:($3/($2+$3+$4)) title 'Piaskowcowa' with lines, \
+             filename using 1:($4/($2+$3+$4)) title 'Łupkowa' with lines"
+#             filename using 1:($2+$3+$4)*3600/4) title 'Suma' with lines"
     
 set xlabel "czas [s]"
-set ylabel "Q [t/h]"
+set ylabel "Zawartoś rudy [%]"
 
-set yr [0.0:1000.0]
+set xr [0:]
+set yr [0.0:1.0]
 
 set multiplot;                          # get into multiplot mode
 set size 1,0.2;

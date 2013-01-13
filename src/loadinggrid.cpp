@@ -8,6 +8,17 @@ LoadingGrid::LoadingGrid(const std::string& file)
     loadData(file);
 }
 
+double LoadingGrid::getNextValue(unsigned int t)
+{
+#if 1
+    unsigned int current_n = (t / 4) % m_nadawa.size();
+    return m_nadawa[current_n] / 1000.0; // kg/1000
+#else
+    return 160.0/3600.0*4;
+#endif
+}
+
+
 void LoadingGrid::loadData(const std::string& file)
 {
     std::string tmp;
