@@ -3,6 +3,7 @@
 
 #include <sstream>
 #include <iomanip>
+#include <cassert>
 
 inline std::istream& operator>>(std::istream& is, Tank& tank)
 {
@@ -54,9 +55,12 @@ void Tank::delta(unsigned long dt, const std::set<IO_type>& x)
         } else {
             // Brakująca masa
             double massToTake = massToRemove - m_materialOnOutput.mass();
-            Material toReclame = p - massToTake;
+            double ratio = massToTake / p.mass();
+            assert(ratio < 1.0 && ratio > 0.0);
+            Material toReclame = p * ratio;
             m_materialOnOutput += toReclame;
-            m_packages.front() = p - toReclame;
+            m_packages.front() = p * (1.0 - ratio);
+            break;
         }
     }
 

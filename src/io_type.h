@@ -62,6 +62,7 @@ struct Material
         return Material(w, p, l);
     }
 
+    // Porównuje pointery
     bool operator<(const Material& other) const
     {
         return this < &other;
@@ -82,33 +83,14 @@ struct Material
         return *this;
     }
 
-    const Material operator-(const Material& other) const
-    {
-        assert(weglanowej >= other.weglanowej);
-        assert(piaskowcowej >= other.piaskowcowej);
-        assert(lupkowej >= other.lupkowej);
-
-        return Material(weglanowej - other.weglanowej,
-                        piaskowcowej - other.piaskowcowej,
-                        lupkowej - other.lupkowej);
-    }
-
     // Masowo
-    const Material operator-(double other) const
+    const Material operator*(double ratio) const
     {
-        assert(mass() >= other);
-        double ratio = other / mass();
-
-        double w_take = ratio * weglanowej;
-        double p_take = ratio * piaskowcowej;
-        double l_take = ratio * lupkowej;
-
-        //weglanowej -= w_take;
-        //piaskowcowej -= p_take;
-        //lupkowej -= l_take;
-
-        return Material(w_take, p_take, l_take);
+        return Material(ratio * weglanowej,
+                        ratio * piaskowcowej,
+                        ratio * lupkowej);
     }
+
 
     double weglanowej; // masa r. węglanowej
     double piaskowcowej; // masa r. piaskowcowej
