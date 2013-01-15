@@ -34,8 +34,8 @@ public:
 
 protected:
     Model() : m_parent(0) {}
-    Model(const Model<T>& other);              // non construction-copyable
 private:
+    Model(const Model<T>& other);              // non construction-copyable
     Model& operator=(const Model<T>& other);   // non copyable
 
     Network<T> *m_parent; ///< Sieć do której należy model
