@@ -65,7 +65,7 @@ void TransportationSystem::connect(dtss::Model<IO_type> *src, dtss::Model<IO_typ
 void TransportationSystem::connect(dtss::Model<IO_type> *src, int outNum,
                                    dtss::Model<IO_type> *dest, int inNum)
 {
-    Connection *conn = new TSConnection(src, outNum, dest, inNum);
+    TSConnection *conn = new TSConnection(src, outNum, dest, inNum);
     m_connections.insert(conn);
 }
 
@@ -75,12 +75,9 @@ const TSConnection *TransportationSystem::findConnection(dtss::Model<IO_type> *s
 {
     for (auto it = m_connections.cbegin(); it != m_connections.cend(); ++it)
     {
-        Connection *conn = *it;
-        if (conn->connType() == MODEL_MODEL) {
-            TSConnection *c = static_cast<TSConnection *>(conn);
-            if (c->source() == src && c->srcOut() == outNum)
-                return c;
-        }
+        TSConnection *c = *it;
+        if (c->source() == src && c->srcOut() == outNum)
+            return c;
     }
     //assert(false);
     return nullptr;

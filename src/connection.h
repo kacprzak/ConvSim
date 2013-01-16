@@ -9,28 +9,24 @@
 enum ConnType { CONV_CONV, CONV_TANK, TANK_CONV, MODEL_MODEL };
 
 /**
- * Połączenia pomiędzy przenośnikami i zbiornikami w systemie
- * transportowym.
+ * Połączenia pomiędzy modelami w systemie transportowym.
  */
+template <typename S, typename D>
 class Connection {
  public:
-    virtual ~Connection() {}
-
-    virtual ConnType connType() const = 0;
-};
-
-template <typename S, typename D>
-class GenericConnection : public Connection {
- public:
-    GenericConnection(S *src, int outNum, D *dest, int inNum)
+    Connection(S *src, int outNum, D *dest, int inNum)
         : m_src(src)
         , m_outNumber(outNum)
         , m_dest(dest)
         , m_inNumber(inNum)
     {}
 
+    virtual ~Connection() {}
+
+    virtual ConnType connType() const = 0;
+
     // for STL
-    bool operator==(const GenericConnection& other) const
+    bool operator==(const Connection& other) const
     {
         return m_src == other.m_src
         && m_outNumber == other.m_outNumber
@@ -38,7 +34,7 @@ class GenericConnection : public Connection {
         && m_inNumber == other.m_inNumber;
     }
     
-    bool operator<(const GenericConnection& other) const
+    bool operator<(const Connection& other) const
     {
         return m_src < other.m_src;
     }
@@ -56,15 +52,16 @@ class GenericConnection : public Connection {
 
 //------------------------------------------------------------------------------
 
-class ConvConvConnection : public GenericConnection<Conveyor, Conveyor>
+class TSConnection : public Connection<dtss::Model<IO_type>, dtss::Model<IO_type> >
 {
  public:
-    ConvConvConnection(Conveyor *src, int outNum, Conveyor *dest, int inNum)
-        : GenericConnection(src, outNum, dest, inNum)
+    TSConnection(dtss::Model<IO_type> *src, int outNum, dtss::Model<IO_type> *dest, int inNum)
+        : Connection(src, outNum, dest, inNum)
     {}
 
-
-    ConnType connType() const { return CONV_CONV; }
+    ConnType connType() const { return MODEL_MODEL; }
 };
+
+//------------------------------------------------------------------------------
 
 #endif // CONNECTION_H
