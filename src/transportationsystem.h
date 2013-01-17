@@ -27,6 +27,9 @@ public:
     void connect(dtss::Model<IO_type> *src, dtss::Model<IO_type> *dest);
     void connect(dtss::Model<IO_type> *src, int outNum,
                  dtss::Model<IO_type> *dest, int inNum);
+    void connect(const std::string& connType,
+                 const std::string& src, int outNum,
+                 const std::string& dest, int inNum);
 
     bool loadConnectionsFromFile(const std::string& filename);
 

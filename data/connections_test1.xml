@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TransportationSystem>
+  <Connection type="CONVEYOR_CONVEYOR"
+              src="P-1" srcOutput="1" dest="P-2" destInput="1" />
+  <Connection type="CONVEYOR_TANK"
+              src="P-2" srcOutput="1" dest="Z-1" destInput="1" />
+  <Connection type="CONVEYOR_TANK"
+              src="P-3" srcOutput="1" dest="Z-1" destInput="1" />
+  <Connection type="TANK_CONVEYOR"
+              src="Z-1" srcOutput="1" dest="P-4" destInput="1" />
+  <Connection type="CONVEYOR_TANK"
+              src="P-4" srcOutput="1" dest="Z-2" destInput="1" />
+  <Connection type="TANK_CONVEYOR"
+              src="Z-2" srcOutput="1" dest="P-5" destInput="1" />
+  <Connection type="CONVEYOR_TANK"
+              src="P-5" srcOutput="1" dest="S-1" destInput="1" />
+</TransportationSystem>

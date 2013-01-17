@@ -1,10 +1,10 @@
 // -*- c-basic-offset: 4; indent-tabs-mode: nil; -*-
 #include "transportationsystem.h"
 
-#include <cstdlib> // atoi
-#include <iostream>
-#include <fstream>
 #include "utils.h"
+#include <boost/lexical_cast.hpp>
+#include "rapidxml/rapidxml.hpp"
+#include "rapidxml/rapidxml_utils.hpp"
 
 TransportationSystem::~TransportationSystem()
 {
@@ -71,6 +71,30 @@ void TransportationSystem::connect(dtss::Model<IO_type> *src, int outNum,
 
 //------------------------------------------------------------------------------
 
+void TransportationSystem::connect(const std::string& conn_type,
+                                   const std::string& src, int so,
+                                   const std::string& dst, int di)
+{
+    if (conn_type == "CONVEYOR_CONVEYOR") {
+        Conveyor *srcp = findByName<Conveyor *>(m_conveyors, src);
+        Conveyor *dstp = findByName<Conveyor *>(m_conveyors, dst);
+        connect(srcp, so, dstp, di);
+    } else if (conn_type == "CONVEYOR_TANK") {
+        Conveyor *srcp = findByName<Conveyor *>(m_conveyors, src);
+        Tank *dstp     = findByName<Tank *>(m_tanks, dst);
+        connect(srcp, so, dstp, di);
+    } else if (conn_type == "TANK_CONVEYOR") {
+        Tank *srcp     = findByName<Tank *>(m_tanks, src);
+        Conveyor *dstp = findByName<Conveyor *>(m_conveyors, dst);
+        connect(srcp, so, dstp, di);
+    } else {
+        std::cerr << "Error: unsupported connection type " 
+                  << conn_type << std::endl;
+    }
+}
+
+//------------------------------------------------------------------------------
+
 const TSConnection *TransportationSystem::findConnection(dtss::Model<IO_type> *src, int outNum)
 {
     for (auto it = m_connections.cbegin(); it != m_connections.cend(); ++it)
@@ -87,59 +111,36 @@ const TSConnection *TransportationSystem::findConnection(dtss::Model<IO_type> *s
 
 bool TransportationSystem::loadConnectionsFromFile(const std::string& filename)
 {
-    using namespace std;
+    // File has to exist while working with XML
+    rapidxml::file<> xmlfile(filename.c_str());
+    
+    using namespace rapidxml;
+    
+    xml_document<> doc;
+    doc.parse<0>(xmlfile.data());
+    
+    xml_node<> *ts_node = doc.first_node("TransportationSystem");
+    
+    try {
+        xml_node<> *conn_node = ts_node->first_node("Connection");
+        while (conn_node) {
+            std::string conn_type = conn_node->first_attribute("type")->value();
+            std::string src       = conn_node->first_attribute("src")->value();
+            int so = boost::lexical_cast<int>(conn_node->first_attribute("srcOutput")->value());
+            std::string dst       = conn_node->first_attribute("dest")->value();
+            int di = boost::lexical_cast<int>(conn_node->first_attribute("destInput")->value());
 
-    char sep = ';';
-    ifstream f(filename);
+            connect(conn_type, src, so, dst, di);
 
-    if (f.is_open() == true) {
-        while (f.good()) {
-            string conn_type;
-            string src;
-            string out;
-            string dst;
-            string in;
-
-            std::getline(f, conn_type, sep);
-            std::getline(f, src, sep);
-            std::getline(f, out, sep);
-            std::getline(f, dst, sep);
-            std::getline(f, in);
-
-            if (conn_type.empty() || src.empty())
-                break;
-
-            int so = atoi(out.c_str());
-            int di = atoi(in.c_str());
-
-#if 0
-            cout << conn_type << ' '
-                 << src << ' '
-                 << so << ' '
-                 << dst << ' '
-                 << di << '\n';
-#endif
-            if (conn_type == "CC") {
-                Conveyor *srcp = findByName<Conveyor *>(m_conveyors, src);
-                Conveyor *dstp = findByName<Conveyor *>(m_conveyors, dst);
-                connect(srcp, so, dstp, di);
-            } else if (conn_type == "CT") {
-                Conveyor *srcp = findByName<Conveyor *>(m_conveyors, src);
-                Tank *dstp     = findByName<Tank *>(m_tanks, dst);
-                connect(srcp, so, dstp, di);
-            } else if (conn_type == "TC") {
-                Tank *srcp     = findByName<Tank *>(m_tanks, src);
-                Conveyor *dstp = findByName<Conveyor *>(m_conveyors, dst);
-                connect(srcp, so, dstp, di);
-            } else {
-                cerr << "Error: unsupported connection type " 
-                     << conn_type << " in " << filename << endl;
-            }
+            // Next node
+            conn_node = conn_node->next_sibling("Connection");
         }
-        f.close();
         return true;
-    } else {
-        cerr << "Error: unable to open " << filename << endl;
+        
+    } catch (const boost::bad_lexical_cast& e) {
+        std::cerr << e.what() << std::endl;
         return false;
     }
+
+    return true;
 }

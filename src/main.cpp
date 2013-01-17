@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 
     // Wczytanie konfiguracji systemu transportowego
     //ts.loadConnectionsFromFile("connections.txt");
-    ts.loadConnectionsFromFile("connections_test1.txt");
+    ts.loadConnectionsFromFile("connections_test1.xml");
 
     pressAnyKey();
 

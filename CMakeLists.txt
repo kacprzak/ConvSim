@@ -44,12 +44,13 @@ configure_file(data/zbiorniki.txt ${CMAKE_CURRENT_BINARY_DIR}/zbiorniki.txt COPY
 configure_file(data/conveyors_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/conveyors_test1.txt COPYONLY)
 configure_file(data/tanks_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/tanks_test1.txt COPYONLY)
 configure_file(data/connections_test1.txt ${CMAKE_CURRENT_BINARY_DIR}/connections_test1.txt COPYONLY)
+configure_file(data/connections_test1.xml ${CMAKE_CURRENT_BINARY_DIR}/connections_test1.xml COPYONLY)
 
 configure_file(plot/sim1.plt ${CMAKE_CURRENT_BINARY_DIR}/sim1.plt COPYONLY)
 configure_file(plot/sim2.plt ${CMAKE_CURRENT_BINARY_DIR}/sim2.plt COPYONLY)
 
 include_directories(
-  src engine
+  src engine external
 )
 
 add_executable( convsim
