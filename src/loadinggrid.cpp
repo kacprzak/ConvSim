@@ -3,15 +3,18 @@
 
 #include <fstream>
 
-LoadingGrid::LoadingGrid(const std::string& file)
+LoadingGrid::LoadingGrid()
+    : m_dataDelta(1)
 {
-    loadData(file);
 }
 
 double LoadingGrid::getNextValue(unsigned int t)
 {
+    if (m_nadawa.empty())
+        return 0.0;
+
 #if 1
-    unsigned int current_n = (t / 4) % m_nadawa.size();
+    unsigned int current_n = (t / m_dataDelta) % m_nadawa.size();
     return m_nadawa[current_n] / 1000.0; // kg/1000
 #else
     return 160.0/3600.0*4;
@@ -19,8 +22,10 @@ double LoadingGrid::getNextValue(unsigned int t)
 }
 
 
-void LoadingGrid::loadData(const std::string& file)
+void LoadingGrid::loadData(const std::string& file, int dataTimeDelta)
 {
+    m_dataDelta = dataTimeDelta;
+
     std::string tmp;
     double input;
     std::ifstream ifs(file);

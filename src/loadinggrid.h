@@ -11,18 +11,18 @@ class LoadingGrid
     friend std::ostream& operator<<(std::ostream& os, const LoadingGrid& lg);
 
 public:
-    LoadingGrid(const std::string& file);
+    LoadingGrid();
 
     /// Następna porcja materiału [t]
     double getNextValue(unsigned int t);
+    void loadData(const std::string& file, int dataTimeDelta = 1);
 
 private:
-    void loadData(const std::string& file);
-
     int lp_prz;
     int lokalizacja; // na ktorym metrze znajduje sie krata
     //int gdzie;
     std::vector<double> m_nadawa; // [kg]
+    int m_dataDelta; // odstępy w pomiarze czasu wczytanych danych [s].
 };
 
 inline std::ostream& operator<<(std::ostream& os, const LoadingGrid& lg)

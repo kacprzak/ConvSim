@@ -83,10 +83,13 @@ int main(int argc, char **argv)
     //-------------------------------------------------------------------------
     cout << "Loading Loading Grids ... ";
     vector<LoadingGrid *> grids;
-    grids.push_back(new LoadingGrid("kr.txt"));
-    //grids.push_back(new LoadingGrid("kr.txt"));
-    //grids.push_back(new LoadingGrid("kr.txt"));
-    //grids.push_back(new LoadingGrid("kr.txt"));
+    LoadingGrid *ld1 = new LoadingGrid();
+    ld1->loadData("kr.txt", 4);
+    grids.push_back(ld1);
+
+    LoadingGrid *ld2 = new LoadingGrid();
+    ld2->loadData("kr.txt", 5);
+    grids.push_back(ld2);
     cout << grids.size() << "\n";
 
     // System transportowy
@@ -140,12 +143,13 @@ int main(int argc, char **argv)
     for (unsigned int step = 0; step < max_step; ++step) {
         // Pobierz materiał z kraty
         //if (step < 100)
-        double mass = grids[0]->getNextValue(step * dt);
+        double mass1 = grids[0]->getNextValue(step * dt);
+        double mass2 = grids[1]->getNextValue(step * dt);
         // Treść zdarzenia: materiał na wejście nr 1 przenośnika
-        IO_type material1(1, Material::build(mass, RUDNA_WEGLANOWA));
-        IO_type material2(2, Material::build(mass, RUDNA_WEGLANOWA));
-        IO_type material3(1, Material::build(mass, RUDNA_PIASKOWCOWA));
-        IO_type material3_2(2, Material::build(mass, RUDNA_PIASKOWCOWA));
+        IO_type material1(1, Material::build(mass1, RUDNA_WEGLANOWA));
+        IO_type material2(2, Material::build(mass2, RUDNA_WEGLANOWA));
+        IO_type material3(1, Material::build(mass1, RUDNA_PIASKOWCOWA));
+        IO_type material3_2(2, Material::build(mass2, RUDNA_PIASKOWCOWA));
 
         // Zbiór zdarzeń wejściowych
         set<dtss::Event<IO_type> > in;
