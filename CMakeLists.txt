@@ -49,6 +49,7 @@ configure_file(data/connections_test1.xml ${CMAKE_CURRENT_BINARY_DIR}/connection
 configure_file(plot/sim1.plt ${CMAKE_CURRENT_BINARY_DIR}/sim1.plt COPYONLY)
 configure_file(plot/sim2.plt ${CMAKE_CURRENT_BINARY_DIR}/sim2.plt COPYONLY)
 configure_file(plot/kr1.plt ${CMAKE_CURRENT_BINARY_DIR}/kr1.plt COPYONLY)
+configure_file(plot/hist1.plt ${CMAKE_CURRENT_BINARY_DIR}/hist1.plt COPYONLY)
 
 include_directories(
   src engine external

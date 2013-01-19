@@ -1,6 +1,8 @@
 set autoscale
 set macro
 
+set grid
+
 PLOT = "plot filename using 1:($2/($2+$3+$4)) title 'Węglanowa' with lines, \
              filename using 1:($3/($2+$3+$4)) title 'Piaskowcowa' with lines, \
              filename using 1:($4/($2+$3+$4)) title 'Łupkowa' with lines"
