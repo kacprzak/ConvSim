@@ -59,6 +59,16 @@ int main(int argc, char **argv)
     if (argc > 1 && strcmp(argv[1], "-s") == 0)
         slow = true;
 
+#ifdef WINDOWS
+    int sleepTime = 10;
+#else
+    int sleepTime = 10000;
+#endif
+
+    if (argc > 2) {
+        sleepTime = atoi(argv[2]);
+    }
+
     using namespace std;
 
     cout << "Starting ConvSim ...\n";
@@ -171,9 +181,9 @@ int main(int argc, char **argv)
         if (slow) {
             // Spowalnia symulację
 #ifdef WINDOWS
-            Sleep(10); // miliseconds
+            Sleep(sleepTime); // miliseconds
 #else
-            usleep(10000); // microseconds
+            usleep(sleepTime); // microseconds
 #endif
         }
     }
